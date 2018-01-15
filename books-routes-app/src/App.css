@@ -1,0 +1,43 @@
+body, html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+  font-size: 16px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: #fff;
+}
+
+.App {
+  padding-top: 71px;
+}
+
+.App-logo {
+  height: 50px;
+  float: left;
+}
+
+.App-header {
+  background-color: #fefefe;
+  border-bottom: 1px solid rgba(34,34,34,.05);
+  height: 70px;
+  padding: 10px 20px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  box-sizing: border-box;
+}
+
+.App-title {
+  font-size: 2em;
+  text-align: center;
+  margin: 0;
+  line-height: 50px;
+}
+
+.App-content{
+  padding: 10px 20px;
+}
