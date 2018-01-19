@@ -1,0 +1,25 @@
+.book-item {
+    padding: 10px;
+    clear:both;
+}
+
+.cover {
+    float: left;
+    margin: 0 10px 10px 0;
+}
+
+.title {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.authors{}
+
+.genres{
+    font-size: .8em;
+    color:#444
+}
+
+.description{
+    margin-top:5px;
+}

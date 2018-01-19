@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import logo from './images/ib-logo.png';
 import './App.css';
+import BookList from './components/BooksList'
+
+import FixturesBooks from './fixtures'
 
 class App extends Component {
   render() {
@@ -11,7 +14,7 @@ class App extends Component {
           <h1 className="App-title">Books<br/>Routes</h1>
         </header>
         <div className="App-content">
-          Content
+        <BookList books={FixturesBooks}></BookList>
         </div>
       </div>
     );
