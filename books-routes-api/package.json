@@ -1,0 +1,23 @@
+{
+  "name": "books-routes-api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./src/server/index.js",
+    "test": "node ./node_modules/mocha/bin/_mocha"
+  },
+  "keywords": [],
+  "author": "LLC Ideas Band",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "4.1.1",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.5.0"
+  },
+  "dependencies": {
+    "knex": "^0.13.0",
+    "koa": "^2.3.0",
+    "koa-router": "^7.2.1",
+    "pg": "^7.4.1"
+  }
+}

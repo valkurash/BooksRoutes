@@ -27,7 +27,7 @@ export default [
         }
       ],
       "description": "Occaecat nulla nostrud est aliqua eu culpa pariatur aliqua velit sint irure nostrud. Esse fugiat cillum ut velit sit occaecat eu ut id pariatur nulla. Ipsum incididunt qui veniam ut. Cillum commodo qui reprehenderit laborum aliquip minim exercitation ea nostrud ut.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "labore aliqua",
       "isbn": "2f55c88b-f0b9-47e7-9c54-905609d21260",
       "id": 0
@@ -57,7 +57,7 @@ export default [
         }
       ],
       "description": "Eu dolore officia mollit do minim fugiat duis. Elit adipisicing eiusmod amet occaecat aute reprehenderit veniam do sit sint fugiat velit. Amet id magna officia id labore aliqua ex mollit ad culpa. Non consectetur sint consequat aliquip culpa Lorem enim consequat. Occaecat ad commodo qui ea ex. Nostrud dolore aliqua culpa ut nulla laboris laborum dolore in dolore voluptate.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "dolor Lorem",
       "isbn": "d4695540-5228-4276-8eee-6c3c895a841b",
       "id": 1
@@ -87,7 +87,7 @@ export default [
         }
       ],
       "description": "Tempor duis ut esse non culpa sunt excepteur. Consequat ipsum ipsum cillum culpa officia incididunt nostrud incididunt anim duis et. Consequat ad magna nulla id pariatur excepteur velit dolore ex labore ex non nostrud. Velit do ad fugiat ullamco adipisicing eiusmod non cupidatat proident enim. Nisi non elit cillum do elit sunt tempor irure anim non duis. Ea magna ipsum adipisicing consequat velit non labore in aliqua quis. Labore occaecat incididunt quis sit nostrud ut et sunt et ullamco consequat eiusmod aliquip aute.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "enim nostrud",
       "isbn": "3a804ac5-e1d1-4a07-923e-682043a9baca",
       "id": 2
@@ -115,7 +115,7 @@ export default [
         }
       ],
       "description": "Consectetur nostrud ad eu culpa non labore eu sint anim exercitation in est mollit. Magna Lorem ullamco consectetur enim incididunt ea sint nulla cupidatat ipsum dolore nulla. Veniam voluptate exercitation ipsum nulla ex minim exercitation. Commodo fugiat sunt dolor irure dolor magna non elit commodo.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "labore aute",
       "isbn": "2a425443-3b22-4340-8560-38d304b7b39b",
       "id": 3
@@ -147,7 +147,7 @@ export default [
         }
       ],
       "description": "Cupidatat esse ut irure magna et nulla. In mollit laboris do aliquip esse enim sunt in veniam laboris. Quis aliqua est incididunt reprehenderit id ut dolor aute cupidatat irure. Eiusmod aliqua veniam et qui tempor labore nostrud aliquip fugiat culpa et dolor aliqua irure. Aliqua est occaecat sint ipsum magna exercitation amet nisi esse incididunt nisi occaecat.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "occaecat dolor",
       "isbn": "123734c4-6901-49f4-a118-f4520aa52e8b",
       "id": 4
@@ -188,7 +188,7 @@ export default [
         }
       ],
       "description": "Anim pariatur sunt commodo adipisicing incididunt esse nostrud ad. Fugiat sit dolor mollit reprehenderit deserunt sit consectetur sit. Officia esse elit ex consectetur. Cupidatat amet officia ea eiusmod adipisicing.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "proident adipisicing",
       "isbn": "7c168d35-b89a-4348-bd21-d482293a0dc0",
       "id": 5
@@ -230,7 +230,7 @@ export default [
         }
       ],
       "description": "Commodo ad sint nostrud reprehenderit exercitation consequat do laboris. Enim aliqua voluptate eu dolore amet do elit aute pariatur. Nulla deserunt commodo dolor dolor proident consectetur do aliquip irure pariatur elit.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "sit nostrud",
       "isbn": "001642f7-6145-4fd2-83e0-feeffeb9049f",
       "id": 6
@@ -258,7 +258,7 @@ export default [
         }
       ],
       "description": "Excepteur nostrud eiusmod labore amet enim. Nisi proident officia consequat irure velit eiusmod eiusmod in ea enim aute excepteur ad commodo. Velit deserunt quis ipsum laborum eiusmod quis minim. Do deserunt duis reprehenderit veniam sunt occaecat reprehenderit exercitation tempor exercitation. Magna officia in nostrud est ea aliqua. Nisi adipisicing enim incididunt nulla incididunt sint. Dolore tempor aute pariatur cupidatat ex.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "consequat do",
       "isbn": "dc73499b-cffe-4239-896e-e992fb6d45d5",
       "id": 7
@@ -286,7 +286,7 @@ export default [
         }
       ],
       "description": "Sit cillum adipisicing laboris ullamco sint elit dolore. Est aliquip minim reprehenderit cillum Lorem quis ad. Velit do elit ipsum quis id ipsum ad consequat. Culpa in do amet excepteur exercitation adipisicing incididunt adipisicing culpa non aute Lorem. Aliqua sunt eu labore id tempor ad occaecat non excepteur consectetur nisi sint pariatur nulla.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "aute irure",
       "isbn": "be351ab0-aa35-46ea-821e-0c35fdee705e",
       "id": 8
@@ -320,7 +320,7 @@ export default [
         }
       ],
       "description": "Elit ut quis consectetur reprehenderit. Incididunt nisi incididunt labore ex pariatur. Laboris officia eu fugiat id cupidatat nisi esse consectetur laboris dolore dolor eu ea. Cupidatat voluptate exercitation minim labore laborum ullamco sunt amet.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "duis aliquip",
       "isbn": "d621ce64-1490-4c8e-a764-77032d210759",
       "id": 9
@@ -344,7 +344,7 @@ export default [
         }
       ],
       "description": "Magna quis do irure eiusmod fugiat ex tempor incididunt pariatur cillum laborum tempor incididunt. Quis ipsum aliquip dolore cillum sit. Enim reprehenderit laboris deserunt anim minim incididunt nulla veniam excepteur ullamco officia voluptate deserunt consequat. Est aute dolor cillum voluptate. Mollit est proident ipsum do magna in velit aliqua laboris laboris pariatur voluptate non proident.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "mollit quis",
       "isbn": "273f3741-daaf-4b53-aa7c-419e1c47c413",
       "id": 10
@@ -386,7 +386,7 @@ export default [
         }
       ],
       "description": "Eiusmod proident qui sunt qui nulla nisi laboris. Proident duis proident dolore mollit Lorem excepteur duis esse eiusmod et adipisicing enim. Eiusmod sunt et esse mollit veniam sunt deserunt incididunt aute laboris. Non eu est in consectetur. Velit duis exercitation ad culpa ex laborum sit nulla.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "in aliqua",
       "isbn": "7062ca65-c9b7-4667-b1df-bb8b3ca58641",
       "id": 11
@@ -428,7 +428,7 @@ export default [
         }
       ],
       "description": "Adipisicing ut tempor laboris dolore excepteur commodo ut cillum ex excepteur Lorem ipsum. Sint quis incididunt sunt ad eiusmod incididunt officia nisi et. Ullamco laboris esse cillum quis consequat in sit velit incididunt aute commodo fugiat. Id duis nostrud ex proident duis cillum. Aute in commodo aliqua culpa in mollit adipisicing incididunt velit proident consequat. Anim cupidatat minim sint laboris incididunt dolor eu ea est. Nisi duis mollit veniam officia culpa.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "reprehenderit ex",
       "isbn": "96007218-576b-4f75-a6e1-098b3c91e434",
       "id": 12
@@ -448,7 +448,7 @@ export default [
         }
       ],
       "description": "Ipsum sit ullamco laboris proident do laboris. Labore occaecat adipisicing exercitation id excepteur do eu magna ex. Occaecat exercitation labore amet quis aliqua ea do ex consequat eiusmod amet deserunt nostrud consectetur. Dolor ut fugiat qui aute duis mollit veniam aliqua mollit proident pariatur enim sit. Lorem deserunt dolor quis cupidatat labore qui ex enim qui enim sint duis duis.",
-      "cover_url": "http://placehold.it/100x140",
+      "cover": "http://placehold.it/100x140",
       "title": "voluptate adipisicing",
       "isbn": "562c79fd-09a1-40ea-9a9d-fbbcb799e7aa",
       "id": 13
