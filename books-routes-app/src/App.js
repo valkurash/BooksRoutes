@@ -1,24 +1,21 @@
-import React, { Component } from 'react';
-import logo from './images/ib-logo.png';
-import './App.css';
-import BookList from './components/BooksList'
-
-import FixturesBooks from './fixtures'
+import React, {Component} from 'react'
+import BooksRoutesApp from './components/BooksRoutesApp';
+import {Provider} from 'react-redux'
+import {ConnectedRouter} from 'react-router-redux'
+import store from './store'
+import history from './history'
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Books<br/>Routes</h1>
-        </header>
-        <div className="App-content">
-        <BookList books={FixturesBooks}></BookList>
-        </div>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <Provider store = {store}>
+                <ConnectedRouter history = {history}>
+                  <BooksRoutesApp />
+                </ConnectedRouter>
+            </Provider>
+        )
+
+    }
 }
 
-export default App;
+export default App

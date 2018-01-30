@@ -33,7 +33,7 @@ export default class Book extends Component {
 
         return (
             <div className="book-item">
-                <div className="cover"><img alt="book cover" src={book.cover_url} /></div>
+                <div className="cover"><img alt="book cover" src={book.cover} /></div>
                 <div className="info">
                     <div className="title">{book.title}</div>
                     <div className="authors">{authors}</div>
