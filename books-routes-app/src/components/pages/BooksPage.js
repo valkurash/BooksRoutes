@@ -1,19 +1,15 @@
-import React, { Component } from 'react'
-//import PropTypes from 'prop-types'
-import BookList from '../BooksList'
-
-import FixturesBooks from '../../fixtures'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import BookList from '../BooksList';
+import FilterBooks from '../FilterBooks';
 
 export default class BooksPage extends Component {
-    /*static propTypes = {
-
-    };*/
-
-    render() {
-        return (
-            <div>
-                <BookList books={FixturesBooks}></BookList>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <FilterBooks />
+        <BookList />
+      </div>
+    );
+  }
 }
