@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Root from './containers/Root';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
+import {Provider} from 'react-redux';
+import {ConnectedRouter} from 'react-router-redux';
 import store from './store/configureStore';
 import history from './history';
 

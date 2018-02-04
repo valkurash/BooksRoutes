@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { searchTermChanged } from "../../actions/booksActions";
 
-export default class FilterBooks extends Component {
+class FilterBooks extends Component {
   static propTypes = {
-    //searchTerm: PropTypes.string.isRequired,
-    //actions: PropTypes.object.isRequired
+    searchTerm: PropTypes.string,
+    searchTermChanged: PropTypes.func.isRequired
   };
 
   render() {
-    //const {searchTerm, actions} = this.props;
+    const { searchTerm, searchTermChanged } = this.props;
 
     return (
       <form>
@@ -17,11 +19,20 @@ export default class FilterBooks extends Component {
             className="form-control"
             type="text"
             name="search"
-            placeholder="Search Book"
-    /*value={searchTerm}*/
-    /*onChange={e => actions.searchTermChanged(e.target.value)}*/ />
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={e => searchTermChanged(e.target.value)}
+          />
         </div>
       </form>
     );
   }
 }
+export default connect(
+  state => {
+    return {
+      searchTerm: state.searchTerm
+    };
+  },
+  { searchTermChanged }
+)(FilterBooks);

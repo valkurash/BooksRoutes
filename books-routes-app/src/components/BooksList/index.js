@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { fetchBooks } from '../../actions/booksActions';
-import Book from '../Book';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchBooks } from "../../actions/booksActions";
+import Book from "../Book";
+import { filtratedBooksSelector } from "../../selectors";
 
 class BookList extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
+    fetchBooks: PropTypes.func,
+    searchTerm: PropTypes.string
   };
 
   componentDidMount() {
@@ -16,17 +19,16 @@ class BookList extends Component {
   render() {
     const { books } = this.props;
 
-    const bookElements = books.map((book) => (
-      <Book key={book.id} book={book} />
-    ));
+    const bookElements = books.map(book => <Book key={book.id} book={book} />);
 
     return <div className="book-list">{bookElements}</div>;
   }
 }
 export default connect(
-  (state) => {
+  state => {
     return {
-      books: state.books,
+      books: filtratedBooksSelector(state),
+      searchTerm: state.searchTerm
     };
   },
   { fetchBooks }

@@ -1,10 +1,13 @@
-body, html {
+body,
+html {
   height: 100%;
   width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 body {
-  font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.42857143;
   color: #333;
@@ -22,7 +25,7 @@ body {
 
 .App-header {
   background-color: #fefefe;
-  border-bottom: 1px solid rgba(34,34,34,.05);
+  border-bottom: 1px solid rgba(34, 34, 34, 0.05);
   height: 70px;
   padding: 10px 20px;
   position: fixed;
@@ -40,6 +43,6 @@ body {
   vertical-align: baseline;
 }
 
-.App-content{
+.App-content {
   padding: 10px 20px;
 }

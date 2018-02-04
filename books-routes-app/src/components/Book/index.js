@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types'
-import './style.css'
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import './style.css';
 
 export default class Book extends Component {
-
     static propTypes = {
         book: PropTypes.shape({
             id: PropTypes.number.isRequired,
@@ -14,22 +13,22 @@ export default class Book extends Component {
             authors: PropTypes.arrayOf(PropTypes.shape({
                 id: PropTypes.number.isRequired,
                 avatar: PropTypes.string.isRequired,
-                name: PropTypes.string
+                name: PropTypes.string,
             })),
             genres: PropTypes.arrayOf(PropTypes.shape({
                 id: PropTypes.number.isRequired,
                 title: PropTypes.string.isRequired,
-            }))
-        })
+            })),
+        }),
     }
 
     render() {
-        const { book } = this.props
+        const {book} = this.props;
 
-        const authors = book.authors.map(author => author.name).join(', ')
-        const genres = book.genres.map(genre => genre.title).join(', ')
+        const authors = book.authors.map((author) => author.name).join(', ');
+        const genres = book.genres.map((genre) => genre.title).join(', ');
 
-        if (!book) return null
+        if (!book) return null;
 
         return (
             <div className="book-item">
@@ -41,6 +40,6 @@ export default class Book extends Component {
                 </div>
                 <div className="description">{book.description}</div>
             </div>
-        )
+        );
     }
 }

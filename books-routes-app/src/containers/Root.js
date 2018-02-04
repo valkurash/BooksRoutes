@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import logo from '../images/ib-logo.png';
 import BooksPage from '../components/pages/BooksPage';
 import BookRoutesPage from '../components/pages/BookRoutesPage';

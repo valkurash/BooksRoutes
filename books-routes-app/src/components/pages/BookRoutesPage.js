@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-//import PropTypes from 'prop-types'
+import React, {Component} from 'react';
+// import PropTypes from 'prop-types'
 
 export default class BookRoutesPage extends Component {
    /* static propTypes = {
@@ -11,6 +11,6 @@ export default class BookRoutesPage extends Component {
             <div>
                 <h1>BookRoutesPage</h1>
             </div>
-        )
+        );
     }
 }
