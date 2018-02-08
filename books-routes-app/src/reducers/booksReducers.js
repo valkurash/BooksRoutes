@@ -1,9 +1,9 @@
-import * as actionTypes from "../actions/actionTypes";
+import * as actionTypes from "../constants/ActionTypes";
 
 export const booksReducer = (books = [], action) => {
   switch (action.type) {
-    case actionTypes.FETCH_BOOKS_SUCCESS:
-      return action.books;
+    case actionTypes.FETCH_BOOKS + actionTypes.SUCCESS:
+      return action.response;
     default:
       return books;
   }

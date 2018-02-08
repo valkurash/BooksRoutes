@@ -10,29 +10,23 @@ export default class Book extends Component {
             title: PropTypes.string.isRequired,
             cover_url: PropTypes.string,
             description: PropTypes.string,
-            authors: PropTypes.arrayOf(PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                avatar: PropTypes.string.isRequired,
-                name: PropTypes.string,
-            })),
-            genres: PropTypes.arrayOf(PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                title: PropTypes.string.isRequired,
-            })),
-        }),
+            authors: PropTypes.arrayOf(PropTypes.shape({id: PropTypes.number.isRequired, avatar: PropTypes.string.isRequired, name: PropTypes.string})),
+            genres: PropTypes.arrayOf(PropTypes.shape({id: PropTypes.number.isRequired, title: PropTypes.string.isRequired}))
+        })
     }
 
     render() {
         const {book} = this.props;
 
-        const authors = book.authors.map((author) => author.name).join(', ');
-        const genres = book.genres.map((genre) => genre.title).join(', ');
+        const authors = 'none' //book.authors.map((author) => author.name).join(', ');
+        const genres = 'none' //book.genres.map((genre) => genre.title).join(', ');
 
-        if (!book) return null;
-
+        if (!book) 
+            return null;
+        
         return (
             <div className="book-item">
-                <div className="cover"><img alt="book cover" src={book.cover} /></div>
+                <div className="cover"><img alt="book cover" src={book.cover}/></div>
                 <div className="info">
                     <div className="title">{book.title}</div>
                     <div className="authors">{authors}</div>

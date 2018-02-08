@@ -1,4 +1,4 @@
-import * as actionTypes from "../actions/actionTypes";
+import * as actionTypes from "../constants/ActionTypes";
 
 const initialFilters = {
   searchTerm: ""
@@ -7,7 +7,10 @@ const initialFilters = {
 export const filtersReducer = (filters = initialFilters, action) => {
   switch (action.type) {
     case actionTypes.SEARCH_INPUT_CHANGED:
-      return { ...filters, searchTerm: action.searchTerm };
+      return {
+        ...filters,
+        searchTerm: action.searchTerm
+      };
     default:
       return filters;
   }
