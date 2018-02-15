@@ -1,6 +1,6 @@
 import {START, SUCCESS, FAIL} from '../constants/ActionTypes'
 
-export default store => next => action => {
+export default() => next => action => {
     const {
         callAPI,
         type,
@@ -27,8 +27,10 @@ export default store => next => action => {
             return next({
                 ...rest,
                 type: type + FAIL,
-                status: response.status,
-                message: response.message
+                error: {
+                    status: response.status,
+                    message: response.message
+                }
             })
         }
 
