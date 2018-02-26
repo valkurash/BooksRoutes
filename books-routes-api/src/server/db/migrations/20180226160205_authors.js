@@ -1,23 +1,17 @@
 exports.up = function (knex, Promise) {
     return knex
         .schema
-        .createTable('books', function (t) {
+        .createTable('authors', function (t) {
             t
                 .increments('id')
                 .unsigned()
                 .primary();
             t
-                .string('title')
+                .string('name')
                 .notNullable()
                 .unique();
             t
-                .string('isbn')
-                .nullable();
-            t
-                .string('cover')
-                .nullable();
-            t
-                .text('description')
+                .string('avatar')
                 .nullable();
         });
 };
@@ -25,5 +19,5 @@ exports.up = function (knex, Promise) {
 exports.down = function (knex, Promise) {
     return knex
         .schema
-        .dropTable('books');
+        .dropTable('authors');
 };

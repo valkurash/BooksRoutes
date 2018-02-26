@@ -4,7 +4,7 @@ const queries = require('../db/queries/books');
 const router = new Router();
 const BASE_URL = `/api/v1/books`;
 
-router.get(BASE_URL, async (ctx) => {
+router.get(BASE_URL, async(ctx) => {
   try {
     const books = await queries.getAllBooks();
     ctx.body = {
@@ -16,7 +16,7 @@ router.get(BASE_URL, async (ctx) => {
   }
 })
 
-router.get(`${BASE_URL}/:id`, async (ctx) => {
+router.get(`${BASE_URL}/:id`, async(ctx) => {
   try {
     const book = await queries.getSingleBook(ctx.params.id);
     if (book.length) {
@@ -36,7 +36,7 @@ router.get(`${BASE_URL}/:id`, async (ctx) => {
   }
 })
 
-router.post(`${BASE_URL}`, async (ctx) => {
+router.post(`${BASE_URL}`, async(ctx) => {
   try {
     const book = await queries.addBook(ctx.request.body);
     if (book.length) {
@@ -61,7 +61,7 @@ router.post(`${BASE_URL}`, async (ctx) => {
   }
 })
 
-router.put(`${BASE_URL}/:id`, async (ctx) => {
+router.put(`${BASE_URL}/:id`, async(ctx) => {
   try {
     const book = await queries.updateBook(ctx.params.id, ctx.request.body);
     if (book.length) {
@@ -86,7 +86,7 @@ router.put(`${BASE_URL}/:id`, async (ctx) => {
   }
 })
 
-router.delete(`${BASE_URL}/:id`, async (ctx) => {
+router.delete(`${BASE_URL}/:id`, async(ctx) => {
   try {
     const book = await queries.deleteBook(ctx.params.id);
     if (book.length) {
