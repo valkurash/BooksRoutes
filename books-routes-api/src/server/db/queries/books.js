@@ -1,4 +1,5 @@
 const knex = require('../connection');
+const bookshelf = require('../bookshelf');
 
 function getAllBooks() {
   return knex

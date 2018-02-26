@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",
+    "bookshelf": "^0.12.1",
     "knex": "^0.13.0",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",

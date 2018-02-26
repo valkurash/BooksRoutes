@@ -8,9 +8,11 @@ exports.up = function (knex, Promise) {
                 .primary();
             t
                 .integer('book_id')
+                .notNullable()
                 .unsigned();
             t
                 .integer('author_id')
+                .notNullable()
                 .unsigned();
 
             t
