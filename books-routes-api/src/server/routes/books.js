@@ -12,14 +12,14 @@ router.get(BASE_URL, async(ctx) => {
       data: books
     };
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-})
+});
 
 router.get(`${BASE_URL}/:id`, async(ctx) => {
   try {
     const book = await queries.getSingleBook(ctx.params.id);
-    if (book.length) {
+    if (book) {
       ctx.body = {
         status: 'success',
         data: book
@@ -32,9 +32,9 @@ router.get(`${BASE_URL}/:id`, async(ctx) => {
       };
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-})
+});
 
 router.post(`${BASE_URL}`, async(ctx) => {
   try {
@@ -59,7 +59,7 @@ router.post(`${BASE_URL}`, async(ctx) => {
       message: err.message || 'Sorry, an error has occurred.'
     };
   }
-})
+});
 
 router.put(`${BASE_URL}/:id`, async(ctx) => {
   try {
@@ -84,7 +84,7 @@ router.put(`${BASE_URL}/:id`, async(ctx) => {
       message: err.message || 'Sorry, an error has occurred.'
     };
   }
-})
+});
 
 router.delete(`${BASE_URL}/:id`, async(ctx) => {
   try {
@@ -109,6 +109,6 @@ router.delete(`${BASE_URL}/:id`, async(ctx) => {
       message: err.message || 'Sorry, an error has occurred.'
     };
   }
-})
+});
 
 module.exports = router;

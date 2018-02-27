@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 const chai = require('chai');
-const should = chai.should();
+chai.should();
 
 describe('Sample Test', () => {
   it('should pass', (done) => {

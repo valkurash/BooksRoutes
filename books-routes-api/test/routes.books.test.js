@@ -39,7 +39,7 @@ describe('routes : books', function () {
       });
   });
 
-  describe.only('GET /api/v1/books', () => {
+  describe('GET /api/v1/books', () => {
     it('should return all books', (done) => {
       chai
         .request(server)
@@ -156,7 +156,6 @@ describe('routes : books', function () {
           done();
         });
     });
-
   });
 
   describe('POST /api/v1/book', () => {
@@ -235,7 +234,6 @@ describe('routes : books', function () {
           done();
         });
     });
-
   });
 
   describe('PUT /api/v1/books', () => {
@@ -410,5 +408,4 @@ describe('routes : books', function () {
         });
     });
   });
-
 });

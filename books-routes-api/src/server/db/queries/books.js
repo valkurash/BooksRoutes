@@ -1,18 +1,19 @@
 const knex = require('../connection');
-const bookshelf = require('../bookshelf');
+const Models = require('../models');
 
 function getAllBooks() {
-  return knex
-    .select('*')
-    .from('books')
-    .leftOuterJoin('books_authors', 'books.id', 'books_authors.book_id')
-    .leftOuterJoin('authors', 'books_authors.author_id', 'authors.id');
+  return Models
+    .Book
+    .fetchAll({withRelated: ['authors']});
+
 }
 
 function getSingleBook(id) {
-  return knex('books')
-    .select('*')
-    .where({id: parseInt(id)});
+  return Models
+    .Book
+    .where({id: parseInt(id)})
+    .fetch({withRelated: ['authors']});
+
 }
 
 function addBook(book) {
