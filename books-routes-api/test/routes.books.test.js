@@ -115,7 +115,7 @@ describe('routes : books', function () {
           // object}
           res
             .body
-            .data[0]
+            .data
             .should
             .include
             .keys('id', 'title', 'isbn', 'cover', 'description', 'authors');

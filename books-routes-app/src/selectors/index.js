@@ -11,6 +11,6 @@ export const filtratedBooksSelector = createSelector(booksSelector, filtersSelec
   const {searchTerm} = filters;
 
   return searchTerm
-    ? books.filter(book => book.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
+    ? books.filter(book => book.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 || book.authors.map((author) => author.name).join(', ').toLowerCase().indexOf(searchTerm.toLowerCase()) > -1)
     : books;
 });

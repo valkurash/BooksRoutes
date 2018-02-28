@@ -35,17 +35,20 @@ exports.up = function (knex) {
         .createTable('authors_books', function (table) {
             table
                 .integer('author_id')
-                .references('authors.id');
+                .references('authors.id')
+                .onDelete('CASCADE');
             table
                 .integer('book_id')
-                .references('books.id');
+                .references('books.id')
+                .onDelete('CASCADE');
         });
 };
 
 exports.down = function (knex) {
     return knex
         .schema
+        .dropTable('authors_books')
         .dropTable('books')
-        .dropTable('authors')
-        .dropTable('authors_books');
+        .dropTable('authors');
+
 };

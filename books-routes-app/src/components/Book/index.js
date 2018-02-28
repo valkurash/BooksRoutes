@@ -18,8 +18,10 @@ export default class Book extends Component {
     render() {
         const {book} = this.props;
 
-        const authors = 'none' //book.authors.map((author) => author.name).join(', ');
-        const genres = 'none' //book.genres.map((genre) => genre.title).join(', ');
+        const authors = book
+            .authors
+            .map((author) => author.name)
+            .join(', ');
 
         if (!book) 
             return null;
@@ -30,7 +32,6 @@ export default class Book extends Component {
                 <div className="info">
                     <div className="title">{book.title}</div>
                     <div className="authors">{authors}</div>
-                    <div className="genres">{genres}</div>
                 </div>
                 <div className="description">{book.description}</div>
             </div>
