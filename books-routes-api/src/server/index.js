@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 1337;
 app.use(bodyParser());
 
 const options = {
-  origin: '*'
+  origin: '*',
 };
 
 app.use(cors(options));
