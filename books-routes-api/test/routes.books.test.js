@@ -53,6 +53,14 @@ describe("routes : books", function() {
             "description",
             "authors"
           );
+          res.body.data[0]["authors"].length.should.eql(1);
+          res.body.data[1]["authors"].length.should.eql(1);
+          res.body.data[2]["authors"].length.should.eql(2);
+          res.body.data[0]["authors"][0].should.include.keys(
+            "id",
+            "name",
+            "avatar"
+          );
           done();
         });
     });
@@ -62,7 +70,7 @@ describe("routes : books", function() {
     it("should respond with a single book", done => {
       chai
         .request(server)
-        .get("/api/v1/books/1")
+        .get("/api/v1/books/3")
         .end((err, res) => {
           // there should be no errors
           should.not.exist(err);
@@ -82,6 +90,27 @@ describe("routes : books", function() {
             "description",
             "authors",
             "routes"
+          );
+          res.body.data["authors"].length.should.eql(2);
+          res.body.data["authors"][0].should.include.keys(
+            "id",
+            "name",
+            "avatar"
+          );
+          res.body.data["routes"].length.should.eql(1);
+          res.body.data["routes"][0].should.include.keys(
+            "id",
+            "name",
+            "book_id"
+          );
+          res.body.data["routes"][0]["points"].length.should.eql(2);
+          res.body.data["routes"][0]["points"][0].should.include.keys(
+            "id",
+            "name",
+            "route_id",
+            "point",
+            "order",
+            "description"
           );
           done();
         });

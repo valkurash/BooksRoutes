@@ -180,8 +180,8 @@ const createBooks = (knex, Promise, bookData) => {
   ])
     .then(ids => {
       let promises = [];
-      ids[1][0].forEach(authorId => {
-        promises.push(createBookAuthor(knex, ids[0][0], authorId));
+      ids[1].forEach(authorId => {
+        promises.push(createBookAuthor(knex, ids[0][0], authorId[0]));
       });
       return [ids[0][0], Promise.all(promises)];
     })
