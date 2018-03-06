@@ -23,20 +23,19 @@ class BookList extends Component {
 
     if (loading) return <div className="loader">Loading...</div>;
 
-    if (error) return error.message;
+    if (error) return <div className="errorMsg">{error.message}</div>;
+
     const bookElements = books.map(book => <Book key={book.id} book={book} />);
 
     return <div className="book-list">{bookElements}</div>;
   }
 }
 export default connect(
-  state => {
-    return {
-      books: filtratedBooksSelector(state),
-      loading: state.get("books").loading,
-      loaded: state.get("books").loaded,
-      error: state.get("books").error
-    };
-  },
+  state => ({
+    books: filtratedBooksSelector(state),
+    loading: state.get("books").loading,
+    loaded: state.get("books").loaded,
+    error: state.get("books").error
+  }),
   { fetchBooks }
 )(BookList);
