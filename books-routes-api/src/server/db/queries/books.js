@@ -1,39 +1,34 @@
-const knex = require('../connection');
-const Models = require('../models');
+const knex = require("../connection");
+const Models = require("../models");
 
 function getAllBooks() {
-  return Models
-    .Book
-    .fetchAll({withRelated: ['authors']});
-
+  return Models.Book.fetchAll({ withRelated: ["authors"] });
 }
 
 function getSingleBook(id) {
-  return Models
-    .Book
-    .where({id: parseInt(id)})
-    .fetch({withRelated: ['authors']});
-
+  return Models.Book.where({ id: parseInt(id) }).fetch({
+    withRelated: ["authors", "routes", "routes.points"]
+  });
 }
 
 function addBook(book) {
-  return knex('books')
+  return knex("books")
     .insert(book)
-    .returning('*');
+    .returning("*");
 }
 
 function updateBook(id, book) {
-  return knex('books')
+  return knex("books")
     .update(book)
-    .where({id: parseInt(id)})
-    .returning('*');
+    .where({ id: parseInt(id) })
+    .returning("*");
 }
 
 function deleteBook(id) {
-  return knex('books')
+  return knex("books")
     .del()
-    .where({id: parseInt(id)})
-    .returning('*');
+    .where({ id: parseInt(id) })
+    .returning("*");
 }
 
 module.exports = {
