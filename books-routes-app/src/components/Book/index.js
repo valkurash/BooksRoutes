@@ -18,14 +18,21 @@ export default class Book extends Component {
           name: PropTypes.string
         })
       )
-    })
+    }),
+    sidebar: PropTypes.bool
   };
 
   render() {
-    const { book } = this.props;
+    const { book, sidebar } = this.props;
 
     const authors = book.authors.map(author => author.name).join(", ");
-
+    const title = sidebar ? (
+      <div className="title">{book.title}</div>
+    ) : (
+      <Link to={`/books/${book.id}`}>
+        <div className="title">{book.title}</div>
+      </Link>
+    );
     if (!book) return null;
 
     return (
@@ -34,9 +41,7 @@ export default class Book extends Component {
           <img alt="book cover" src={book.cover} />
         </div>
         <div className="info">
-          <Link to={`/books/${book.id}`}>
-            <div className="title">{book.title}</div>
-          </Link>
+          {title}
           <div className="authors">{authors}</div>
         </div>
         <div className="description">{book.description}</div>

@@ -35,6 +35,25 @@ let booksData = [
             order: "2"
           }
         ]
+      },
+      {
+        name: "Route500",
+        path: [
+          {
+            name: "Point001",
+            description: "Description text 00123",
+            lat: "80.876",
+            lon: "-24.560",
+            order: "1"
+          },
+          {
+            name: "Point002",
+            description: "Description text 00321",
+            lat: "-19.789",
+            lon: "30.56",
+            order: "2"
+          }
+        ]
       }
     ]
   },

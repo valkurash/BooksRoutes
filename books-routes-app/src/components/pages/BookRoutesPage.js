@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Route, Redirect, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchBook } from "../../actions/booksActions";
 import PropTypes from "prop-types";
+import RouteMap from "../RouteMap";
+import Book from "../Book";
 
 class BookRoutesPage extends Component {
   static propTypes = {
@@ -29,7 +31,6 @@ class BookRoutesPage extends Component {
           PropTypes.shape({
             id: PropTypes.number.isRequired,
             name: PropTypes.string
-            //points
           })
         )
       }),
@@ -52,12 +53,34 @@ class BookRoutesPage extends Component {
     if (book.get("loading")) return <div className="loader">Loading...</div>;
     if (book.get("error"))
       return <div className="errorMsg">{book.get("error").message}</div>;
-
+    const routesList = bookData.routes.map(route => (
+      <li key={route.id}>
+        <Link to={`/books/${bookData.id}/${route.id}`}>{route.name}</Link>
+      </li>
+    ));
     return (
       <div>
-        <h1>BookRoutesPage {bookData.title}</h1>
-
-        <Link to="/">Back to all Books</Link>
+        <div className="routeSidebar">
+          <Link to="/">Back to all Books</Link>
+          <h1>BookRoutesPage {bookData.title}</h1>
+          <Book key={bookData.id} book={bookData} sidebar={true} />
+          <ul>{routesList}</ul>
+          <Switch>
+            <Redirect
+              from="/books/:id"
+              exact
+              to={`/books/${bookData.id}/${bookData.routes[0].id}`}
+            />
+            {bookData.routes.map((route, index) => (
+              <Route
+                exact
+                key={index}
+                path="/books/:bookId/:routeId"
+                component={RouteMap}
+              />
+            ))}
+          </Switch>
+        </div>
       </div>
     );
   }

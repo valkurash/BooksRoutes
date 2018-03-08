@@ -27,7 +27,7 @@ class BookList extends Component {
 
     const bookElements = books.map(book => <Book key={book.id} book={book} />);
 
-    return <div className="book-list">{bookElements}</div>;
+    return <div className="bookList">{bookElements}</div>;
   }
 }
 export default connect(
