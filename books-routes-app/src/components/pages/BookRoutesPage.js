@@ -65,6 +65,8 @@ class BookRoutesPage extends Component {
           <h1>BookRoutesPage {bookData.title}</h1>
           <Book key={bookData.id} book={bookData} sidebar={true} />
           <ul>{routesList}</ul>
+        </div>
+        <div className="routeContent">
           <Switch>
             <Redirect
               from="/books/:id"
