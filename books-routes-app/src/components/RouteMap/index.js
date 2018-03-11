@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-const { compose, withProps, withStateHandlers } = require("recompose");
+const {
+  compose,
+  withProps,
+  withStateHandlers,
+  lifecycle,
+  withHandlers
+} = require("recompose");
 const {
   withScriptjs,
   withGoogleMap,
@@ -19,40 +25,83 @@ const MapWithAMakredInfoWindow = compose(
     mapElement: <div style={{ height: `100%` }} />
   }),
   withStateHandlers(
-    () => ({
-      isOpen: false
+    props => ({
+      isOpen: props.route.points.reduce((acc, curr) => {
+        acc[curr.id.toString()] = false;
+        return acc;
+      }, {})
     }),
     {
-      onToggleOpen: ({ isOpen }) => () => ({
-        isOpen: !isOpen
-      })
+      onToggleOpen: ({ isOpen }) => id => {
+        let state = { ...isOpen };
+        state[id.toString()] = !isOpen[id.toString()];
+        return { isOpen: state };
+      }
     }
   ),
+  withHandlers(() => {
+    const refs = {
+      map: undefined
+    };
+    const zoomToMarkers = () => {
+      const bounds = new window.google.maps.LatLngBounds();
+      refs.map.props.children.forEach(child => {
+        if (child.type === Marker) {
+          bounds.extend(
+            new window.google.maps.LatLng(
+              child.props.position.lat,
+              child.props.position.lng
+            )
+          );
+        }
+      });
+      refs.map.fitBounds(bounds);
+    };
+    return {
+      onMapMounted: () => ref => {
+        refs.map = ref;
+        zoomToMarkers();
+      },
+      zoomToMarkers: () => zoomToMarkers
+    };
+  }),
+  lifecycle({
+    componentDidUpdate(props) {
+      props.zoomToMarkers();
+    }
+  }),
   withScriptjs,
   withGoogleMap
-)(props => (
-  <GoogleMap
-    defaultZoom={8}
-    defaultCenter={{
-      lat: props.route.points[0].point.y,
-      lng: props.route.points[0].point.x
-    }}
-  >
-    <Marker
-      position={{
-        lat: props.route.points[0].point.y,
-        lng: props.route.points[0].point.x
+)(props => {
+  const points = props.route.points;
+  return (
+    <GoogleMap
+      ref={props.onMapMounted}
+      defaultZoom={8}
+      defaultCenter={{
+        lat: points[0].point.y,
+        lng: points[0].point.x
       }}
-      onClick={props.onToggleOpen}
     >
-      {props.isOpen && (
-        <InfoWindow onCloseClick={props.onToggleOpen}>
-          <div>{props.route.points[0].description}</div>
-        </InfoWindow>
-      )}
-    </Marker>
-  </GoogleMap>
-));
+      {points.map((point, index) => (
+        <Marker
+          key={index}
+          position={{
+            lat: point.point.y,
+            lng: point.point.x
+          }}
+          onClick={() => props.onToggleOpen(point.id)}
+        >
+          {props.isOpen[point.id.toString()] && (
+            <InfoWindow onCloseClick={() => props.onToggleOpen(point.id)}>
+              <div>{point.description}</div>
+            </InfoWindow>
+          )}
+        </Marker>
+      ))}
+    </GoogleMap>
+  );
+});
 
 class RouteMap extends Component {
   static propTypes = {
