@@ -106,19 +106,38 @@ describe('routes : books', function () {
             .should
             .equal('application/json');
           // the JSON response body should have a key-value pair of {"status": "success"}
-          res
-            .body
-            .status
-            .should
-            .eql('success');
-          // the JSON response body should have a key-value pair of {"data": 1 book
-          // object}
-          res
-            .body
-            .data
-            .should
-            .include
-            .keys('id', 'title', 'isbn', 'cover', 'description', 'authors');
+          res.body.status.should.eql("success");
+          // the JSON response body should have a key-value pair of {"data": 1 book object}
+          res.body.data.should.include.keys(
+            "id",
+            "title",
+            "isbn",
+            "cover",
+            "description",
+            "authors",
+            "routes"
+          );
+          res.body.data["authors"].length.should.eql(2);
+          res.body.data["authors"][0].should.include.keys(
+            "id",
+            "name",
+            "avatar"
+          );
+          res.body.data["routes"].length.should.eql(1);
+          res.body.data["routes"][0].should.include.keys(
+            "id",
+            "name",
+            "book_id"
+          );
+          res.body.data["routes"][0]["points"].length.should.eql(2);
+          res.body.data["routes"][0]["points"][0].should.include.keys(
+            "id",
+            "name",
+            "route_id",
+            "point",
+            "order",
+            "description"
+          );
           done();
         });
     });
