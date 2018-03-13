@@ -1,0 +1,6 @@
+.book-list-wrap {
+  flex-grow: 1;
+}
+.book-cover {
+  height: 140px;
+}

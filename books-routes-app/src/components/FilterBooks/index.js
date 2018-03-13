@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { searchTermChanged } from "../../actions/booksActions";
+import TextField from "material-ui/TextField";
 
 class FilterBooks extends Component {
   static propTypes = {
@@ -13,17 +14,18 @@ class FilterBooks extends Component {
     const { searchTerm, searchTermChanged } = this.props;
 
     return (
-      <form>
-        <div className="form-group">
-          <input
-            className="form-control"
-            type="text"
-            name="search"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={e => searchTermChanged(e.target.value)}
-          />
-        </div>
+      <form noValidate autoComplete="off">
+        <TextField
+          style={{ maxWidth: 500 }}
+          id="search"
+          label="Search book..."
+          type="search"
+          margin="normal"
+          helperText="by title or author"
+          value={searchTerm}
+          onChange={e => searchTermChanged(e.target.value)}
+          fullWidth
+        />
       </form>
     );
   }

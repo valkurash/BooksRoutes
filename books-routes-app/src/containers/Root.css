@@ -7,34 +7,31 @@ html {
 }
 
 body {
-  font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
   line-height: 1.42857143;
   color: #333;
   background-color: #fff;
 }
-
-.App {
-  padding-top: 71px;
+a:hover,
+a:visited {
+  color: initial;
 }
 
-.App-logo {
+.app-logo {
   height: 50px;
   display: inline-block;
 }
 
-.App-header {
+.app-header {
   background-color: #fefefe;
   border-bottom: 1px solid rgba(34, 34, 34, 0.05);
   height: 70px;
   padding: 10px 20px;
-  position: fixed;
-  width: 100%;
-  top: 0;
   box-sizing: border-box;
 }
 
-.App-title {
+.app-title {
   font-size: 1.5em;
   display: inline-block;
   margin: 0;
@@ -43,6 +40,13 @@ body {
   vertical-align: baseline;
 }
 
-.App-content {
+.app-content {
   padding: 10px 20px;
+}
+.routes-nav a:hover {
+  text-decoration: none;
+}
+.routes-nav a.active {
+  text-decoration: none;
+  cursor: initial;
 }
