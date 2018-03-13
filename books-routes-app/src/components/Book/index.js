@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { GridTile } from "material-ui/GridList";
 import "./style.css";
 
 export default class Book extends Component {
@@ -36,16 +37,17 @@ export default class Book extends Component {
     if (!book) return null;
 
     return (
-      <div className="book-item">
-        <div className="cover">
-          <img alt="book cover" src={book.cover} />
-        </div>
-        <div className="info">
-          {title}
-          <div className="authors">{authors}</div>
-        </div>
-        <div className="description">{book.description}</div>
-      </div>
+      <GridTile
+        className="bookItem"
+        title={title}
+        subtitle={
+          <span>
+            by <b>{authors}</b>
+          </span>
+        }
+      >
+        <img alt="book cover" src={book.cover} />
+      </GridTile>
     );
   }
 }

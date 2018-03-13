@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { fetchBooks } from "../../actions/booksActions";
 import Book from "../Book";
 import { filtratedBooksSelector } from "../../selectors";
+import { GridList } from "material-ui/GridList";
+import "./style.css";
 
 class BookList extends Component {
   static propTypes = {
@@ -27,7 +29,13 @@ class BookList extends Component {
 
     const bookElements = books.map(book => <Book key={book.id} book={book} />);
 
-    return <div className="bookList">{bookElements}</div>;
+    return (
+      <div className="bookListWrap">
+        <GridList cellHeight={180} className="bookGridList">
+          {bookElements}
+        </GridList>
+      </div>
+    );
   }
 }
 export default connect(
