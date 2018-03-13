@@ -80,8 +80,7 @@ describe("routes : books", function() {
           res.type.should.equal("application/json");
           // the JSON response body should have a key-value pair of {"status": "success"}
           res.body.status.should.eql("success");
-          // the JSON response body should have a key-value pair of {"data": 1 book
-          // object}
+          // the JSON response body should have a key-value pair of {"data": 1 book object}
           res.body.data.should.include.keys(
             "id",
             "title",
