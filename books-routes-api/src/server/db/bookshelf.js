@@ -1,2 +1,2 @@
-const knex = require("./connection");
-module.exports = require("bookshelf")(knex);
+const knex = require('./connection');
+module.exports = require('bookshelf')(knex);
