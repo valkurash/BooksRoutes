@@ -59,8 +59,10 @@ const MapWithAMakredInfoWindow = compose(
     };
     return {
       onMapMounted: () => ref => {
-        refs.map = ref;
-        zoomToMarkers();
+        if (ref) {
+          refs.map = ref;
+          zoomToMarkers();
+        }
       },
       zoomToMarkers: () => zoomToMarkers
     };
