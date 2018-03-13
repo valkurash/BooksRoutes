@@ -1,25 +1,27 @@
 .book-item {
-    padding: 10px;
-    clear:both;
+  padding: 10px;
+  clear: both;
+  overflow: hidden;
 }
 
 .cover {
-    float: left;
-    margin: 0 10px 10px 0;
+  float: left;
+  margin: 0 10px 10px 0;
 }
 
 .title {
-    font-size: 1.5em;
-    font-weight: 600;
+  font-size: 1.5em;
+  font-weight: 600;
 }
 
-.authors{}
-
-.genres{
-    font-size: .8em;
-    color:#444
+.authors {
 }
 
-.description{
-    margin-top:5px;
+.genres {
+  font-size: 0.8em;
+  color: #444;
+}
+
+.description {
+  margin-top: 5px;
 }

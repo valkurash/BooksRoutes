@@ -9,11 +9,54 @@ let booksData = [
       title: 'labore aliqua',
       isbn: '2f55c88b-f0b9-47e7-9c54-905609d21260'
     },
-    author: {
-      avatar: 'http://placehold.it/100x140',
-      name: 'gatru fontate'
-    }
-  }, {
+    authors: [
+      {
+        avatar: "http://placehold.it/100x140",
+        name: "gatru fontate"
+      }
+    ],
+    routes: [
+      {
+        name: "Route1",
+        path: [
+          {
+            name: "Point1",
+            description: "Description text 123",
+            lat: "10.876",
+            lon: "-27.56",
+            order: "1"
+          },
+          {
+            name: "Point2",
+            description: "Description text 321",
+            lat: "-10.786",
+            lon: "20.56",
+            order: "2"
+          }
+        ]
+      },
+      {
+        name: "Route500",
+        path: [
+          {
+            name: "Point001",
+            description: "Description text 00123",
+            lat: "80.876",
+            lon: "-24.560",
+            order: "1"
+          },
+          {
+            name: "Point002",
+            description: "Description text 00321",
+            lat: "-19.789",
+            lon: "30.56",
+            order: "2"
+          }
+        ]
+      }
+    ]
+  },
+  {
     book: {
       description: 'Eu dolore officia mollit do minim fugiat duis. Elit adipisicing eiusmod amet occ' +
           'aecat aute reprehenderit veniam do sit sint fugiat velit. Amet id magna officia ' +
