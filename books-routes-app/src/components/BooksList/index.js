@@ -1,9 +1,9 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {fetchBooks} from "../../actions/booksActions";
+import { connect } from "react-redux";
+import { fetchBooks } from "../../actions/booksActions";
 import Book from "../Book";
-import {filtratedBooksSelector} from "../../selectors";
+import { filtratedBooksSelector } from "../../selectors";
 
 class BookList extends Component {
   static propTypes = {
@@ -15,34 +15,27 @@ class BookList extends Component {
   };
 
   componentDidMount() {
-    const {loading, loaded, fetchBooks} = this.props;
-    if (!loading && !loaded) 
-      fetchBooks();
-    }
+    const { loading, loaded, fetchBooks } = this.props;
+    if (!loading && !loaded) fetchBooks();
+  }
   render() {
-    const {books, loading, error} = this.props;
+    const { books, loading, error } = this.props;
 
-    if (loading) 
-      return <div className="loader">Loading...</div>
+    if (loading) return <div className="loader">Loading...</div>;
 
-    if (error) 
-      return error.message;
-    const bookElements = books.map(book => <Book key={book.id} book={book}/>);
+    if (error) return <div className="errorMsg">{error.message}</div>;
 
-    return <div className="book-list">{bookElements}</div>;
+    const bookElements = books.map(book => <Book key={book.id} book={book} />);
+
+    return <div className="bookList">{bookElements}</div>;
   }
 }
-export default connect(state => {
-  return {
+export default connect(
+  state => ({
     books: filtratedBooksSelector(state),
-    loading: state
-      .get('books')
-      .loading,
-    loaded: state
-      .get('books')
-      .loaded,
-    error: state
-      .get('books')
-      .error
-  };
-}, {fetchBooks})(BookList);
+    loading: state.get("books").loading,
+    loaded: state.get("books").loaded,
+    error: state.get("books").error
+  }),
+  { fetchBooks }
+)(BookList);
