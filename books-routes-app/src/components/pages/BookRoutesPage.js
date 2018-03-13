@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Route, Redirect, Switch } from "react-router-dom";
+import { Link, Route, Redirect, Switch, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchBook } from "../../actions/booksActions";
 import PropTypes from "prop-types";
@@ -55,7 +55,7 @@ class BookRoutesPage extends Component {
       return <div className="errorMsg">{book.get("error").message}</div>;
     const routesList = bookData.routes.map(route => (
       <li key={route.id}>
-        <Link to={`/books/${bookData.id}/${route.id}`}>{route.name}</Link>
+        <NavLink to={`/books/${bookData.id}/${route.id}`}>{route.name}</NavLink>
       </li>
     ));
     return (
@@ -64,7 +64,7 @@ class BookRoutesPage extends Component {
           <Link to="/">Back to all Books</Link>
           <h1>BookRoutesPage {bookData.title}</h1>
           <Book key={bookData.id} book={bookData} sidebar={true} />
-          <ul>{routesList}</ul>
+          <ul className="routesNav">{routesList}</ul>
         </div>
         <div className="routeContent">
           <Switch>
