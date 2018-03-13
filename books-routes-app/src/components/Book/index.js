@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { GridTile } from "material-ui/GridList";
 import "./style.css";
 
 export default class Book extends Component {
@@ -19,35 +17,27 @@ export default class Book extends Component {
           name: PropTypes.string
         })
       )
-    }),
-    sidebar: PropTypes.bool
+    })
   };
 
   render() {
-    const { book, sidebar } = this.props;
+    const { book } = this.props;
 
     const authors = book.authors.map(author => author.name).join(", ");
-    const title = sidebar ? (
-      <div className="title">{book.title}</div>
-    ) : (
-      <Link to={`/books/${book.id}`}>
-        <div className="title">{book.title}</div>
-      </Link>
-    );
+
     if (!book) return null;
 
     return (
-      <GridTile
-        className="bookItem"
-        title={title}
-        subtitle={
-          <span>
-            by <b>{authors}</b>
-          </span>
-        }
-      >
-        <img alt="book cover" src={book.cover} />
-      </GridTile>
+      <div className="book-item">
+        <div className="cover">
+          <img alt="book cover" src={book.cover} />
+        </div>
+        <div className="info">
+          <div className="title">{book.title}</div>
+          <div className="authors">{authors}</div>
+        </div>
+        <div className="description">{book.description}</div>
+      </div>
     );
   }
 }

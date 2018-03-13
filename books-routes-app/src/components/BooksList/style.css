@@ -1,11 +1,6 @@
-book-list-wrap {
-  display: "flex";
-  flex-wrap: "wrap";
-  justify-content: "space-around";
+.book-list-wrap {
+  flex-grow: 1;
 }
-
-book-grid-list {
-  width: 500;
-  height: 450;
-  overflow-y: "auto";
+.book-cover {
+  height: 140px;
 }

@@ -9,14 +9,14 @@ import "./Root.css";
 class Root extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">
+      <div className="app">
+        <header className="app-header">
+          <img src={logo} className="app-logo" alt="logo" />
+          <h1 className="app-title">
             Books<br />Routes
           </h1>
         </header>
-        <div className="App-content">
+        <div className="app-content">
           <Switch>
             <Redirect from="/" exact to="/books" />
             <Route exact path="/books" component={BooksPage} />

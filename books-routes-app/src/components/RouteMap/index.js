@@ -21,7 +21,7 @@ const MapWithAMakredInfoWindow = compose(
     googleMapURL:
       "https://maps.googleapis.com/maps/api/js?key=AIzaSyBKSJA0XS-xvJTzsqwPBo1DqKSolCw_NeQ&v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />,
+    containerElement: <div style={{ height: `500px` }} />,
     mapElement: <div style={{ height: `100%` }} />
   }),
   withStateHandlers(
@@ -97,10 +97,10 @@ const MapWithAMakredInfoWindow = compose(
           {props.isOpen[point.id.toString()] && (
             <InfoWindow onCloseClick={() => props.onToggleOpen(point.id)}>
               <div>
-                <div className="pointHeader">{`${point.order}. ${
+                <div className="point-header">{`${point.order}. ${
                   point.name
                 }`}</div>
-                <div className="pointDescription">{point.description}</div>
+                <div className="point-descr">{point.description}</div>
               </div>
             </InfoWindow>
           )}
@@ -127,12 +127,7 @@ class RouteMap extends Component {
 
   render() {
     const { route } = this.props;
-    return (
-      <div className="routeMap">
-        {route.name}
-        <MapWithAMakredInfoWindow route={route} />
-      </div>
-    );
+    return <MapWithAMakredInfoWindow route={route} />;
   }
 }
 export default connect((state, props) => ({
