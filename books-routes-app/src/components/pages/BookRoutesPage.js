@@ -18,8 +18,9 @@ import Hidden from "material-ui/Hidden";
 import Divider from "material-ui/Divider";
 import MenuIcon from "material-ui-icons/Menu";
 import ArrowIcon from "material-ui-icons/ArrowBack";
+import CloseIcon from "material-ui-icons/Close";
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const styles = theme => ({
   root: {
@@ -43,7 +44,12 @@ const styles = theme => ({
     }
   },
   toolbar: theme.mixins.toolbar,
-
+  drawerHeader: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    ...theme.mixins.toolbar
+  },
   drawerPaper: {
     width: drawerWidth,
     [theme.breakpoints.up("md")]: {
@@ -123,27 +129,28 @@ class BookRoutesPage extends Component {
     ));
     const drawer = (
       <div>
-        <div
-          className={classes.toolbar}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column"
-          }}
-        >
-          <Link to="/">
+        <div className={classes.drawerHeader}>
+          <Link
+            to="/"
+            style={{
+              display: "flex",
+              alignItems: "center"
+            }}
+          >
             <ArrowIcon />
-            <span
-              style={{
-                display: "inline-block",
-                lineHeight: "24px",
-                verticalAlign: "top"
-              }}
-            >
-              Back to all Books
-            </span>
+            Back to all Books
           </Link>
+
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={drawerToggle}
+            className={classes.navIconHide}
+          >
+            <CloseIcon />
+          </IconButton>
         </div>
+
         <Divider />
         <List className="routes-nav">{routesList}</List>
         <Divider />

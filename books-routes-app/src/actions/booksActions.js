@@ -1,6 +1,7 @@
 import * as actionTypes from "../constants/ActionTypes";
 
 const api = "https://booksroutes-api.azurewebsites.net/api/v1/books";
+//const api = "http://localhost:1337/api/v1/books";
 export function fetchBooks() {
   return {
     type: actionTypes.FETCH_BOOKS,

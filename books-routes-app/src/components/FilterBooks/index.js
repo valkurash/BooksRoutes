@@ -16,7 +16,6 @@ class FilterBooks extends Component {
     return (
       <form noValidate autoComplete="off">
         <TextField
-          style={{ maxWidth: 500 }}
           id="search"
           label="Search book..."
           type="search"
@@ -24,6 +23,7 @@ class FilterBooks extends Component {
           helperText="by title or author"
           value={searchTerm}
           onChange={e => searchTermChanged(e.target.value)}
+          style={{ margin: "0 0 25px", maxWidth: 700 }}
           fullWidth
         />
       </form>
