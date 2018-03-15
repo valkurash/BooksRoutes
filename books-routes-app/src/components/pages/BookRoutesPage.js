@@ -124,7 +124,12 @@ class BookRoutesPage extends Component {
 
     const routesList = bookData.routes.map(route => (
       <ListItem key={route.id}>
-        <NavLink to={`/books/${bookData.id}/${route.id}`}>{route.name}</NavLink>
+        <NavLink
+          to={`/books/${bookData.id}/${route.id}`}
+          onClick={drawerToggle}
+        >
+          {route.name}
+        </NavLink>
       </ListItem>
     ));
     const drawer = (
