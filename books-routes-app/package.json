@@ -26,6 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "node iisConfig/copyIISConfig.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow"
@@ -44,6 +45,5 @@
     "eslint-plugin-standard": "^3.0.1",
     "prettier-eslint": "^8.8.1",
     "redux-devtools": "^3.4.1"
-  },
-  "postbuild": "node iisConfig/copyIISConfig.js"
+  }
 }
