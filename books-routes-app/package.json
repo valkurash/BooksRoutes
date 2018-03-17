@@ -44,5 +44,6 @@
     "eslint-plugin-standard": "^3.0.1",
     "prettier-eslint": "^8.8.1",
     "redux-devtools": "^3.4.1"
-  }
+  },
+  "postbuild": "node iisConfig/copyIISConfig.js"
 }
