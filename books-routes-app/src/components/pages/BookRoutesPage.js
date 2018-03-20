@@ -181,7 +181,7 @@ class BookRoutesPage extends Component {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography variant="title" color="inherit" noWrap>
+              <Typography color="inherit" variant="title" noWrap>
                 {bookData.title} Routes
               </Typography>
             </Toolbar>
