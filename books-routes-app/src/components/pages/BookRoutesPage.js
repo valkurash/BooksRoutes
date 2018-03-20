@@ -19,6 +19,7 @@ import Divider from "material-ui/Divider";
 import MenuIcon from "material-ui-icons/Menu";
 import ArrowIcon from "material-ui-icons/ArrowBack";
 import CloseIcon from "material-ui-icons/Close";
+import DocumentMeta from "react-document-meta";
 
 const drawerWidth = 280;
 
@@ -122,6 +123,11 @@ class BookRoutesPage extends Component {
     if (book.get("error"))
       return <div className="error-msg">{book.get("error").message}</div>;
 
+    const meta = {
+      title: `${bookData.title} Routes`,
+      description: `${bookData.title} Routes Description`
+    };
+
     const routesList = bookData.routes.map(route => (
       <ListItem key={route.id}>
         <NavLink
@@ -163,68 +169,70 @@ class BookRoutesPage extends Component {
       </div>
     );
     return (
-      <div className={classes.root}>
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={drawerToggle}
-              className={classes.navIconHide}
+      <DocumentMeta {...meta}>
+        <div className={classes.root}>
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={drawerToggle}
+                className={classes.navIconHide}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="title" color="inherit" noWrap>
+                {bookData.title} Routes
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Hidden mdUp>
+            <Drawer
+              variant="temporary"
+              anchor="left"
+              open={mobileOpen}
+              onClose={drawerToggle}
+              classes={{
+                paper: classes.drawerPaper
+              }}
+              ModalProps={{
+                keepMounted: true // Better open performance on mobile.
+              }}
             >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="title" color="inherit" noWrap>
-              {bookData.title} Routes
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Hidden mdUp>
-          <Drawer
-            variant="temporary"
-            anchor="left"
-            open={mobileOpen}
-            onClose={drawerToggle}
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            ModalProps={{
-              keepMounted: true // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <Drawer
-            variant="permanent"
-            open
-            classes={{
-              paper: classes.drawerPaper
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <Switch>
-            <Redirect
-              from="/books/:id"
-              exact
-              to={`/books/${bookData.id}/${bookData.routes[0].id}`}
-            />
-            {bookData.routes.map((route, index) => (
-              <Route
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <Hidden smDown implementation="css">
+            <Drawer
+              variant="permanent"
+              open
+              classes={{
+                paper: classes.drawerPaper
+              }}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            <Switch>
+              <Redirect
+                from="/books/:id"
                 exact
-                key={index}
-                path="/books/:bookId/:routeId"
-                component={RouteMap}
+                to={`/books/${bookData.id}/${bookData.routes[0].id}`}
               />
-            ))}
-          </Switch>
-        </main>
-      </div>
+              {bookData.routes.map((route, index) => (
+                <Route
+                  exact
+                  key={index}
+                  path="/books/:bookId/:routeId"
+                  component={RouteMap}
+                />
+              ))}
+            </Switch>
+          </main>
+        </div>
+      </DocumentMeta>
     );
   }
 }
