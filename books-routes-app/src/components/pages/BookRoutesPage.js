@@ -142,7 +142,7 @@ class BookRoutesPage extends Component {
       <div>
         <div className={classes.drawerHeader}>
           <Link
-            to="/"
+            to="/books"
             style={{
               display: "flex",
               alignItems: "center"
