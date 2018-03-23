@@ -33,7 +33,7 @@ class FilterBooks extends Component {
 export default connect(
   state => {
     return {
-      searchTerm: state.searchTerm
+      searchTerm: state.get("filters").searchTerm
     };
   },
   { searchTermChanged }

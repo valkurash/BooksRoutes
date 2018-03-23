@@ -5,9 +5,11 @@ import { fetchBooks } from "../../actions/booksActions";
 import { filtratedBooksSelector } from "../../selectors";
 import { Link } from "react-router-dom";
 import Grid from "material-ui/Grid";
-import Card, { CardHeader, CardContent, CardMedia } from "material-ui/Card";
 import Typography from "material-ui/Typography";
 import { CircularProgress } from "material-ui/Progress";
+import Button from "material-ui/Button";
+import AddIcon from "material-ui-icons/Add";
+import Paper from "material-ui/Paper";
 import "./style.css";
 
 class BookList extends Component {
@@ -37,25 +39,42 @@ class BookList extends Component {
 
     if (error) return <div className="error-msg">{error.message}</div>;
 
+    if (!books.length)
+      return (
+        <div>
+          <div className="no-result">
+            Sorry, no books matched your search. Please try again later or you
+            can suggest book you interested in or even add book with its routes
+            yourself.
+          </div>
+          <Button
+            variant="raised"
+            color="primary"
+            aria-label="add"
+            component={Link}
+            to="/add"
+          >
+            <AddIcon /> Suggest new book
+          </Button>
+        </div>
+      );
     const bookElements = books.map(book => (
       <Grid key={book.id} item xs={12} sm={6} md={3} xl={2}>
-        <Card className="book-item">
-          <CardHeader
-            title={<Link to={`/books/${book.id}`}>{book.title}</Link>}
-            subheader={book.authors.map(author => author.name).join(", ")}
-          />
-          <CardMedia
-            className="book-cover"
-            image={book.cover}
-            title={book.title}
-          />
-          <CardContent>
-            <Typography component="p">{`${book.description.substring(
-              0,
-              250
-            )}...`}</Typography>
-          </CardContent>
-        </Card>
+        <Paper className="book-card">
+          <div className="book-cover">
+            <img className="cover" src={book.cover} alt={book.title} />
+          </div>
+          <Typography variant="headline" component="div">
+            <Link to={`/books/${book.id}`}>{book.title}</Link>
+          </Typography>
+          <Typography variant="subheading" component="div">
+            {book.authors.map(author => author.name).join(", ")}
+          </Typography>
+          <Typography
+            className="book-descr"
+            component="p"
+          >{`${book.description.substring(0, 250)}...`}</Typography>
+        </Paper>
       </Grid>
     ));
 

@@ -124,13 +124,14 @@ class BookRoutesPage extends Component {
       return <div className="error-msg">{book.get("error").message}</div>;
 
     const routesList = bookData.routes.map(route => (
-      <ListItem key={route.id}>
-        <NavLink
-          to={`/books/${bookData.id}/${route.id}`}
-          onClick={drawerToggle}
-        >
-          {route.name}
-        </NavLink>
+      <ListItem
+        component={NavLink}
+        key={route.id}
+        to={`/books/${bookData.id}/${route.id}`}
+        onClick={drawerToggle}
+        button
+      >
+        {route.name}
       </ListItem>
     ));
     const drawer = (
@@ -158,8 +159,14 @@ class BookRoutesPage extends Component {
         </div>
 
         <Divider />
-        <List className="routes-nav">{routesList}</List>
-        <Divider />
+        {bookData.routes.length > 1 && (
+          <div>
+            <List component="nav" className="routes-nav">
+              {routesList}
+            </List>
+            <Divider />
+          </div>
+        )}
         <Book key={bookData.id} book={bookData} />
       </div>
     );
@@ -179,7 +186,7 @@ class BookRoutesPage extends Component {
               <MenuIcon />
             </IconButton>
             <Typography color="inherit" variant="title" noWrap>
-              {bookData.title} Routes
+              {bookData.title}
             </Typography>
           </Toolbar>
         </AppBar>

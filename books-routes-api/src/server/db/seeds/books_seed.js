@@ -2,18 +2,17 @@ let booksData = [
   {
     book: {
       description:
-        "Occaecat nulla nostrud est aliqua eu culpa pariatur aliqua velit sint irure nost" +
-        "rud. Esse fugiat cillum ut velit sit occaecat eu ut id pariatur nulla. Ipsum inc" +
-        "ididunt qui veniam ut. Cillum commodo qui reprehenderit laborum aliquip minim ex" +
-        "ercitation ea nostrud ut.",
-      cover: "http://placehold.it/100x140",
-      title: "labore aliqua",
-      isbn: "2f55c88b-f0b9-47e7-9c54-905609d21260"
+        "Сборник представляет разные грани творчества знаменитого «черного юмориста». Американец ирландского происхождения, Данливи прославился в равной степени откровенностью интимного содержания и проникновенностью, психологической достоверностью даже самых экзотических ситуаций и персоналий. Это вакханалия юмора, подчас черного, эроса, подчас шокирующего, остроумия, подчас феерического, и лирики, подчас самой пронзительной. ",
+      cover:
+        "https://i.livelib.ru/boocover/1000089210/o/3ecb/Dzhejms_Patrik_Danlivi__Samyj_sumrachnyj_sezon_Semyuelya_S_sbornik.jpeg",
+      title: "Самый сумрачный сезон Сэмюэля С.",
+      isbn: "5-352-00963-7"
     },
     authors: [
       {
-        avatar: "http://placehold.it/100x140",
-        name: "gatru fontate"
+        avatar:
+          "https://j.livelib.ru/auface/103113/140x140/bff9/Dzhejms_Patrik_Danlivi.jpg",
+        name: "Джеймс Патрик Данливи"
       }
     ],
     routes: [
@@ -60,19 +59,17 @@ let booksData = [
   {
     book: {
       description:
-        "Eu dolore officia mollit do minim fugiat duis. Elit adipisicing eiusmod amet occ" +
-        "aecat aute reprehenderit veniam do sit sint fugiat velit. Amet id magna officia " +
-        "id labore aliqua ex mollit ad culpa. Non consectetur sint consequat aliquip culp" +
-        "a Lorem enim consequat. Occaecat ad commodo qui ea ex. Nostrud dolore aliqua cul" +
-        "pa ut nulla laboris laborum dolore in dolore voluptate.",
-      cover: "http://placehold.it/100x140",
-      title: "dolor Lorem",
-      isbn: "d4695540-5228-4276-8eee-6c3c895a841b"
+        "Псевдоавтобиографическая постмодернистская поэма написана в 1969—1970 году и распространялась в самиздате. Впервые была опубликована летом 1973 года в Израиле в журнале «АМИ», вышедшем тиражом в 300 экземпляров; затем — в 1977 году в Париже. Поэма «Москва — Петушки» переведена на многие языки, по ней поставлены многочисленные спектакли.",
+      cover:
+        "https://upload.wikimedia.org/wikipedia/ru/thumb/7/73/Moscow_Petushki.jpg/200px-Moscow_Petushki.jpg",
+      title: "Москва — Петушки",
+      isbn: "978-5-389-03119-7"
     },
     authors: [
       {
-        avatar: "http://placehold.it/100x140",
-        name: "klomert pugnas"
+        avatar:
+          "https://upload.wikimedia.org/wikipedia/ru/thumb/f/f2/ErofeevV.jpg/200px-ErofeevV.jpg",
+        name: "Венедикт Васильевич Ерофеев"
       }
     ],
     routes: [
@@ -107,8 +104,8 @@ let booksData = [
         "lit sunt tempor irure anim non duis. Ea magna ipsum adipisicing consequat velit " +
         "non labore in aliqua quis. Labore occaecat incididunt quis sit nostrud ut et sun" +
         "t et ullamco consequat eiusmod aliquip aute.",
-      cover: "http://placehold.it/100x140",
-      title: "enim nostrud",
+      cover: "http://placehold.it/200x320",
+      title: "dolor Lorem",
       isbn: "3a804ac5-e1d1-4a07-923e-682043a9baca"
     },
     authors: [
@@ -118,7 +115,7 @@ let booksData = [
       },
       {
         avatar: "http://placehold.it/100x140",
-        name: "kromme fontate"
+        name: "gatru fontate"
       }
     ],
     routes: [
@@ -148,8 +145,17 @@ let booksData = [
 const createBook = (knex, book) => {
   return knex("books").insert(book, "id");
 };
+const selectAuthor = (knex, author) => {
+  return knex("authors")
+    .where({ name: author.name })
+    .select("id");
+};
 const createAuthor = (knex, author) => {
-  return knex("authors").insert(author, "id");
+  return knex("authors")
+    .insert(author, "id")
+    .catch(function() {
+      return selectAuthor(knex, author);
+    });
 };
 const createBookAuthor = (knex, bookId, authorId) => {
   return knex("authors_books").insert({
@@ -163,7 +169,6 @@ const createAuthors = (knex, Promise, authors) => {
   authors.forEach(author => {
     promises.push(createAuthor(knex, author));
   });
-
   return Promise.all(promises);
 };
 
@@ -200,7 +205,11 @@ const createBooks = (knex, Promise, bookData) => {
     .then(ids => {
       let promises = [];
       ids[1].forEach(authorId => {
-        promises.push(createBookAuthor(knex, ids[0][0], authorId[0]));
+        let authorIdVal =
+          typeof authorId[0] === "object" && authorId[0].hasOwnProperty("id")
+            ? authorId[0].id
+            : authorId[0];
+        promises.push(createBookAuthor(knex, ids[0][0], authorIdVal));
       });
       return [ids[0][0], Promise.all(promises)];
     })

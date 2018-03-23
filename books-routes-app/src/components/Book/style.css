@@ -4,11 +4,6 @@
   overflow: hidden;
 }
 
-.cover {
-  float: left;
-  margin: 0 10px 10px 0;
-}
-
 .title {
   font-size: 1.5em;
   font-weight: 600;

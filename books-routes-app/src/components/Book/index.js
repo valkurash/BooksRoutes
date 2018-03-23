@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Typography from "material-ui/Typography";
 import "./style.css";
 
 export default class Book extends Component {
@@ -23,20 +24,23 @@ export default class Book extends Component {
   render() {
     const { book } = this.props;
 
-    const authors = book.authors.map(author => author.name).join(", ");
-
     if (!book) return null;
 
     return (
       <div className="book-item">
-        <div className="cover">
-          <img alt="book cover" src={book.cover} />
+        <div className="book-cover">
+          <img className="cover" src={book.cover} alt={book.title} />
         </div>
-        <div className="info">
-          <div className="title">{book.title}</div>
-          <div className="authors">{authors}</div>
-        </div>
-        <div className="description">{book.description}</div>
+        <Typography variant="headline" component="div">
+          {book.title}
+        </Typography>
+        <Typography variant="subheading" component="div">
+          {book.authors.map(author => author.name).join(", ")}
+        </Typography>
+        <Typography
+          className="book-descr"
+          component="p"
+        >{`${book.description.substring(0, 250)}...`}</Typography>
       </div>
     );
   }
