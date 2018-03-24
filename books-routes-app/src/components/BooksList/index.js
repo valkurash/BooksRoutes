@@ -10,6 +10,11 @@ import { CircularProgress } from "material-ui/Progress";
 import Button from "material-ui/Button";
 import AddIcon from "material-ui-icons/Add";
 import Paper from "material-ui/Paper";
+import ExpansionPanel, {
+  ExpansionPanelSummary,
+  ExpansionPanelDetails
+} from "material-ui/ExpansionPanel";
+import ExpandMoreIcon from "material-ui-icons/ExpandMore";
 import "./style.css";
 
 class BookList extends Component {
@@ -59,21 +64,32 @@ class BookList extends Component {
         </div>
       );
     const bookElements = books.map(book => (
-      <Grid key={book.id} item xs={12} sm={6} md={3} xl={2}>
+      <Grid key={book.id} item xs={12} sm={6} md={3} lg={2} xl={1}>
         <Paper className="book-card">
           <div className="book-cover">
-            <img className="cover" src={book.cover} alt={book.title} />
+            <Link to={`/books/${book.id}`}>
+              <img className="cover" src={book.cover} alt={book.title} />
+            </Link>
           </div>
-          <Typography variant="headline" component="div">
-            <Link to={`/books/${book.id}`}>{book.title}</Link>
-          </Typography>
-          <Typography variant="subheading" component="div">
-            {book.authors.map(author => author.name).join(", ")}
-          </Typography>
-          <Typography
-            className="book-descr"
-            component="p"
-          >{`${book.description.substring(0, 250)}...`}</Typography>
+          <Paper className="book-heading" color="primary">
+            <Typography variant="title" component="div">
+              <Link to={`/books/${book.id}`}>{book.title}</Link>
+            </Typography>
+            <Typography variant="subheading" component="div">
+              {book.authors.map(author => author.name).join(", ")}
+            </Typography>
+          </Paper>
+          <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="subheading">Description</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <Typography
+                component="p"
+                style={{ wordBreak: "break-word" }}
+              >{`${book.description.substring(0, 250)}...`}</Typography>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
         </Paper>
       </Grid>
     ));

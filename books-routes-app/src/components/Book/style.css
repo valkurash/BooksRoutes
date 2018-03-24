@@ -4,16 +4,6 @@
   overflow: hidden;
 }
 
-.title {
-  font-size: 1.5em;
-  font-weight: 600;
-}
-
-.genres {
-  font-size: 0.8em;
-  color: #444;
-}
-
-.description {
-  margin-top: 5px;
+.book-descr {
+  padding-top: 10px;
 }

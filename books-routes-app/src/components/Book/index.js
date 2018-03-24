@@ -37,10 +37,9 @@ export default class Book extends Component {
         <Typography variant="subheading" component="div">
           {book.authors.map(author => author.name).join(", ")}
         </Typography>
-        <Typography
-          className="book-descr"
-          component="p"
-        >{`${book.description.substring(0, 250)}...`}</Typography>
+        <Typography className="book-descr" component="p">
+          {book.description}
+        </Typography>
       </div>
     );
   }

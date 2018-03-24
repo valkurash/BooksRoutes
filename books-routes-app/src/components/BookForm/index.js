@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { FormControl } from "material-ui/Form";
+import { FormControl, FormLabel } from "material-ui/Form";
 import TextField from "material-ui/TextField";
+import Button from "material-ui/Button";
 import RouteMapSuggestion from "../RouteMapSuggestion";
 
 export default class BookForm extends Component {
@@ -50,8 +51,19 @@ export default class BookForm extends Component {
               multiline
             />
           </FormControl>
+          <FormLabel component="legend" style={{ margin: "15px 0" }}>
+            Add points
+          </FormLabel>
+          <RouteMapSuggestion />
         </form>
-        <RouteMapSuggestion />
+        <Button
+          variant="raised"
+          color="secondary"
+          size="large"
+          style={{ margin: "15px 0" }}
+        >
+          Submit
+        </Button>
       </div>
     );
   }

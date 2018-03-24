@@ -3,18 +3,15 @@
 }
 .book-list-wrap .book-card {
   overflow: hidden;
-  padding: 10px;
   text-align: center;
-  background-color: #fafafa;
 }
 .book-cover {
-  margin-bottom: 10px;
+  /*margin: 10px 0;*/
 }
 .book-cover .cover {
-  max-width: 200px;
+  /*max-width: 200px;*/
   width: 100%;
 }
-
-.book-descr {
-  padding-top: 10px;
+.book-heading {
+  padding: 12px 24px;
 }

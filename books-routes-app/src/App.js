@@ -9,7 +9,24 @@ import ReactGA from "react-ga";
 
 ReactGA.initialize("UA-116041442-1");
 
-const theme = createMuiTheme();
+/*"primary1Color": "#009688",
+"accent1Color": "#ff6e40",
+"primary2Color": "#00796b",
+"primary3Color": "#00695c",
+"accent2Color": "#e0f2f1",
+"pickerHeaderColor": "#4db6ac"*/
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#009688"
+    },
+    secondary: {
+      main: "#ff6e40",
+      contrastText: "#fff"
+    }
+  }
+});
 
 export default class App extends Component {
   render() {

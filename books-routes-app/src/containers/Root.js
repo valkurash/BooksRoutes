@@ -16,7 +16,7 @@ class Root extends Component {
       <div className="app">
         <AppBar position="static" color="default" className="app-header">
           <Toolbar>
-            <Typography variant="title">
+            <Typography variant="title" component="a" href="/">
               <img src={logo} className="app-logo" alt="logo" />
               <div className="app-title">
                 Books<br />Routes
