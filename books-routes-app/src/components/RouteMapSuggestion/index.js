@@ -1,15 +1,25 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import {
+  changeNewBooksPoint,
+  removeNewBooksPoint,
+  newBookPointDescrChanged
+} from "../../actions/booksActions";
 
 const {
   compose,
   withProps,
   withStateHandlers,
-  lifecycle,
   withHandlers
 } = require("recompose");
-const { withScriptjs, withGoogleMap, GoogleMap } = require("react-google-maps");
+const {
+  withScriptjs,
+  withGoogleMap,
+  GoogleMap,
+  Marker,
+  InfoWindow
+} = require("react-google-maps");
 
 const Map = compose(
   withProps({
@@ -21,15 +31,15 @@ const Map = compose(
   }),
   withStateHandlers(
     props => ({
-      isOpen: props.points.reduce((acc, curr) => {
-        acc[curr.id.toString()] = false;
+      isOpen: props.points.reduce((acc, curr, index) => {
+        acc[index.toString()] = false;
         return acc;
       }, {})
     }),
     {
-      onToggleOpen: ({ isOpen }) => id => {
+      onToggleOpen: ({ isOpen }) => index => {
         let state = { ...isOpen };
-        state[id.toString()] = !isOpen[id.toString()];
+        state[index.toString()] = !isOpen[index.toString()];
         return { isOpen: state };
       }
     }
@@ -38,18 +48,26 @@ const Map = compose(
     const refs = {
       map: undefined
     };
+
     return {
       onMapMounted: () => ref => {
         if (ref) {
           refs.map = ref;
         }
+      },
+      handleMapClick: props => event => {
+        const { points, changeNewBooksPoint } = props;
+        let newPoint = {
+          position: event.latLng,
+          lat: event.latLng.lat(),
+          lng: event.latLng.lng(),
+          defaultAnimation: 0,
+          key: Date.now(),
+          description: ""
+        };
+        changeNewBooksPoint([...points, newPoint]);
       }
     };
-  }),
-  lifecycle({
-    componentDidUpdate(props) {
-      props.zoomToMarkers();
-    }
   }),
   withScriptjs,
   withGoogleMap
@@ -57,22 +75,73 @@ const Map = compose(
   return (
     <GoogleMap
       ref={props.onMapMounted}
-      defaultZoom={8}
-      defaultCenter={{ lat: -34.397, lng: 150.644 }}
-    />
+      defaultZoom={3}
+      defaultCenter={{ lat: 37.688, lng: 35.438 }}
+      onClick={props.handleMapClick}
+    >
+      {props.points.map((point, index) => {
+        return (
+          <Marker
+            key={point.key}
+            {...point}
+            onRightClick={() => props.removeNewBooksPoint(index)} //TODO: change for mobiles
+            onClick={() => props.onToggleOpen(index)}
+          >
+            {props.isOpen[index.toString()] && (
+              <InfoWindow onCloseClick={() => props.onToggleOpen(index)}>
+                <div>
+                  <textarea
+                    placeholder="Description"
+                    style={{ resize: "none" }}
+                    rows="4"
+                    value={point.description}
+                    onChange={e =>
+                      props.newBookPointDescrChanged(e.target.value, index)
+                    }
+                  />
+                </div>
+              </InfoWindow>
+            )}
+          </Marker>
+        );
+      })}
+    </GoogleMap>
   );
 });
 
 class RouteMapSuggestion extends Component {
   static propTypes = {
-    points: PropTypes.array.isRequired
+    points: PropTypes.array.isRequired,
+    changeNewBooksPoint: PropTypes.func.isRequired,
+    removeNewBooksPoint: PropTypes.func.isRequired,
+    newBookPointDescrChanged: PropTypes.func.isRequired
   };
 
   render() {
-    const { points } = this.props;
-    return <Map points={points} />;
+    const {
+      points,
+      changeNewBooksPoint,
+      removeNewBooksPoint,
+      newBookPointDescrChanged
+    } = this.props;
+    return (
+      <Map
+        points={points}
+        changeNewBooksPoint={changeNewBooksPoint}
+        removeNewBooksPoint={removeNewBooksPoint}
+        newBookPointDescrChanged={newBookPointDescrChanged}
+      />
+    );
   }
 }
-export default connect(state => ({
-  points: state.get("newBook").get("points")
-}))(RouteMapSuggestion);
+export default connect(
+  state => ({
+    points: state.get("newBook").get("points")
+  }),
+  dispatch => ({
+    changeNewBooksPoint: points => dispatch(changeNewBooksPoint(points)),
+    removeNewBooksPoint: index => dispatch(removeNewBooksPoint(index)),
+    newBookPointDescrChanged: (value, index) =>
+      dispatch(newBookPointDescrChanged(value, index))
+  })
+)(RouteMapSuggestion);
