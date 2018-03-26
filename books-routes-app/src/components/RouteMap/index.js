@@ -97,10 +97,20 @@ const MapWithAMakredInfoWindow = compose(
           {props.isOpen[point.id.toString()] && (
             <InfoWindow onCloseClick={() => props.onToggleOpen(point.id)}>
               <div>
-                <div className="point-header">{`${point.order}. ${
-                  point.name
-                }`}</div>
-                <div className="point-descr">{point.description}</div>
+                <div
+                  className="point-header"
+                  style={{ fontWeight: "bold" }}
+                >{`${point.order}. ${point.name}`}</div>
+                <div className="point-descr">
+                  {point.description.split("\n").map((item, key) => {
+                    return (
+                      <span key={key}>
+                        {item}
+                        <br />
+                      </span>
+                    );
+                  })}
+                </div>
               </div>
             </InfoWindow>
           )}
