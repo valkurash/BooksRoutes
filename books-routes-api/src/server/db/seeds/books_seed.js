@@ -117,7 +117,7 @@ let booksData = [
         path: [
           {
             name: "Point1",
-            description: "Description text 456",
+            description: "Description text 4567",
             lat: "11.98",
             lon: "-21.543",
             order: "1"
