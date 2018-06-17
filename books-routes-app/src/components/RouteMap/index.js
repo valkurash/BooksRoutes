@@ -16,7 +16,7 @@ const {
   InfoWindow
 } = require("react-google-maps");
 
-const MapWithAMakredInfoWindow = compose(
+const MapWithAMarkedInfoWindow = compose(
   withProps({
     googleMapURL:
       "https://maps.googleapis.com/maps/api/js?key=AIzaSyBKSJA0XS-xvJTzsqwPBo1DqKSolCw_NeQ&v=3.exp&libraries=geometry,drawing,places",
@@ -34,6 +34,9 @@ const MapWithAMakredInfoWindow = compose(
     {
       onToggleOpen: ({ isOpen }) => id => {
         let state = { ...isOpen };
+        for (let key in state) {
+          state[key.toString()] = false;
+        }
         state[id.toString()] = !isOpen[id.toString()];
         return { isOpen: state };
       }
@@ -95,7 +98,10 @@ const MapWithAMakredInfoWindow = compose(
           onClick={() => props.onToggleOpen(point.id)}
         >
           {props.isOpen[point.id.toString()] && (
-            <InfoWindow onCloseClick={() => props.onToggleOpen(point.id)}>
+            <InfoWindow
+              onCloseClick={() => props.onToggleOpen(point.id)}
+              options={{ maxWidth: 300 }}
+            >
               <div>
                 <div
                   className="point-header"
@@ -137,7 +143,7 @@ class RouteMap extends Component {
 
   render() {
     const { route } = this.props;
-    return <MapWithAMakredInfoWindow route={route} />;
+    return <MapWithAMarkedInfoWindow route={route} />;
   }
 }
 export default connect((state, props) => ({

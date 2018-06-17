@@ -15,7 +15,7 @@ export default class AddBookPage extends Component {
           }}
         >
           <ArrowIcon />
-          Back to all Books
+          Вернуться к списку книг
         </Link>
         <BookForm />
       </div>

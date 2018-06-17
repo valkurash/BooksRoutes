@@ -10,11 +10,6 @@ import { CircularProgress } from "material-ui/Progress";
 import Button from "material-ui/Button";
 import AddIcon from "material-ui-icons/Add";
 import Paper from "material-ui/Paper";
-import ExpansionPanel, {
-  ExpansionPanelSummary,
-  ExpansionPanelDetails
-} from "material-ui/ExpansionPanel";
-import ExpandMoreIcon from "material-ui-icons/ExpandMore";
 import "./style.css";
 
 class BookList extends Component {
@@ -48,9 +43,9 @@ class BookList extends Component {
       return (
         <div>
           <div className="no-result">
-            Sorry, no books matched your search. Please try again later or you
-            can suggest book you interested in or even add book with its routes
-            yourself.
+            К сожалению, книг по текущему запросу найдено. Попробуйте повторить
+            поиск позднее или оставьте заявку на добавление интересующей Вас
+            книги или маршрута.
           </div>
           <Button
             variant="raised"
@@ -59,7 +54,7 @@ class BookList extends Component {
             component={Link}
             to="/add"
           >
-            <AddIcon /> Suggest new book
+            <AddIcon /> Предложить новую книгу
           </Button>
         </div>
       );
@@ -79,17 +74,6 @@ class BookList extends Component {
               {book.authors.map(author => author.name).join(", ")}
             </Typography>
           </Paper>
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subheading">Description</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography
-                component="p"
-                style={{ wordBreak: "break-word" }}
-              >{`${book.description.substring(0, 250)}...`}</Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
         </Paper>
       </Grid>
     ));

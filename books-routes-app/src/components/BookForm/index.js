@@ -37,7 +37,7 @@ class BookForm extends Component {
             <TextField
               required
               id="title"
-              label="Book title"
+              label="Название книги"
               value={title}
               onChange={e => changeNewBooksData("title", e.target.value)}
               margin="normal"
@@ -45,25 +45,25 @@ class BookForm extends Component {
             <TextField
               required
               id="author"
-              label="Author"
+              label="Автор"
               value={authors}
               onChange={e => changeNewBooksData("authors", e.target.value)}
-              helperText="If there are several authors, then separate them with a comma"
+              helperText="Если авторов несколько, перечислите их через запятую"
               margin="normal"
             />
             <TextField
               required
               id="route"
-              label="Route name or description"
+              label="Название или описание маршрута"
               value={route}
               onChange={e => changeNewBooksData("route", e.target.value)}
-              helperText="Suggest your route"
+              helperText="Предложите свой маршрут"
               margin="normal"
               multiline
             />
           </FormControl>
           <FormLabel component="legend" style={{ margin: "15px 0" }}>
-            Add points
+            Точки маршрута
           </FormLabel>
           <RouteMapSuggestion />
         </form>
@@ -74,7 +74,7 @@ class BookForm extends Component {
           style={{ margin: "15px 0" }}
           onClick={() => sendNewBook()}
         >
-          Submit
+          Отправить
         </Button>
       </div>
     );

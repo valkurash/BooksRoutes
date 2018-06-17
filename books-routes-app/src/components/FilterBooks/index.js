@@ -17,10 +17,10 @@ class FilterBooks extends Component {
       <form noValidate autoComplete="off">
         <TextField
           id="search"
-          label="Search book..."
+          label="Искать книгу..."
           type="search"
           margin="normal"
-          helperText="by title or author"
+          helperText="по названию или автору"
           value={searchTerm}
           onChange={e => searchTermChanged(e.target.value)}
           style={{ margin: "0 0 25px", maxWidth: 700 }}
