@@ -10,6 +10,7 @@
 }
 .book-cover .cover {
   /*max-width: 200px;*/
+  display: block;
   width: 100%;
 }
 .book-heading {

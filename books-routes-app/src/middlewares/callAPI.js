@@ -10,7 +10,15 @@ export default () => next => action => {
     type: type + START
   });
 
-  fetch(callAPI)
+  let options = {};
+  if (action.method === "POST")
+    options = {
+      method: "POST",
+      body: JSON.stringify(action.payload),
+      headers: { "Content-Type": "application/json" }
+    };
+
+  fetch(callAPI, options)
     .then(res => {
       if (!res.ok) {
         throw Error(res.statusText);

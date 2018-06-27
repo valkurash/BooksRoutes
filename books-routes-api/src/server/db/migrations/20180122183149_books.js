@@ -9,6 +9,7 @@ exports.up = function(knex) {
       table.string("isbn").nullable();
       table.string("cover").nullable();
       table.text("description").nullable();
+      table.bool("moderated");
     })
     .createTable("routes", function(table) {
       table.increments("id").primary();

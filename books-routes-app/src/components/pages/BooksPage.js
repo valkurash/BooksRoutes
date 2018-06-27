@@ -8,7 +8,7 @@ export default class BooksPage extends Component {
     return (
       <div>
         <Helmet>
-          <title>Все маршруты по книгам</title>
+          <title>Маршруты по книгам</title>
           <link
             rel="canonical"
             href="http://booksroutes.azurewebsites.net/books"

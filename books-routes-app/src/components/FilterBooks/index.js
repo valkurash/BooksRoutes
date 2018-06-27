@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { searchTermChanged } from "../../actions/booksActions";
-import TextField from "material-ui/TextField";
+import TextField from "@material-ui/core/TextField";
 
 class FilterBooks extends Component {
   static propTypes = {

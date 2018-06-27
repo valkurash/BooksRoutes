@@ -6,6 +6,8 @@ import {
   removeNewBooksPoint,
   newBookPointDescrChanged
 } from "../../actions/booksActions";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
 const {
   compose,
@@ -39,6 +41,9 @@ const Map = compose(
     {
       onToggleOpen: ({ isOpen }) => index => {
         let state = { ...isOpen };
+        for (let key in state) {
+          state[key.toString()] = false;
+        }
         state[index.toString()] = !isOpen[index.toString()];
         return { isOpen: state };
       }
@@ -84,21 +89,33 @@ const Map = compose(
           <Marker
             key={point.key}
             {...point}
-            onRightClick={() => props.removeNewBooksPoint(index)} //TODO: change for mobiles
+            onRightClick={() => props.removeNewBooksPoint(index)}
             onClick={() => props.onToggleOpen(index)}
           >
             {props.isOpen[index.toString()] && (
               <InfoWindow onCloseClick={() => props.onToggleOpen(index)}>
-                <div>
-                  <textarea
-                    placeholder="Description"
-                    style={{ resize: "none" }}
-                    rows="4"
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center"
+                  }}
+                >
+                  <TextField
+                    placeholder="Описание точки"
                     value={point.description}
                     onChange={e =>
                       props.newBookPointDescrChanged(e.target.value, index)
                     }
+                    margin="normal"
+                    fullWidth
                   />
+                  <Button
+                    color="secondary"
+                    onClick={() => props.removeNewBooksPoint(index)}
+                  >
+                    Удалить точку
+                  </Button>
                 </div>
               </InfoWindow>
             )}

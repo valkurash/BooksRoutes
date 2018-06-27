@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "react-router-redux";
 import store from "./store/configureStore";
 import history from "./history";
-import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import ReactGA from "react-ga";
 
 ReactGA.initialize("UA-116041442-1");

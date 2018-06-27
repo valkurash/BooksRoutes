@@ -5,13 +5,16 @@ const newBookDataRecord = Record({
   title: "",
   authors: "",
   route: "",
-  points: []
+  points: [],
+  loading: false,
+  loaded: false,
+  error: false
 });
 
 const defaultBookState = new newBookDataRecord();
 
 export const newBookReducer = (state = defaultBookState, action) => {
-  const { type, payload } = action;
+  const { type, payload, error } = action;
   switch (type) {
     case actionTypes.CHANGE_NEW_BOOK_POINTS:
       return state.set("points", payload.points);
@@ -30,9 +33,23 @@ export const newBookReducer = (state = defaultBookState, action) => {
       ]);
     case actionTypes.CHANGE_NEW_BOOK_DATA:
       return state.set(payload.name, payload.value);
-    case actionTypes.SEND_NEW_BOOK:
-      console.log(state);
-      return defaultBookState;
+    case actionTypes.SEND_NEW_BOOK + actionTypes.SUCCESS:
+      return state
+        .set("loading", false)
+        .set("loaded", true)
+        .set("error", false)
+        .set("title", "")
+        .set("authors", "")
+        .set("route", "")
+        .set("points", []);
+
+    case actionTypes.SEND_NEW_BOOK + actionTypes.START:
+      return state.set("loading", true).set("loaded", false);
+    case actionTypes.SEND_NEW_BOOK + actionTypes.FAIL:
+      return state
+        .set("loading", false)
+        .set("loaded", false)
+        .set("error", error);
     default:
       return state;
   }

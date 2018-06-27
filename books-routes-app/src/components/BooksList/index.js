@@ -4,12 +4,11 @@ import { connect } from "react-redux";
 import { fetchBooks } from "../../actions/booksActions";
 import { filtratedBooksSelector } from "../../selectors";
 import { Link } from "react-router-dom";
-import Grid from "material-ui/Grid";
-import Typography from "material-ui/Typography";
-import { CircularProgress } from "material-ui/Progress";
-import Button from "material-ui/Button";
-import AddIcon from "material-ui-icons/Add";
-import Paper from "material-ui/Paper";
+import Grid from "@material-ui/core/Grid";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
+import AddIcon from "@material-ui/icons/Add";
+import Paper from "@material-ui/core/Paper";
 import "./style.css";
 
 class BookList extends Component {
@@ -66,14 +65,6 @@ class BookList extends Component {
               <img className="cover" src={book.cover} alt={book.title} />
             </Link>
           </div>
-          <Paper className="book-heading" color="primary">
-            <Typography variant="title" component="div">
-              <Link to={`/books/${book.id}`}>{book.title}</Link>
-            </Typography>
-            <Typography variant="subheading" component="div">
-              {book.authors.map(author => author.name).join(", ")}
-            </Typography>
-          </Paper>
         </Paper>
       </Grid>
     ));

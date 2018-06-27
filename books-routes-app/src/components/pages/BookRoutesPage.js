@@ -6,19 +6,20 @@ import drawerToggle from "../decorators/handleDrawerToggle";
 import PropTypes from "prop-types";
 import RouteMap from "../RouteMap";
 import Book from "../Book";
-import { CircularProgress } from "material-ui/Progress";
-import { withStyles } from "material-ui/styles";
-import Drawer from "material-ui/Drawer";
-import AppBar from "material-ui/AppBar";
-import Toolbar from "material-ui/Toolbar";
-import List, { ListItem } from "material-ui/List";
-import Typography from "material-ui/Typography";
-import IconButton from "material-ui/IconButton";
-import Hidden from "material-ui/Hidden";
-import Divider from "material-ui/Divider";
-import MenuIcon from "material-ui-icons/Menu";
-import ArrowIcon from "material-ui-icons/ArrowBack";
-import CloseIcon from "material-ui-icons/Close";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { withStyles } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import Hidden from "@material-ui/core/Hidden";
+import Divider from "@material-ui/core/Divider";
+import MenuIcon from "@material-ui/icons/Menu";
+import ArrowIcon from "@material-ui/icons/ArrowBack";
+import CloseIcon from "@material-ui/icons/Close";
 import { Helmet } from "react-helmet";
 
 const drawerWidth = 280;
@@ -54,7 +55,8 @@ const styles = theme => ({
   drawerPaper: {
     width: drawerWidth,
     [theme.breakpoints.up("md")]: {
-      position: "relative"
+      position: "relative",
+      height: "calc(100vh - 84px)"
     }
   },
   content: {
@@ -173,7 +175,7 @@ class BookRoutesPage extends Component {
     return (
       <div className={classes.root}>
         <Helmet>
-          <title>{`${bookData.title} Routes`}</title>
+          <title>{`${bookData.title} Маршруты`}</title>
         </Helmet>
         <AppBar className={classes.appBar}>
           <Toolbar>

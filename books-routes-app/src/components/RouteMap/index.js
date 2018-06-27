@@ -84,8 +84,8 @@ const MapWithAMarkedInfoWindow = compose(
       ref={props.onMapMounted}
       defaultZoom={8}
       defaultCenter={{
-        lat: points[0].point.y,
-        lng: points[0].point.x
+        lat: points[0] ? points[0].point.y : 37.688,
+        lng: points[0] ? points[0].point.x : 35.438
       }}
     >
       {points.map((point, index) => (

@@ -42,8 +42,11 @@ export function changeNewBooksData(name, value) {
     payload: { name, value }
   };
 }
-export function sendNewBook() {
+export function sendNewBook(bookData) {
   return {
-    type: actionTypes.SEND_NEW_BOOK
+    type: actionTypes.SEND_NEW_BOOK,
+    payload: { ...bookData },
+    callAPI: api,
+    method: "POST"
   };
 }
