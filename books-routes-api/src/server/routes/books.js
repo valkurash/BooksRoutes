@@ -60,23 +60,23 @@ router.post(`${BASE_URL}`, async ctx => {
       routes: [
         {
           name: body.route,
-          path: body.points.map(point => {
+          path: body.points.map((point, i) => {
             return {
               name: point.key,
               description: point.description || "unknown",
               lat: point.lat,
               lon: point.lng,
-              order: point.key
+              order: i
             };
           })
         }
       ]
     };
-    await queries.addBookWithRelations(bookData);
+    const book = await queries.addBookWithRelations(bookData);
     ctx.status = 201;
     ctx.body = {
-      status: "success"
-      //data: book
+      status: "success",
+      data: book
     };
   } catch (err) {
     ctx.status = 400;

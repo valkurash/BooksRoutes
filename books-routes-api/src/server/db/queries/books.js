@@ -71,7 +71,7 @@ function addBookWithRelations(bookData) {
         );
       });
     });
-    return true;
+    return book;
   });
 }
 

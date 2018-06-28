@@ -575,7 +575,7 @@ const booksData = [
         ]
       }
     ]
-  },
+  } /*,
   {
     book: {
       moderated: "true",
@@ -620,7 +620,7 @@ const booksData = [
         ]
       }
     ]
-  }
+  }*/
 ];
 
 const createBook = (knex, book) => {

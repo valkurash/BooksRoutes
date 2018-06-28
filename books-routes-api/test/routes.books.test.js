@@ -41,9 +41,11 @@ describe("routes : books", function() {
           res.type.should.equal("application/json");
           // the JSON response body should have a key-value pair of {"status": "success"}
           res.body.status.should.eql("success");
-          // the JSON response body should have a key-value pair of {"data": [3 books
+
+          // the JSON response body should have a key-value pair of {"data": [num books
           // objects]}
-          res.body.data.length.should.eql(3);
+          //res.body.data.length.should.eql(num);
+
           // the first object in the data array should have the right keys
           res.body.data[0].should.include.keys(
             "id",
@@ -54,8 +56,6 @@ describe("routes : books", function() {
             "authors"
           );
           res.body.data[0]["authors"].length.should.eql(1);
-          res.body.data[1]["authors"].length.should.eql(1);
-          res.body.data[2]["authors"].length.should.eql(2);
           res.body.data[0]["authors"][0].should.include.keys(
             "id",
             "name",
@@ -70,7 +70,7 @@ describe("routes : books", function() {
     it("should respond with a single book", done => {
       chai
         .request(server)
-        .get("/api/v1/books/3")
+        .get("/api/v1/books/1")
         .end((err, res) => {
           // there should be no errors
           should.not.exist(err);
@@ -91,7 +91,7 @@ describe("routes : books", function() {
             "authors",
             "routes"
           );
-          res.body.data["authors"].length.should.eql(2);
+          res.body.data["authors"].length.should.eql(1);
           res.body.data["authors"][0].should.include.keys(
             "id",
             "name",
@@ -103,7 +103,7 @@ describe("routes : books", function() {
             "name",
             "book_id"
           );
-          res.body.data["routes"][0]["points"].length.should.eql(2);
+          res.body.data["routes"][0]["points"].length.should.eql(9);
           res.body.data["routes"][0]["points"][0].should.include.keys(
             "id",
             "name",
@@ -131,7 +131,7 @@ describe("routes : books", function() {
           res.body.status.should.eql("error");
           // the JSON response body should have a key-value pair of {"message": "That book
           // does not exist."}
-          res.body.message.should.eql("That book does not exist.");
+          res.body.message.should.eql("Такой книги не существует.");
           done();
         });
     });
@@ -144,13 +144,26 @@ describe("routes : books", function() {
         .post("/api/v1/books")
         .send({
           title: "labore aute",
-          isbn: "2a425443-3b22-4340-8560-38d304b7b39b",
-          cover: "http://placehold.it/100x140",
-          description:
-            "Consectetur nostrud ad eu culpa non labore eu sint anim exercitation in est moll" +
-            "it. Magna Lorem ullamco consectetur enim incididunt ea sint nulla cupidatat ipsu" +
-            "m dolore nulla. Veniam voluptate exercitation ipsum nulla ex minim exercitation." +
-            " Commodo fugiat sunt dolor irure dolor magna non elit commodo."
+          authors: "Goble, Frank",
+          route: "Secret path",
+          points: [
+            {
+              position: { lat: 45.55622355539127, lng: 41.59034374999999 },
+              lat: 45.55622355539127,
+              lng: 41.59034374999999,
+              defaultAnimation: 0,
+              key: 1530180716690,
+              description: "point1 description"
+            },
+            {
+              position: { lat: 49.92633568218444, lng: 72.00049999999999 },
+              lat: 49.92633568218444,
+              lng: 72.00049999999999,
+              defaultAnimation: 0,
+              key: 1530180732604,
+              description: "point2 description"
+            }
+          ]
         })
         .end((err, res) => {
           // there should be no errors
@@ -163,13 +176,7 @@ describe("routes : books", function() {
           res.body.status.should.eql("success");
           // the JSON response body should have a key-value pair of {"data": 1 book
           // object}
-          res.body.data[0].should.include.keys(
-            "id",
-            "title",
-            "isbn",
-            "cover",
-            "description"
-          );
+          res.body.data.should.include.keys("id");
           done();
         });
     });
@@ -246,7 +253,7 @@ describe("routes : books", function() {
           res.body.status.should.eql("error");
           // the JSON response body should have a key-value pair of {"message": "That book
           // does not exist."}
-          res.body.message.should.eql("That book does not exist.");
+          res.body.message.should.eql("Такой книги не существует.");
           done();
         });
     });
