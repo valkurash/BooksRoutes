@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import FormLabel from "@material-ui/core/FormLabel";
-import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
 import CustomSnackbarContentWrapper from "../decorators/customSnackBar";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -71,59 +71,67 @@ class BookForm extends Component {
     return (
       <div>
         <form noValidate autoComplete="off">
-          <FormControl component="fieldset">
-            <TextField
-              error={this.state.titleError}
-              required
-              id="title"
-              label="Название книги"
-              value={title}
-              onChange={e => changeNewBooksData("title", e.target.value)}
-              margin="normal"
-            />
-            <TextField
-              error={this.state.authorsError}
-              required
-              id="authors"
-              label="Автор"
-              value={authors}
-              onChange={e => changeNewBooksData("authors", e.target.value)}
-              helperText="Если авторов несколько, перечислите их через запятую"
-              margin="normal"
-            />
-            <TextField
-              error={this.state.routeError}
-              required
-              id="route"
-              label="Название или описание маршрута"
-              value={route}
-              onChange={e => changeNewBooksData("route", e.target.value)}
-              helperText="Предложите свой маршрут"
-              margin="normal"
-              multiline
-            />
-          </FormControl>
-          <FormLabel component="legend" style={{ margin: "15px 0" }}>
-            Точки маршрута
-          </FormLabel>
-          <RouteMapSuggestion />
+          <Grid container spacing={24}>
+            <Grid item xs={12} md={4}>
+              <TextField
+                error={this.state.titleError}
+                required
+                id="title"
+                label="Название книги"
+                value={title}
+                onChange={e => changeNewBooksData("title", e.target.value)}
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                error={this.state.authorsError}
+                required
+                id="authors"
+                label="Автор"
+                value={authors}
+                onChange={e => changeNewBooksData("authors", e.target.value)}
+                helperText="Если авторов несколько, перечислите их через запятую"
+                margin="normal"
+                fullWidth
+              />
+              <TextField
+                error={this.state.routeError}
+                required
+                id="route"
+                label="Название или описание маршрута"
+                value={route}
+                onChange={e => changeNewBooksData("route", e.target.value)}
+                helperText="Предложите свой маршрут"
+                margin="normal"
+                multiline
+                rows="4"
+                fullWidth
+              />
+              <Button
+                variant="raised"
+                color="secondary"
+                size="large"
+                style={{ margin: "15px 0" }}
+                onClick={() => handleSubmit()}
+              >
+                Отправить
+              </Button>
+              {loading && (
+                <CircularProgress
+                  className="loader"
+                  style={{ display: "block", margin: "auto" }}
+                  size={50}
+                />
+              )}
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <FormLabel component="legend" style={{ margin: "15px 0" }}>
+                Точки маршрута
+              </FormLabel>
+              <RouteMapSuggestion />
+            </Grid>
+          </Grid>
         </form>
-        <Button
-          variant="raised"
-          color="secondary"
-          size="large"
-          style={{ margin: "15px 0" }}
-          onClick={() => handleSubmit()}
-        >
-          Отправить
-        </Button>
-        {loading && (
-          <CircularProgress
-            className="loader"
-            style={{ display: "block", margin: "auto" }}
-            size={50}
-          />
-        )}
 
         <Snackbar
           anchorOrigin={{

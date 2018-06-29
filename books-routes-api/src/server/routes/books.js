@@ -52,11 +52,9 @@ router.post(`${BASE_URL}`, async ctx => {
         title: body.title,
         moderated: "false"
       },
-      authors: (body.authors.replace(/ /g, "") || "unknown")
+      authors: (body.authors.replace(/\s\s+/g, " ") || "unknown")
         .split(",")
-        .map(name => {
-          return { name };
-        }),
+        .map(name => ({ name: name.trim() })),
       routes: [
         {
           name: body.route,

@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-// import PropTypes from 'prop-types'
+import { Helmet } from "react-helmet";
 
 export default class NotFoundPage extends Component {
-  /* static propTypes = {
-
-    };*/
-
   render() {
     return (
       <div>
-        <h1>404. Page Not Found</h1>
+        <Helmet>
+          <title>Страница не найдена</title>
+        </Helmet>
+        <h1>404. Страница не найдена</h1>
       </div>
     );
   }
