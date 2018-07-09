@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 1337;
 
 app.use(bodyParser());
 
-app.use(prerender(options));
+//app.use(prerender(options));
 
 app.use(
   cors({
