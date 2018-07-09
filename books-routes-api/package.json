@@ -26,9 +26,7 @@
     "knex": "^0.14.4",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
-    "koa-prerender": "^1.0.3",
     "koa-router": "^7.2.1",
-    "pg": "^7.4.1",
-    "prerender": "^5.4.2"
+    "pg": "^7.4.1"
   }
 }
