@@ -28,8 +28,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build":
-      "react-scripts build && react-snapshot && react-snapshot-sitemap --output-domain http://booksroutes.info",
+    "build": "react-scripts build ",
     "postbuild": "node iisConfig/copyIISConfig.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
