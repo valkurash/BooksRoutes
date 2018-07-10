@@ -19,7 +19,7 @@ class Root extends Component {
             <Typography variant="title" component="a" href="/">
               <img src={logo} className="app-logo" alt="logo" />
               <div className="app-title">
-                Маршруты<br />по книгам
+                Books<br />Routes
               </div>
             </Typography>
           </Toolbar>
