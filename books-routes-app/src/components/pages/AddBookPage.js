@@ -10,6 +10,7 @@ export default class AddBookPage extends Component {
       <div>
         <Helmet>
           <title>Предложить маршрут из книги</title>
+          <meta name="description" content="Предложить маршруты для путешествий или обзорных экскурсий по местам из своих любимых книг" />
         </Helmet>
         <Link
           to="/books"
