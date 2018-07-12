@@ -5,7 +5,6 @@ const {
   compose,
   withProps,
   withStateHandlers,
-  lifecycle,
   withHandlers
 } = require("recompose");
 const {
@@ -70,11 +69,6 @@ const MapWithAMarkedInfoWindow = compose(
       zoomToMarkers: () => zoomToMarkers
     };
   }),
-  lifecycle({
-    componentDidUpdate(props) {
-      props.zoomToMarkers();
-    }
-  }),
   withScriptjs,
   withGoogleMap
 )(props => {
@@ -84,23 +78,23 @@ const MapWithAMarkedInfoWindow = compose(
       ref={props.onMapMounted}
       defaultZoom={8}
       defaultCenter={{
-        lat: points[0] ? points[0].point.y : 37.688,
-        lng: points[0] ? points[0].point.x : 35.438
+        lat: points[0] ? points[0].point.x : 37.688,
+        lng: points[0] ? points[0].point.y : 35.438
       }}
     >
       {points.map((point, index) => (
         <Marker
           key={index}
           position={{
-            lat: point.point.y,
-            lng: point.point.x
+            lat: point.point.x,
+            lng: point.point.y
           }}
           onClick={() => props.onToggleOpen(point.id)}
         >
           {props.isOpen[point.id.toString()] && (
             <InfoWindow
               onCloseClick={() => props.onToggleOpen(point.id)}
-              options={{ maxWidth: 300 }}
+              options={{ maxWidth: 250 }}
             >
               <div>
                 <div

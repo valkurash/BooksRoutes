@@ -64,7 +64,7 @@ function addBookWithRelations(bookData) {
             name: point.name,
             route_id: route.id,
             order: parseInt(point.order),
-            point: knex.raw(`Point(${point.lon}, ${point.lat})`),
+            point: knex.raw(`Point(${point.lat}, ${point.lon})`),
             description: point.description
           },
           { transacting: t }

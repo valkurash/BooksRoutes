@@ -93,7 +93,10 @@ const Map = compose(
             onClick={() => props.onToggleOpen(index)}
           >
             {props.isOpen[index.toString()] && (
-              <InfoWindow onCloseClick={() => props.onToggleOpen(index)}>
+              <InfoWindow
+                onCloseClick={() => props.onToggleOpen(index)}
+                options={{ maxWidth: 250 }}
+              >
                 <div
                   style={{
                     display: "flex",

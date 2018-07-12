@@ -176,7 +176,7 @@ class BookRoutesPage extends Component {
       <div className={classes.root}>
         <Helmet>
           <title>{`Маршруты по книге ${bookData.title}`}</title>
-          <meta name="description" content={`Маршруты для путешествий или обзорных экскурсий по местам из книги ${bookData.title}`} />
+          <meta name="description" content={`Литературная карта. Маршруты для путешествий или обзорных экскурсий по местам из книги ${bookData.title}`} />
         </Helmet>
         <AppBar className={classes.appBar}>
           <Toolbar>

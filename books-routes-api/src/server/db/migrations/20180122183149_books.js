@@ -22,7 +22,8 @@ exports.up = function(knex) {
     .createTable("points", function(table) {
       table.increments("id").primary();
       table.string("name").notNullable();
-      table.specificType("point", "Point").notNullable();
+      table.specificType("point", "Point").nullable();
+      table.specificType("polyline", "Path").nullable();
       table.integer("order").notNullable();
       table.text("description").nullable();
       table

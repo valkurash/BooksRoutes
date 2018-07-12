@@ -5,6 +5,7 @@ import { fetchBooks } from "../../actions/booksActions";
 import { filtratedBooksSelector } from "../../selectors";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
@@ -57,17 +58,29 @@ class BookList extends Component {
           </Button>
         </div>
       );
-    const bookElements = books.map(book => (
-      <Grid key={book.id} item xs={12} sm={6} md={3} lg={2} xl={1}>
-        <Paper className="book-card">
-          <div className="book-cover">
+    const bookElements = books
+      .sort((a, b) => {
+        if (a.title > b.title) return 1;
+        if (a.name < b.name) return -1;
+        return 0;
+      })
+      .map(book => (
+        <Grid key={book.id} item xs={12} sm={6} md={3} lg={2} xl={1}>
+          <Paper className="book-card">
             <Link to={`/books/${book.id}`}>
-              <img className="cover" src={book.cover} alt={book.title} />
+              <div className="book-cover">
+                <img className="cover" src={book.cover} alt={book.title} />
+              </div>
+              <Typography variant="title" component="div" classNme="title">
+                {book.title}
+              </Typography>
+              <Typography variant="subheading" component="div" classNme="title">
+                {book.authors.map(author => author.name).join(", ")}
+              </Typography>
             </Link>
-          </div>
-        </Paper>
-      </Grid>
-    ));
+          </Paper>
+        </Grid>
+      ));
 
     return (
       <div className="book-list-wrap">

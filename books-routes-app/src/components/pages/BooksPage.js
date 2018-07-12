@@ -9,8 +9,7 @@ export default class BooksPage extends Component {
       <div>
         <Helmet>
           <title>Маршруты по книгам</title>
-          <meta name="description" content="Маршруты на карте для путешествий или обзорных экскурсий по местам из своих любимых книг" />
-          <link rel="canonical" href="http://booksroutes.info/books" />
+          <meta name="description" content="Литературная карта. Маршруты для путешествий или обзорных экскурсий по местам из своих любимых книг." />
         </Helmet>
         <FilterBooks />
         <BookList />
