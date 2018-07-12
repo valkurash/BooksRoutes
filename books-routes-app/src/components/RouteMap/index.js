@@ -102,7 +102,7 @@ const MapWithAMarkedInfoWindow = compose(
                   style={{ fontWeight: "bold" }}
                 >{`${point.order}. ${point.name}`}</div>
                 <div className="point-descr">
-                  {point.description.split("\n").map((item, key) => {
+                  {(point.description || "").split("\n").map((item, key) => {
                     return (
                       <span key={key}>
                         {item}

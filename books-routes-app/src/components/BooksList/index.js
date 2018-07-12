@@ -71,10 +71,14 @@ class BookList extends Component {
               <div className="book-cover">
                 <img className="cover" src={book.cover} alt={book.title} />
               </div>
-              <Typography variant="title" component="div" classNme="title">
+              <Typography variant="title" component="div" className="title">
                 {book.title}
               </Typography>
-              <Typography variant="subheading" component="div" classNme="title">
+              <Typography
+                variant="subheading"
+                component="div"
+                className="title"
+              >
                 {book.authors.map(author => author.name).join(", ")}
               </Typography>
             </Link>

@@ -9,6 +9,9 @@
 .book-card a {
   text-decoration: none;
 }
+.book-card:hover {
+  background: #fafafa;
+}
 .book-card a:hover .title {
   color: rgb(0, 105, 95);
 }
