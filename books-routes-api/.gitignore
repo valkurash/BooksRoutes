@@ -3,4 +3,4 @@ node_modules/
 npm-debug.log
 
 # seed
-src/server/db/seeds
+src/server/db/seeds/
