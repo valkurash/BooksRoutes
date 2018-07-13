@@ -10,7 +10,17 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import Paper from "@material-ui/core/Paper";
+import Zoom from "@material-ui/core/Zoom";
+import { withStyles } from "@material-ui/core/styles";
 import "./style.css";
+
+const styles = theme => ({
+  fab: {
+    position: "fixed",
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2
+  }
+});
 
 class BookList extends Component {
   static propTypes = {
@@ -18,7 +28,9 @@ class BookList extends Component {
     loading: PropTypes.bool,
     loaded: PropTypes.bool,
     error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-    fetchBooks: PropTypes.func
+    fetchBooks: PropTypes.func,
+    classes: PropTypes.object.isRequired,
+    theme: PropTypes.object.isRequired
   };
 
   componentDidMount() {
@@ -26,7 +38,12 @@ class BookList extends Component {
     if (!loading && !loaded) fetchBooks();
   }
   render() {
-    const { books, loading, error } = this.props;
+    const { books, loading, error, classes, theme } = this.props;
+
+    const transitionDuration = {
+      enter: theme.transitions.duration.enteringScreen,
+      exit: theme.transitions.duration.leavingScreen
+    };
 
     if (loading)
       return (
@@ -91,6 +108,25 @@ class BookList extends Component {
         <Grid container spacing={24}>
           {bookElements}
         </Grid>
+        <Zoom
+          key="secondary"
+          in={true}
+          timeout={transitionDuration}
+          style={{
+            transitionDelay: transitionDuration.exit
+          }}
+          unmountOnExit
+        >
+          <Button
+            component={Link}
+            to="/add"
+            variant="fab"
+            className={classes.fab}
+            color="secondary"
+          >
+            <AddIcon />
+          </Button>
+        </Zoom>
       </div>
     );
   }
@@ -103,4 +139,4 @@ export default connect(
     error: state.get("books").error
   }),
   { fetchBooks }
-)(BookList);
+)(withStyles(styles, { withTheme: true })(BookList));

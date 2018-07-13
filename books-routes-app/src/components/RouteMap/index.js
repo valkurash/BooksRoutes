@@ -104,10 +104,9 @@ const MapWithAMarkedInfoWindow = compose(
                 <div className="point-descr">
                   {(point.description || "").split("\n").map((item, key) => {
                     return (
-                      <span key={key}>
-                        {item}
-                        <br />
-                      </span>
+                      <div key={key}>
+                        <span dangerouslySetInnerHTML={{ __html: item }} />
+                      </div>
                     );
                   })}
                 </div>
