@@ -78,7 +78,7 @@ class BookList extends Component {
     const bookElements = books
       .sort((a, b) => {
         if (a.title > b.title) return 1;
-        if (a.name < b.name) return -1;
+        if (a.title < b.title) return -1;
         return 0;
       })
       .map(book => (

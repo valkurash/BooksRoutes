@@ -125,17 +125,23 @@ class BookRoutesPage extends Component {
     if (book.get("error"))
       return <div className="error-msg">{book.get("error").message}</div>;
 
-    const routesList = bookData.routes.map(route => (
-      <ListItem
-        component={NavLink}
-        key={route.id}
-        to={`/books/${bookData.id}/${route.id}`}
-        onClick={drawerToggle}
-        button
-      >
-        {route.name}
-      </ListItem>
-    ));
+    const routesList = bookData.routes
+      .sort((a, b) => {
+        if (a.name > b.name) return 1;
+        if (a.name < b.name) return -1;
+        return 0;
+      })
+      .map(route => (
+        <ListItem
+          component={NavLink}
+          key={route.id}
+          to={`/books/${bookData.id}/${route.id}`}
+          onClick={drawerToggle}
+          button
+        >
+          {route.name}
+        </ListItem>
+      ));
     const drawer = (
       <div>
         <div className={classes.drawerHeader}>
@@ -176,7 +182,12 @@ class BookRoutesPage extends Component {
       <div className={classes.root}>
         <Helmet>
           <title>{`Маршруты по книге ${bookData.title}`}</title>
-          <meta name="description" content={`Литературная карта. Маршруты для путешествий или обзорных экскурсий по местам из книги ${bookData.title}`} />
+          <meta
+            name="description"
+            content={`Литературная карта. Маршруты для путешествий или обзорных экскурсий по местам из книги ${
+              bookData.title
+            }`}
+          />
         </Helmet>
         <AppBar className={classes.appBar}>
           <Toolbar>
