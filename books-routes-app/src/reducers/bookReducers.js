@@ -27,6 +27,24 @@ export const bookReducer = (state = defaultBookState, action) => {
   const { type, payload, response, error } = action;
   switch (type) {
     case actionTypes.FETCH_BOOK + actionTypes.SUCCESS:
+      response.routes.map(r => {
+        r.points.map(p => {
+          if (p.polyline) {
+            p.polyline = p.polyline
+              .replace(/\s*/g, "")
+              .replace("((", "(")
+              .replace("))", ")")
+              .match(/\((.*?)\)/g)
+              .map(p => {
+                let coords = p.replace(/[\(\)]/g, "").split(",");
+                return {
+                  lat: parseFloat(coords[0]),
+                  lng: parseFloat(coords[1])
+                };
+              });
+          }
+        });
+      });
       return state
         .setIn(
           ["entities", payload.id, "entities"],

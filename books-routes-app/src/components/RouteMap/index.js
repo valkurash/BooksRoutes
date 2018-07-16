@@ -12,7 +12,8 @@ const {
   withGoogleMap,
   GoogleMap,
   Marker,
-  InfoWindow
+  InfoWindow,
+  Polyline
 } = require("react-google-maps");
 
 const MapWithAMarkedInfoWindow = compose(
@@ -72,49 +73,111 @@ const MapWithAMarkedInfoWindow = compose(
   withScriptjs,
   withGoogleMap
 )(props => {
-  const points = props.route.points;
+  const pointsData = props.route.points;
+  const firstPoint = pointsData[0].point || pointsData[0].polyline[0];
   return (
     <GoogleMap
       ref={props.onMapMounted}
       defaultZoom={8}
       defaultCenter={{
-        lat: points[0] ? points[0].point.x : 37.688,
-        lng: points[0] ? points[0].point.y : 35.438
+        lat: firstPoint.x || firstPoint.lat,
+        lng: firstPoint.y || firstPoint.lng
       }}
     >
-      {points.map((point, index) => (
-        <Marker
-          key={index}
-          position={{
-            lat: point.point.x,
-            lng: point.point.y
-          }}
-          onClick={() => props.onToggleOpen(point.id)}
-        >
-          {props.isOpen[point.id.toString()] && (
-            <InfoWindow
-              onCloseClick={() => props.onToggleOpen(point.id)}
-              options={{ maxWidth: 250 }}
+      {pointsData.map(
+        (pointData, index) =>
+          pointData.point ? (
+            <Marker
+              key={index}
+              position={{
+                lat: pointData.point.x,
+                lng: pointData.point.y
+              }}
+              onClick={() => props.onToggleOpen(pointData.id)}
             >
-              <div>
-                <div
-                  className="point-header"
-                  style={{ fontWeight: "bold" }}
-                >{`${point.order}. ${point.name}`}</div>
-                <div className="point-descr">
-                  {(point.description || "").split("\n").map((item, key) => {
-                    return (
-                      <div key={key}>
-                        <span dangerouslySetInnerHTML={{ __html: item }} />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </InfoWindow>
-          )}
-        </Marker>
-      ))}
+              {props.isOpen[pointData.id.toString()] && (
+                <InfoWindow
+                  onCloseClick={() => props.onToggleOpen(pointData.id)}
+                  options={{ maxWidth: 250 }}
+                >
+                  <div>
+                    <div
+                      className="point-header"
+                      style={{ fontWeight: "bold" }}
+                    >{`${pointData.order}. ${pointData.name}`}</div>
+                    <div className="point-descr">
+                      {(pointData.description || "")
+                        .split("\n")
+                        .map((item, key) => {
+                          return (
+                            <div key={key}>
+                              <span
+                                dangerouslySetInnerHTML={{ __html: item }}
+                              />
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </InfoWindow>
+              )}
+            </Marker>
+          ) : (
+            <div key={index}>
+              <Polyline
+                path={pointData.polyline}
+                options={{
+                  geodesic: true,
+                  strokeColor: "#FF0000",
+                  strokeWeight: 5
+                }}
+                onClick={() => props.onToggleOpen(pointData.id)}
+              />
+              {props.isOpen[pointData.id.toString()] && (
+                <InfoWindow
+                  onCloseClick={() => props.onToggleOpen(pointData.id)}
+                  options={{ maxWidth: 250 }}
+                  position={
+                    pointData.polyline.length === 2
+                      ? {
+                          lat:
+                            (pointData.polyline[0].lat +
+                              pointData.polyline[1].lat) /
+                            2,
+                          lng:
+                            (pointData.polyline[0].lng +
+                              pointData.polyline[1].lng) /
+                            2
+                        }
+                      : pointData.polyline[
+                          Math.floor(pointData.polyline.length / 2)
+                        ]
+                  }
+                >
+                  <div>
+                    <div
+                      className="point-header"
+                      style={{ fontWeight: "bold" }}
+                    >{`${pointData.order}. ${pointData.name}`}</div>
+                    <div className="point-descr">
+                      {(pointData.description || "")
+                        .split("\n")
+                        .map((item, key) => {
+                          return (
+                            <div key={key}>
+                              <span
+                                dangerouslySetInnerHTML={{ __html: item }}
+                              />
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </InfoWindow>
+              )}
+            </div>
+          )
+      )}
     </GoogleMap>
   );
 });
