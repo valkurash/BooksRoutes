@@ -26,10 +26,10 @@ class Root extends Component {
         </AppBar>
         <div className="app-content">
           <Switch>
-            <Redirect from="/" exact to="/books" />
-            <Route exact path="/books" component={BooksPage} />
-            <Route path="/books/:id" component={BookRoutesPage} />
-            <Route exact path="/add" component={AddBookPage} />
+            <Redirect from="/" exact to="/books/" />
+            <Route exact path="/books/" component={BooksPage} />
+            <Route path="/books/:id/" component={BookRoutesPage} />
+            <Route exact path="/add/" component={AddBookPage} />
             <Route path="*" component={NotFoundPage} />
           </Switch>
         </div>

@@ -135,7 +135,7 @@ class BookRoutesPage extends Component {
         <ListItem
           component={NavLink}
           key={route.id}
-          to={`/books/${bookData.id}/${route.id}`}
+          to={`/books/${bookData.id}/${route.id}/`}
           onClick={drawerToggle}
           button
         >
@@ -146,7 +146,7 @@ class BookRoutesPage extends Component {
       <div>
         <div className={classes.drawerHeader}>
           <Link
-            to="/books"
+            to="/books/"
             style={{
               display: "flex",
               alignItems: "center"
@@ -167,14 +167,17 @@ class BookRoutesPage extends Component {
         </div>
 
         <Divider />
-        {bookData.routes.length > 1 && (
-          <div>
-            <List component="nav" className="routes-nav">
-              {routesList}
-            </List>
-            <Divider />
-          </div>
-        )}
+        <div
+          style={{
+            display: bookData.routes.length > 1 ? "block" : "none"
+          }}
+        >
+          <List component="nav" className="routes-nav">
+            {routesList}
+          </List>
+          <Divider />
+        </div>
+
         <Book key={bookData.id} book={bookData} />
       </div>
     );
@@ -235,15 +238,15 @@ class BookRoutesPage extends Component {
           <div className={classes.toolbar} />
           <Switch>
             <Redirect
-              from="/books/:id"
+              from="/books/:id/"
               exact
-              to={`/books/${bookData.id}/${bookData.routes[0].id}`}
+              to={`/books/${bookData.id}/${bookData.routes[0].id}/`}
             />
             {bookData.routes.map((route, index) => (
               <Route
                 exact
                 key={index}
-                path="/books/:bookId/:routeId"
+                path="/books/:bookId/:routeId/"
                 component={RouteMap}
               />
             ))}

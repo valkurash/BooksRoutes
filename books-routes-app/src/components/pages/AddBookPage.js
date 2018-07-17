@@ -10,10 +10,13 @@ export default class AddBookPage extends Component {
       <div>
         <Helmet>
           <title>Предложить маршрут из книги</title>
-          <meta name="description" content="Литературная карта. Предложить маршруты для путешествий или обзорных экскурсий по местам из своих любимых книг" />
+          <meta
+            name="description"
+            content="Литературная карта. Предложить маршруты для путешествий или обзорных экскурсий по местам из своих любимых книг"
+          />
         </Helmet>
         <Link
-          to="/books"
+          to="/books/"
           style={{
             display: "flex",
             alignItems: "center"
