@@ -69,7 +69,7 @@ class BookList extends Component {
             color="primary"
             aria-label="add"
             component={Link}
-            to="/add/"
+            to="/add"
           >
             <AddIcon /> Предложить новую книгу
           </Button>
@@ -84,7 +84,7 @@ class BookList extends Component {
       .map(book => (
         <Grid key={book.id} item xs={12} sm={6} md={3} lg={2} xl={1}>
           <Paper className="book-card">
-            <Link to={`/books/${book.id}/`}>
+            <Link to={`/books/${book.id}`}>
               <div className="book-cover">
                 <img className="cover" src={book.cover} alt={book.title} />
               </div>
@@ -119,7 +119,7 @@ class BookList extends Component {
         >
           <Button
             component={Link}
-            to="/add/"
+            to="/add"
             variant="fab"
             className={classes.fab}
             color="secondary"

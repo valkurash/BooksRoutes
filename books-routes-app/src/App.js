@@ -4,7 +4,12 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "react-router-redux";
 import store from "./store/configureStore";
 import history from "./history";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import {
+  MuiThemeProvider,
+  createMuiTheme,
+  createGenerateClassName
+} from "@material-ui/core/styles";
+import JssProvider from "react-jss/lib/JssProvider";
 import ReactGA from "react-ga";
 
 ReactGA.initialize("UA-116041442-1");
@@ -15,6 +20,10 @@ ReactGA.initialize("UA-116041442-1");
 "primary3Color": "#00695c",
 "accent2Color": "#e0f2f1",
 "pickerHeaderColor": "#4db6ac"*/
+
+const generateClassName = createGenerateClassName({
+  dangerouslyUseGlobalCSS: true
+});
 
 const theme = createMuiTheme({
   palette: {
@@ -33,9 +42,11 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <MuiThemeProvider theme={theme}>
-            <Root />
-          </MuiThemeProvider>
+          <JssProvider generateClassName={generateClassName}>
+            <MuiThemeProvider theme={theme}>
+              <Root />
+            </MuiThemeProvider>
+          </JssProvider>
         </ConnectedRouter>
       </Provider>
     );

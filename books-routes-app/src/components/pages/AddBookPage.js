@@ -16,7 +16,7 @@ export default class AddBookPage extends Component {
           />
         </Helmet>
         <Link
-          to="/books/"
+          to="/books"
           style={{
             display: "flex",
             alignItems: "center"
