@@ -12,6 +12,7 @@ import AddIcon from "@material-ui/icons/Add";
 import Paper from "@material-ui/core/Paper";
 import Zoom from "@material-ui/core/Zoom";
 import { withStyles } from "@material-ui/core/styles";
+import ProgressiveImage from "react-progressive-image";
 import "./style.css";
 
 const styles = theme => ({
@@ -98,14 +99,22 @@ class BookList extends Component {
               to={`/books/${book.id}`}
             >
               <div style={{ marginBottom: "15px" }}>
-                <img
-                  style={{
-                    display: "block",
-                    width: "100%"
-                  }}
+                <ProgressiveImage
                   src={book.cover}
-                  alt={book.title}
-                />
+                  placeholder={book.cover.replace("images/", "images/tiny/")}
+                >
+                  {(src, loading) => (
+                    <img
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        filter: loading ? "blur(5px)" : "none"
+                      }}
+                      src={src}
+                      alt={book.title}
+                    />
+                  )}
+                </ProgressiveImage>
               </div>
               <Typography variant="title" component="div" className="title">
                 {book.title}

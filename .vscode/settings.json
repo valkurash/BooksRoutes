@@ -5,5 +5,7 @@
     "javascript.format.enable": false,
     // Use 'prettier-eslint' instead of 'prettier'. Other settings will only be fallbacks in case they could not be inferred from eslint rules.
     "prettier.eslintIntegration": true,
-    "cSpell.language": "en,ru"
+    "cSpell.language": "en,ru",
+    "appService.defaultWebAppToDeploy": "/subscriptions/2d77c6b2-888c-40c7-8744-8ad971784fea/resourceGroups/BooksRoutes/providers/Microsoft.Web/sites/booksroutes",
+    "appService.deploySubpath": "books-routes-app\\build"
 }

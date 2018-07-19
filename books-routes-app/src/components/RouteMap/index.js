@@ -8,7 +8,6 @@ const {
   withHandlers
 } = require("recompose");
 const {
-  withScriptjs,
   withGoogleMap,
   GoogleMap,
   Marker,
@@ -70,7 +69,7 @@ const MapWithAMarkedInfoWindow = compose(
       zoomToMarkers: () => zoomToMarkers
     };
   }),
-  withScriptjs,
+
   withGoogleMap
 )(props => {
   const pointsData = props.route.points;

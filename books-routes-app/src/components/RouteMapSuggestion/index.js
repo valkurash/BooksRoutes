@@ -16,7 +16,6 @@ const {
   withHandlers
 } = require("recompose");
 const {
-  withScriptjs,
   withGoogleMap,
   GoogleMap,
   Marker,
@@ -74,7 +73,6 @@ const Map = compose(
       }
     };
   }),
-  withScriptjs,
   withGoogleMap
 )(props => {
   return (

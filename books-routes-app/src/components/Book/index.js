@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
+import ProgressiveImage from "react-progressive-image";
 
 export default class Book extends Component {
   static propTypes = {
@@ -34,7 +35,19 @@ export default class Book extends Component {
         }}
       >
         <div className="book-cover">
-          <img className="cover" src={book.cover} alt={book.title} />
+          <ProgressiveImage
+            className="cover"
+            src={book.cover}
+            placeholder={book.cover.replace("images/", "images/tiny/")}
+          >
+            {(src, loading) => (
+              <img
+                style={{ filter: loading ? "blur(5px)" : "none" }}
+                src={src}
+                alt={book.title}
+              />
+            )}
+          </ProgressiveImage>
         </div>
         <Typography variant="headline" component="div">
           {book.title}
