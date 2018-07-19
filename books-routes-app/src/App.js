@@ -7,9 +7,11 @@ import history from "./history";
 import {
   MuiThemeProvider,
   createMuiTheme,
-  createGenerateClassName
+  createGenerateClassName,
+  jssPreset
 } from "@material-ui/core/styles";
 import JssProvider from "react-jss/lib/JssProvider";
+import { create } from "jss";
 import ReactGA from "react-ga";
 
 ReactGA.initialize("UA-116041442-1");
@@ -40,15 +42,18 @@ const theme = createMuiTheme({
 export default class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <JssProvider generateClassName={generateClassName}>
+      <JssProvider
+        jss={create(jssPreset())}
+        generateClassName={generateClassName}
+      >
+        <Provider store={store}>
+          <ConnectedRouter history={history}>
             <MuiThemeProvider theme={theme}>
               <Root />
             </MuiThemeProvider>
-          </JssProvider>
-        </ConnectedRouter>
-      </Provider>
+          </ConnectedRouter>
+        </Provider>
+      </JssProvider>
     );
   }
 }
