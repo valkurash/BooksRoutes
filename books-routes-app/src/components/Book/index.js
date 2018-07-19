@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import "./style.css";
 
 export default class Book extends Component {
   static propTypes = {
@@ -27,7 +26,13 @@ export default class Book extends Component {
     if (!book) return null;
 
     return (
-      <div className="book-item">
+      <div
+        style={{
+          padding: "10px",
+          clear: "both",
+          overflow: "hidden"
+        }}
+      >
         <div className="book-cover">
           <img className="cover" src={book.cover} alt={book.title} />
         </div>
@@ -37,7 +42,12 @@ export default class Book extends Component {
         <Typography variant="subheading" component="div">
           {book.authors.map(author => author.name).join(", ")}
         </Typography>
-        <Typography className="book-descr" component="div">
+        <Typography
+          style={{
+            paddingTop: "10px"
+          }}
+          component="div"
+        >
           {(book.description || "").split("\n").map((item, key) => {
             return <p key={key}>{item}</p>;
           })}

@@ -8,7 +8,6 @@ import BooksPage from "../components/pages/BooksPage";
 import BookRoutesPage from "../components/pages/BookRoutesPage";
 import AddBookPage from "../components/pages/AddBookPage";
 import NotFoundPage from "../components/pages/NotFoundPage";
-import "./Root.css";
 
 class Root extends Component {
   render() {
@@ -17,14 +16,26 @@ class Root extends Component {
         <AppBar position="static" color="default" className="app-header">
           <Toolbar>
             <Typography variant="title" component="a" href="/">
-              <img src={logo} className="app-logo" alt="logo" />
-              <div className="app-title">
+              <img
+                src={logo}
+                style={{
+                  height: "50px",
+                  display: "inline-block"
+                }}
+                alt="logo"
+              />
+              <div
+                style={{
+                  fontSize: "1.2em",
+                  display: "inline-block"
+                }}
+              >
                 Books<br />Routes
               </div>
             </Typography>
           </Toolbar>
         </AppBar>
-        <div className="app-content">
+        <div style={{ padding: "10px 20px" }}>
           <Switch>
             <Redirect from="/" exact to="/books" />
             <Route exact path="/books" component={BooksPage} />

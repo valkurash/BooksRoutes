@@ -59,7 +59,7 @@ class BookList extends Component {
     if (!books.length)
       return (
         <div>
-          <div className="no-result">
+          <div style={{ marginBottom: "15px" }}>
             К сожалению, книг по текущему запросу найдено. Попробуйте повторить
             поиск позднее или оставьте заявку на добавление интересующей Вас
             книги или маршрута.
@@ -83,10 +83,29 @@ class BookList extends Component {
       })
       .map(book => (
         <Grid key={book.id} item xs={12} sm={6} md={3} lg={2} xl={1}>
-          <Paper className="book-card">
-            <Link to={`/books/${book.id}`}>
-              <div className="book-cover">
-                <img className="cover" src={book.cover} alt={book.title} />
+          <Paper
+            style={{
+              overflow: "hidden",
+              textAlign: "center",
+              padding: "15px"
+            }}
+            className="book-card"
+          >
+            <Link
+              style={{
+                textDecoration: "none"
+              }}
+              to={`/books/${book.id}`}
+            >
+              <div style={{ marginBottom: "15px" }}>
+                <img
+                  style={{
+                    display: "block",
+                    width: "100%"
+                  }}
+                  src={book.cover}
+                  alt={book.title}
+                />
               </div>
               <Typography variant="title" component="div" className="title">
                 {book.title}
@@ -104,7 +123,11 @@ class BookList extends Component {
       ));
 
     return (
-      <div className="book-list-wrap">
+      <div
+        style={{
+          flexGrow: 1
+        }}
+      >
         <Grid container spacing={24}>
           {bookElements}
         </Grid>

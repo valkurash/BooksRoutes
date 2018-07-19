@@ -13,19 +13,14 @@ import {
 import JssProvider from "react-jss/lib/JssProvider";
 import { create } from "jss";
 import ReactGA from "react-ga";
+import "./index.css";
 
-ReactGA.initialize("UA-116041442-1");
+const snap = navigator.userAgent !== "ReactSnap";
+const production = process.env.NODE_ENV === "production";
 
-/*"primary1Color": "#009688",
-"accent1Color": "#ff6e40",
-"primary2Color": "#00796b",
-"primary3Color": "#00695c",
-"accent2Color": "#e0f2f1",
-"pickerHeaderColor": "#4db6ac"*/
-
-const generateClassName = createGenerateClassName({
-  dangerouslyUseGlobalCSS: true
-});
+if (production && snap) {
+  ReactGA.initialize("UA-116041442-1");
+}
 
 const theme = createMuiTheme({
   palette: {
@@ -44,7 +39,7 @@ export default class App extends Component {
     return (
       <JssProvider
         jss={create(jssPreset())}
-        generateClassName={generateClassName}
+        generateClassName={createGenerateClassName()}
       >
         <Provider store={store}>
           <ConnectedRouter history={history}>

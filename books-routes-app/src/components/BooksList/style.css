@@ -1,28 +1,6 @@
-.book-list-wrap {
-  flex-grow: 1;
-}
-.book-list-wrap .book-card {
-  overflow: hidden;
-  text-align: center;
-  padding: 15px;
-}
-.book-card a {
-  text-decoration: none;
-}
 .book-card:hover {
   background: #fafafa;
 }
 .book-card a:hover .title {
   color: rgb(0, 105, 95);
-}
-.book-cover {
-  margin-bottom: 15px;
-}
-.book-cover .cover {
-  /*max-width: 200px;*/
-  display: block;
-  width: 100%;
-}
-.no-result {
-  margin-bottom: 15px;
 }

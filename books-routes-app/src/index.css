@@ -1,5 +1,26 @@
-body {
-  margin: 0;
+body,
+html {
+  height: 100%;
+  width: 100%;
   padding: 0;
-  font-family: sans-serif;
+  margin: 0;
+}
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: #fff;
+}
+a {
+  color: #333;
+}
+a:hover {
+  text-decoration: none;
+}
+.routes-nav a {
+  text-decoration: none;
+}
+.routes-nav a.active {
+  background-color: rgba(0, 0, 0, 0.08);
 }
