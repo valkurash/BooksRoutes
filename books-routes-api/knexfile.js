@@ -1,12 +1,20 @@
 const path = require("path");
+let db_test, db_dev;
+try {
+  const db_strings = require("./db_strings.js");
+  db_test = db_strings.db_test;
+  db_dev = db_strings.db_dev;
+} catch (e) {
+  db_test = process.env.DB_TEST;
+  db_dev = process.env.DB_DEV;
+}
 
 const BASE_PATH = path.join(__dirname, "src", "server", "db");
 
 module.exports = {
   test: {
     client: "pg",
-    connection:
-      "postgres://valkurash@booksroutes:Val21postgres@booksroutes.postgres.database.azure.com:5432/books_routes_test?ssl=true&tcp_keepalives_idle=600",
+    connection: db_test,
     migrations: {
       directory: path.join(BASE_PATH, "migrations")
     },
@@ -17,12 +25,10 @@ module.exports = {
       min: 2,
       max: 10
     }
-    //debug: true
   },
   development: {
     client: "pg",
-    connection:
-      "postgres://valkurash@booksroutes:Val21postgres@booksroutes.postgres.database.azure.com:5432/books_routes?ssl=true&tcp_keepalives_idle=600",
+    connection: db_dev,
     migrations: {
       directory: path.join(BASE_PATH, "migrations")
     },

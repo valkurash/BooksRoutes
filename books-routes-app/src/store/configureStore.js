@@ -15,15 +15,13 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     })
   : compose;
 
-const enhancer = composeEnhancers(
-  applyMiddleware(
-    thunk,
-    callAPI,
-    routerMiddleware(history),
-    googleAnalytics,
-    logger
-  )
-);
+let middleware = [thunk, callAPI, routerMiddleware(history)];
+if (process.env.NODE_ENV !== "production") {
+  middleware = [...middleware, logger];
+} else if (navigator.userAgent !== "ReactSnap") {
+  middleware = [...middleware, googleAnalytics];
+}
+const enhancer = composeEnhancers(applyMiddleware(...middleware));
 
 const store = createStore(reducer, Map(), enhancer);
 window.store = store;

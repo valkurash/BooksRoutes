@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import NotFoundPage from "../pages/NotFoundPage";
 const {
   compose,
   withProps,
@@ -198,6 +199,7 @@ class RouteMap extends Component {
 
   render() {
     const { route } = this.props;
+    if (!route) return <NotFoundPage />;
     return <MapWithAMarkedInfoWindow route={route} />;
   }
 }

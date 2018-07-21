@@ -15,10 +15,10 @@ import { create } from "jss";
 import ReactGA from "react-ga";
 import "./index.css";
 
-const snap = navigator.userAgent !== "ReactSnap";
+const notSnap = navigator.userAgent !== "ReactSnap";
 const production = process.env.NODE_ENV === "production";
 
-if (production && snap) {
+if (production && notSnap) {
   ReactGA.initialize("UA-116041442-1");
 }
 

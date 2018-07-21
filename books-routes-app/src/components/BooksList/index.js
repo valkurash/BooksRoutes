@@ -83,7 +83,7 @@ class BookList extends Component {
         return 0;
       })
       .map(book => (
-        <Grid key={book.id} item xs={12} sm={6} md={3} lg={2} xl={1}>
+        <Grid key={book.id} item xs={12} sm={6} md={3} lg={2}>
           <Paper
             style={{
               overflow: "hidden",

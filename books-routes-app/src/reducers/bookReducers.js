@@ -27,8 +27,8 @@ export const bookReducer = (state = defaultBookState, action) => {
   const { type, payload, response, error } = action;
   switch (type) {
     case actionTypes.FETCH_BOOK + actionTypes.SUCCESS:
-      response.routes.map(r => {
-        r.points.map(p => {
+      response.routes.forEach(r => {
+        r.points.forEach(p => {
           if (p.polyline) {
             p.polyline = p.polyline
               .replace(/\s*/g, "")
@@ -36,7 +36,7 @@ export const bookReducer = (state = defaultBookState, action) => {
               .replace("))", ")")
               .match(/\((.*?)\)/g)
               .map(p => {
-                let coords = p.replace(/[\(\)]/g, "").split(",");
+                let coords = p.replace(/[()]/g, "").split(",");
                 return {
                   lat: parseFloat(coords[0]),
                   lng: parseFloat(coords[1])

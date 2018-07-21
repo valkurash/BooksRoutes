@@ -4,3 +4,4 @@ npm-debug.log
 
 # seed
 src/server/db/seeds/
+db_strings.js

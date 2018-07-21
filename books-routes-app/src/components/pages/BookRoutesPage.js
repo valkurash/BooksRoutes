@@ -6,6 +6,7 @@ import drawerToggle from "../decorators/handleDrawerToggle";
 import PropTypes from "prop-types";
 import RouteMap from "../RouteMap";
 import Book from "../Book";
+import NotFoundPage from "./NotFoundPage";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -123,7 +124,11 @@ class BookRoutesPage extends Component {
         />
       );
     if (book.get("error"))
-      return <div className="error-msg">{book.get("error").message}</div>;
+      return book.get("error").status === 404 ? (
+        <NotFoundPage />
+      ) : (
+        <div className="error-msg">{book.get("error").statusText}</div>
+      );
 
     const routesList = bookData.routes
       .sort((a, b) => {

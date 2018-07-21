@@ -21,7 +21,7 @@ export default () => next => action => {
   fetch(callAPI, options)
     .then(res => {
       if (!res.ok) {
-        throw Error(res.statusText);
+        throw new (res => res)(res);
       }
       // Read the response as json.
       return res.json();

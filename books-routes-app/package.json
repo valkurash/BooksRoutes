@@ -32,10 +32,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "prebuild": "node imagemin.js",
-    "postbuild": "react-snap && node iisConfig/copyIISConfig.js",
+    "postbuild":
+      "react-snap && npm run generate-sw && node iisConfig/copyIISConfig.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "flow": "flow"
+    "flow": "flow",
+    "generate-sw":
+      "sw-precache --root=build --config sw-precache-config.js && uglifyjs build/service-worker.js -o build/service-worker.js"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

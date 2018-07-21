@@ -55,7 +55,7 @@ class BookForm extends Component {
 
     const handleSubmit = () => {
       let valid = true;
-      this.state.validation.map(el => {
+      this.state.validation.forEach(el => {
         let name = `${el}Error`;
         if (!this.props[el]) {
           valid = false;
@@ -146,7 +146,7 @@ class BookForm extends Component {
             variant="error"
             message={
               error
-                ? error.message
+                ? error.statusText
                 : "Произошла ошибка, повторите попытку позднее"
             }
           />

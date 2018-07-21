@@ -22,11 +22,11 @@
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",
-    "bookshelf": "^0.12.1",
-    "knex": "^0.14.4",
+    "bookshelf": "^0.13.3",
+    "knex": "^0.15.2",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.2.1",
-    "pg": "^7.4.1"
+    "pg": "^7.4.3"
   }
 }
