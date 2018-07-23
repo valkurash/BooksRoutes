@@ -42,6 +42,9 @@ export const bookReducer = (state = defaultBookState, action) => {
                   lng: parseFloat(coords[1])
                 };
               });
+            p.strokeColor = `hsl(${Math.floor(
+              Math.random() * 360
+            )}, 100%, 50%)`;
           }
         });
       });

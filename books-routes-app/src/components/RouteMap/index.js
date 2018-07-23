@@ -89,6 +89,11 @@ const MapWithAMarkedInfoWindow = compose(
           pointData.point ? (
             <Marker
               key={index}
+              animation={
+                props.isOpen[pointData.id.toString()]
+                  ? window.google.maps.Animation.BOUNCE
+                  : null
+              }
               position={{
                 lat: pointData.point.x,
                 lng: pointData.point.y
@@ -128,8 +133,8 @@ const MapWithAMarkedInfoWindow = compose(
                 path={pointData.polyline}
                 options={{
                   geodesic: true,
-                  strokeColor: "#FF0000",
-                  strokeWeight: 5
+                  strokeColor: pointData.strokeColor,
+                  strokeWeight: props.isOpen[pointData.id.toString()] ? 12 : 7
                 }}
                 onClick={() => props.onToggleOpen(pointData.id)}
               />

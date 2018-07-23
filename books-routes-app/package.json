@@ -2,7 +2,7 @@
   "name": "books-routes-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://booksroutes.info/",
+  "homepage": "https://booksroutes.info/",
   "dependencies": {
     "@material-ui/core": "^1.3.0",
     "@material-ui/icons": "^1.1.0",
