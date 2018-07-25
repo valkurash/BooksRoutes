@@ -1,8 +1,9 @@
 import * as actionTypes from "../constants/ActionTypes";
-import { arrToMap } from "./utils";
 import { Record } from "immutable";
+import { arrToMap } from "./utils";
+import { initialStoreState } from "../store/configureStore";
 
-const BookDataRecord = Record({
+const singleBookRecord = Record({
   id: null,
   title: null,
   cover: null,
@@ -10,20 +11,20 @@ const BookDataRecord = Record({
   authors: null,
   routes: null
 });
-
-const BookRecord = Record({
-  entities: BookDataRecord,
+const singleBookWrapper = Record({
+  entities: singleBookRecord,
   loading: false,
   loaded: false,
   error: false
 });
-const ReducerRecord = Record({
-  entities: arrToMap([], BookRecord)
+const defaultSingleBooksState = Record({
+  entities: arrToMap([], singleBookWrapper)
 });
 
-const defaultBookState = new ReducerRecord();
-
-export const bookReducer = (state = defaultBookState, action) => {
+export const bookReducer = (
+  state = initialStoreState.get("singleBooks") || new defaultSingleBooksState(),
+  action
+) => {
   const { type, payload, response, error } = action;
   switch (type) {
     case actionTypes.FETCH_BOOK + actionTypes.SUCCESS:
@@ -51,7 +52,7 @@ export const bookReducer = (state = defaultBookState, action) => {
       return state
         .setIn(
           ["entities", payload.id, "entities"],
-          new BookDataRecord(response)
+          new singleBookRecord(response)
         )
         .setIn(["entities", payload.id, "loading"], false)
         .setIn(["entities", payload.id, "loaded"], true)

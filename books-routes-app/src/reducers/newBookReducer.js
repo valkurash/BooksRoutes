@@ -11,9 +11,7 @@ const newBookDataRecord = Record({
   error: false
 });
 
-const defaultBookState = new newBookDataRecord();
-
-export const newBookReducer = (state = defaultBookState, action) => {
+export const newBookReducer = (state = new newBookDataRecord(), action) => {
   const { type, payload, error } = action;
   switch (type) {
     case actionTypes.CHANGE_NEW_BOOK_POINTS:

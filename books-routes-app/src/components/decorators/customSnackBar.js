@@ -83,4 +83,8 @@ CustomSnackbarContent.propTypes = {
   variant: PropTypes.oneOf(["success", "warning", "error", "info"]).isRequired
 };
 
-export default withStyles(styles1)(CustomSnackbarContent);
+export default withStyles(styles1, {
+  withTheme: true,
+  name: "customSnackBar",
+  classNamePrefix: "custom-snack-bar-"
+})(CustomSnackbarContent);

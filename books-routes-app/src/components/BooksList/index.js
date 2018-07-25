@@ -171,4 +171,10 @@ export default connect(
     error: state.get("books").error
   }),
   { fetchBooks }
-)(withStyles(styles, { withTheme: true })(BookList));
+)(
+  withStyles(styles, {
+    withTheme: true,
+    name: "BooksList",
+    classNamePrefix: "books-list-"
+  })(BookList)
+);

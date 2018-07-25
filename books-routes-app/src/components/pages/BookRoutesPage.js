@@ -212,7 +212,10 @@ class BookRoutesPage extends Component {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Hidden mdUp>
+        <Hidden
+          mdUp
+          implementation={navigator.userAgent === "ReactSnap" ? "css" : "js"}
+        >
           <Drawer
             variant="temporary"
             anchor="left"
@@ -228,7 +231,10 @@ class BookRoutesPage extends Component {
             {drawer}
           </Drawer>
         </Hidden>
-        <Hidden smDown implementation="css">
+        <Hidden
+          smDown
+          implementation={navigator.userAgent === "ReactSnap" ? "css" : "js"}
+        >
           <Drawer
             variant="permanent"
             open
@@ -268,4 +274,10 @@ export default connect(
   (dispatch, ownProps) => ({
     fetchBook: () => dispatch(fetchBook(ownProps.match.params.id))
   })
-)(withStyles(styles, { withTheme: true })(drawerToggle(BookRoutesPage)));
+)(
+  withStyles(styles, {
+    withTheme: true,
+    name: "BooksRoutesPage",
+    classNamePrefix: "books-routes-"
+  })(drawerToggle(BookRoutesPage))
+);
