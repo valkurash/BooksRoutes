@@ -12,6 +12,7 @@
     "immutable-stringify": "^1.0.5",
     "jss": "^9.8.7",
     "react": "^16.4.1",
+    "react-content-loader": "^3.1.2",
     "react-dom": "^16.4.1",
     "react-ga": "^2.5.3",
     "react-google-maps": "^9.4.5",
@@ -33,7 +34,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "prebuild": "node imagemin.js",
     "postbuild": "react-snap && npm run generate-sw && node iisConfig/copyIISConfig.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

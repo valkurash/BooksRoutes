@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500&subset=cyrillic");
+
 body,
 html {
   height: 100%;
@@ -17,10 +19,4 @@ a {
 }
 a:hover {
   text-decoration: none;
-}
-.routes-nav a {
-  text-decoration: none;
-}
-.routes-nav a.active {
-  background-color: rgba(0, 0, 0, 0.08);
 }

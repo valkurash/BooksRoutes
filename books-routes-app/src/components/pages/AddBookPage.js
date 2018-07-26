@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import ArrowIcon from "@material-ui/icons/ArrowBack";
+import Typography from "@material-ui/core/Typography";
+import ArrowIcon from "@material-ui/icons/ArrowLeft";
 import BookForm from "../BookForm";
 import { Helmet } from "react-helmet";
 
@@ -23,7 +24,9 @@ export default class AddBookPage extends Component {
           }}
         >
           <ArrowIcon />
-          Вернуться к списку книг
+          <Typography variant="subheading" component="span">
+            Вернуться к списку книг
+          </Typography>
         </Link>
         <BookForm />
       </div>

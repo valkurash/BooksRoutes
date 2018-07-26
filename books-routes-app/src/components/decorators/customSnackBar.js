@@ -19,7 +19,7 @@ const variantIcon = {
   info: InfoIcon
 };
 
-const styles1 = theme => ({
+const styles = theme => ({
   success: {
     backgroundColor: green[600]
   },
@@ -83,7 +83,7 @@ CustomSnackbarContent.propTypes = {
   variant: PropTypes.oneOf(["success", "warning", "error", "info"]).isRequired
 };
 
-export default withStyles(styles1, {
+export default withStyles(styles, {
   withTheme: true,
   name: "customSnackBar",
   classNamePrefix: "custom-snack-bar-"

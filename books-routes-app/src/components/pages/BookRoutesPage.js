@@ -8,6 +8,7 @@ import RouteMap from "../RouteMap";
 import Book from "../Book";
 import NotFoundPage from "./NotFoundPage";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ContentLoader from "react-content-loader";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -19,14 +20,14 @@ import IconButton from "@material-ui/core/IconButton";
 import Hidden from "@material-ui/core/Hidden";
 import Divider from "@material-ui/core/Divider";
 import MenuIcon from "@material-ui/icons/Menu";
-import ArrowIcon from "@material-ui/icons/ArrowBack";
+import ArrowIcon from "@material-ui/icons/ArrowLeft";
 import CloseIcon from "@material-ui/icons/Close";
 import { Helmet } from "react-helmet";
 
 const drawerWidth = 280;
 
 const styles = theme => ({
-  root: {
+  singleBook: {
     flexGrow: 1,
     zIndex: 1,
     overflow: "hidden",
@@ -63,7 +64,14 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
-    padding: 0
+    padding: 0,
+    height: "calc(100vh - 84px)"
+  },
+  routesNavLink: {
+    textDecoration: "none",
+    "&.active": {
+      backgroundColor: "rgba(0, 0, 0, 0.08)"
+    }
   }
 });
 
@@ -114,15 +122,10 @@ class BookRoutesPage extends Component {
     const { book, drawerToggle, mobileOpen, classes } = this.props;
 
     if (!book) return null;
+
     const bookData = book.get("entities");
-    if (book.get("loading"))
-      return (
-        <CircularProgress
-          className="loader"
-          style={{ display: "block", margin: "auto" }}
-          size={50}
-        />
-      );
+    const loading = book.get("loading");
+
     if (book.get("error"))
       return book.get("error").status === 404 ? (
         <NotFoundPage />
@@ -130,23 +133,27 @@ class BookRoutesPage extends Component {
         <div className="error-msg">{book.get("error").statusText}</div>
       );
 
-    const routesList = bookData.routes
-      .sort((a, b) => {
-        if (a.name > b.name) return 1;
-        if (a.name < b.name) return -1;
-        return 0;
-      })
-      .map(route => (
-        <ListItem
-          component={NavLink}
-          key={route.id}
-          to={`/books/${bookData.id}/${route.id}`}
-          onClick={drawerToggle}
-          button
-        >
-          {route.name}
-        </ListItem>
-      ));
+    const routesList = bookData
+      ? bookData.routes
+          .sort((a, b) => {
+            if (a.name > b.name) return 1;
+            if (a.name < b.name) return -1;
+            return 0;
+          })
+          .map(route => (
+            <ListItem
+              component={NavLink}
+              className={classes.routesNavLink}
+              key={route.id}
+              to={`/books/${bookData.id}/${route.id}`}
+              onClick={drawerToggle}
+              button
+            >
+              {route.name}
+            </ListItem>
+          ))
+      : [];
+
     const drawer = (
       <div>
         <div className={classes.drawerHeader}>
@@ -158,7 +165,9 @@ class BookRoutesPage extends Component {
             }}
           >
             <ArrowIcon />
-            Вернуться к списку книг
+            <Typography variant="subheading" component="span">
+              Вернуться к списку книг
+            </Typography>
           </Link>
 
           <IconButton
@@ -170,33 +179,55 @@ class BookRoutesPage extends Component {
             <CloseIcon />
           </IconButton>
         </div>
-
         <Divider />
-        <div
-          style={{
-            display: bookData.routes.length > 1 ? "block" : "none"
-          }}
-        >
-          <List component="nav" className="routes-nav">
-            {routesList}
-          </List>
-          <Divider />
-        </div>
+        {loading ? (
+          <div
+            style={{
+              padding: "10px",
+              clear: "both",
+              overflow: "hidden"
+            }}
+          >
+            <ContentLoader height={520} width={260}>
+              <rect x="0" y="0" rx="0" ry="0" width="200" height="320" />
+              <rect x="0" y="340" rx="4" ry="4" width="180" height="20" />
+              <rect x="0" y="370" rx="3" ry="3" width="150" height="15" />
+              <rect x="0" y="415" rx="2" ry="2" width="250" height="13" />
+              <rect x="0" y="438" rx="2" ry="2" width="230" height="13" />
+              <rect x="0" y="461" rx="2" ry="2" width="220" height="13" />
+              <rect x="0" y="484" rx="2" ry="2" width="240" height="13" />
+              <rect x="0" y="507" rx="2" ry="2" width="250" height="13" />
+            </ContentLoader>
+          </div>
+        ) : (
+          <div>
+            <div
+              style={{
+                display: bookData.routes.length > 1 ? "block" : "none"
+              }}
+            >
+              <List component="nav">{routesList}</List>
+              <Divider />
+            </div>
 
-        <Book key={bookData.id} book={bookData} />
+            <Book key={bookData.id} book={bookData} />
+          </div>
+        )}
       </div>
     );
     return (
-      <div className={classes.root}>
-        <Helmet>
-          <title>{`Маршруты по книге ${bookData.title}`}</title>
-          <meta
-            name="description"
-            content={`Литературная карта. Маршруты для путешествий или обзорных экскурсий по местам из книги ${
-              bookData.title
-            }`}
-          />
-        </Helmet>
+      <div className={classes.singleBook}>
+        {bookData && (
+          <Helmet>
+            <title>{`Маршруты по книге ${bookData.title}`}</title>
+            <meta
+              name="description"
+              content={`Литературная карта. Маршруты для путешествий или обзорных экскурсий по местам из книги ${
+                bookData.title
+              }`}
+            />
+          </Helmet>
+        )}
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton
@@ -207,9 +238,22 @@ class BookRoutesPage extends Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography color="inherit" variant="title" noWrap>
-              {bookData.title}
-            </Typography>
+            {loading ? (
+              <div
+                style={{
+                  height: "20px",
+                  width: "250px"
+                }}
+              >
+                <ContentLoader height={20} width={250} primaryColor={"#ffffff"}>
+                  <rect x="0" y="0" rx="4" ry="4" width="250" height="20" />
+                </ContentLoader>
+              </div>
+            ) : (
+              <Typography color="inherit" variant="title" noWrap>
+                {bookData.title}
+              </Typography>
+            )}
           </Toolbar>
         </AppBar>
         <Hidden
@@ -247,21 +291,38 @@ class BookRoutesPage extends Component {
         </Hidden>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Switch>
-            <Redirect
-              from="/books/:id"
-              exact
-              to={`/books/${bookData.id}/${bookData.routes[0].id}`}
-            />
-            {bookData.routes.map((route, index) => (
-              <Route
-                exact
-                key={index}
-                path="/books/:bookId/:routeId"
-                component={RouteMap}
+          {loading ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100%"
+              }}
+            >
+              <CircularProgress
+                className="loader"
+                style={{ display: "block", margin: "auto" }}
+                size={50}
               />
-            ))}
-          </Switch>
+            </div>
+          ) : (
+            <Switch>
+              <Redirect
+                from="/books/:id"
+                exact
+                to={`/books/${bookData.id}/${bookData.routes[0].id}`}
+              />
+              {bookData.routes.map((route, index) => (
+                <Route
+                  exact
+                  key={index}
+                  path="/books/:bookId/:routeId"
+                  component={RouteMap}
+                />
+              ))}
+            </Switch>
+          )}
         </main>
       </div>
     );
