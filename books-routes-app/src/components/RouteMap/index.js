@@ -2,75 +2,97 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import NotFoundPage from "../pages/NotFoundPage";
+import MarkerWithInfo from "../MarkerWithInfo";
+import PathWithInfo from "../PathWithInfo";
 const {
   compose,
   withProps,
   withStateHandlers,
-  withHandlers
+  withHandlers,
+  lifecycle
 } = require("recompose");
+
+const { withGoogleMap, GoogleMap } = require("react-google-maps");
 const {
-  withGoogleMap,
-  GoogleMap,
-  Marker,
-  InfoWindow,
-  Polyline
-} = require("react-google-maps");
+  MarkerClusterer
+} = require("react-google-maps/lib/components/addons/MarkerClusterer");
+const refs = { map: undefined };
+
+const zoomToBound = (coords, fullMap) => {
+  const bounds = new window.google.maps.LatLngBounds();
+  coords.forEach(c => {
+    bounds.extend(c);
+  });
+  if (fullMap) {
+    refs.map.fitBounds(bounds);
+  } else {
+    //refs.map.panToBounds(bounds);
+    refs.map.panTo(bounds.getCenter());
+    refs.map.fitBounds(bounds);
+  }
+};
 
 const MapWithAMarkedInfoWindow = compose(
   withProps({
     googleMapURL:
       "https://maps.googleapis.com/maps/api/js?key=AIzaSyBKSJA0XS-xvJTzsqwPBo1DqKSolCw_NeQ&v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `100%`, minHeight: "500px" }} />,
+    containerElement: (
+      <div style={{ height: `100%`, minHeight: "calc(100vh - 140px)" }} />
+    ),
     mapElement: <div style={{ height: `100%` }} />
+  }),
+  lifecycle({
+    componentDidUpdate() {
+      zoomToBound(this.props.bound, true);
+    }
   }),
   withStateHandlers(
     props => ({
       isOpen: props.route.points.reduce((acc, curr) => {
         acc[curr.id.toString()] = false;
         return acc;
+      }, {}),
+      isHovered: props.route.points.reduce((acc, curr) => {
+        acc[curr.id.toString()] = false;
+        return acc;
       }, {})
     }),
     {
-      onToggleOpen: ({ isOpen }) => id => {
+      onToggleOpen: ({ isOpen }) => (id, flag) => {
         let state = { ...isOpen };
+        if (state[id.toString()] === flag) return state;
         for (let key in state) {
           state[key.toString()] = false;
         }
-        state[id.toString()] = !isOpen[id.toString()];
+        state[id.toString()] = flag;
         return { isOpen: state };
+      },
+      onToggleHover: ({ isHovered }) => (id, flag) => {
+        let state = { ...isHovered };
+        if (state[id.toString()] === flag) return state;
+        for (let key in state) {
+          state[key.toString()] = false;
+        }
+        state[id.toString()] = flag;
+        return { isHovered: state };
       }
     }
   ),
-  withHandlers(() => {
-    const refs = {
-      map: undefined
-    };
-    const zoomToMarkers = () => {
-      const bounds = new window.google.maps.LatLngBounds();
-      refs.map.props.children.forEach(child => {
-        if (child.type === Marker) {
-          bounds.extend(
-            new window.google.maps.LatLng(
-              child.props.position.lat,
-              child.props.position.lng
-            )
-          );
-        }
-      });
-      refs.map.fitBounds(bounds);
-    };
-    return {
-      onMapMounted: () => ref => {
-        if (ref) {
-          refs.map = ref;
-          zoomToMarkers();
-        }
-      },
-      zoomToMarkers: () => zoomToMarkers
-    };
+  withHandlers({
+    onMapMounted: props => ref => {
+      if (ref) {
+        refs.map = ref;
+        zoomToBound(props.bound, true);
+      }
+    },
+    zoomToBound: () => (path, fullMap) => zoomToBound(path, fullMap),
+    panToMarker: () => latLng => {
+      refs.map.panTo(latLng);
+    },
+    onMarkerClustererClick: () => markerClusterer =>
+      markerClusterer.getMarkers()
   }),
-
   withGoogleMap
 )(props => {
   const pointsData = props.route.points;
@@ -84,105 +106,37 @@ const MapWithAMarkedInfoWindow = compose(
         lng: firstPoint.y || firstPoint.lng
       }}
     >
-      {pointsData.map(
-        (pointData, index) =>
-          pointData.point ? (
-            <Marker
-              key={index}
-              animation={
-                props.isOpen[pointData.id.toString()]
-                  ? window.google.maps.Animation.BOUNCE
-                  : null
-              }
-              position={{
-                lat: pointData.point.x,
-                lng: pointData.point.y
-              }}
-              onClick={() => props.onToggleOpen(pointData.id)}
-            >
-              {props.isOpen[pointData.id.toString()] && (
-                <InfoWindow
-                  onCloseClick={() => props.onToggleOpen(pointData.id)}
-                  options={{ maxWidth: 250 }}
-                >
-                  <div>
-                    <div
-                      className="point-header"
-                      style={{ fontWeight: "bold" }}
-                    >{`${pointData.order}. ${pointData.name}`}</div>
-                    <div className="point-descr">
-                      {(pointData.description || "")
-                        .split("\n")
-                        .map((item, key) => {
-                          return (
-                            <div key={key}>
-                              <span
-                                dangerouslySetInnerHTML={{ __html: item }}
-                              />
-                            </div>
-                          );
-                        })}
-                    </div>
-                  </div>
-                </InfoWindow>
-              )}
-            </Marker>
-          ) : (
-            <div key={index}>
-              <Polyline
-                path={pointData.polyline}
-                options={{
-                  geodesic: true,
-                  strokeColor: pointData.strokeColor,
-                  strokeWeight: props.isOpen[pointData.id.toString()] ? 12 : 7
-                }}
-                onClick={() => props.onToggleOpen(pointData.id)}
+      <MarkerClusterer
+        onClick={props.onMarkerClustererClick}
+        averageCenter
+        enableRetinaIcons
+        gridSize={40}
+      >
+        {pointsData.map(
+          pointData =>
+            pointData.point ? (
+              <MarkerWithInfo
+                key={pointData.order}
+                pointData={pointData}
+                isOpen={props.isOpen[pointData.id.toString()]}
+                isHovered={props.isHovered[pointData.id.toString()]}
+                onToggleOpen={props.onToggleOpen}
+                onToggleHover={props.onToggleHover}
+                panToMarker={props.panToMarker}
               />
-              {props.isOpen[pointData.id.toString()] && (
-                <InfoWindow
-                  onCloseClick={() => props.onToggleOpen(pointData.id)}
-                  options={{ maxWidth: 250 }}
-                  position={
-                    pointData.polyline.length === 2
-                      ? {
-                          lat:
-                            (pointData.polyline[0].lat +
-                              pointData.polyline[1].lat) /
-                            2,
-                          lng:
-                            (pointData.polyline[0].lng +
-                              pointData.polyline[1].lng) /
-                            2
-                        }
-                      : pointData.polyline[
-                          Math.floor(pointData.polyline.length / 2)
-                        ]
-                  }
-                >
-                  <div>
-                    <div
-                      className="point-header"
-                      style={{ fontWeight: "bold" }}
-                    >{`${pointData.order}. ${pointData.name}`}</div>
-                    <div className="point-descr">
-                      {(pointData.description || "")
-                        .split("\n")
-                        .map((item, key) => {
-                          return (
-                            <div key={key}>
-                              <span
-                                dangerouslySetInnerHTML={{ __html: item }}
-                              />
-                            </div>
-                          );
-                        })}
-                    </div>
-                  </div>
-                </InfoWindow>
-              )}
-            </div>
-          )
-      )}
+            ) : (
+              <PathWithInfo
+                key={pointData.order}
+                pointData={pointData}
+                isOpen={props.isOpen[pointData.id.toString()]}
+                isHovered={props.isHovered[pointData.id.toString()]}
+                onToggleOpen={props.onToggleOpen}
+                onToggleHover={props.onToggleHover}
+                zoomToBound={props.zoomToBound}
+              />
+            )
+        )}
+      </MarkerClusterer>
     </GoogleMap>
   );
 });
@@ -205,7 +159,18 @@ class RouteMap extends Component {
   render() {
     const { route } = this.props;
     if (!route) return <NotFoundPage />;
-    return <MapWithAMarkedInfoWindow route={route} />;
+
+    const bound = route.points.reduce((acc, pointData) => {
+      return acc.concat(
+        pointData.point
+          ? {
+              lat: pointData.point.x,
+              lng: pointData.point.y
+            }
+          : pointData.polyline
+      );
+    }, []);
+    return <MapWithAMarkedInfoWindow route={route} bound={bound} />;
   }
 }
 export default connect((state, props) => ({
