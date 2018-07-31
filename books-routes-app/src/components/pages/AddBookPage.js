@@ -10,10 +10,30 @@ export default class AddBookPage extends Component {
     return (
       <div>
         <Helmet>
-          <title>Предложить маршрут из книги</title>
+          <title>
+            Предложить туристический маршрут по мотивам любимой книги
+          </title>
           <meta
             name="description"
-            content="Литературная карта. Предложить маршруты для путешествий или обзорных экскурсий по местам из своих любимых книг"
+            content="Предложить свой литературные маршруты. Туристический путеводитель по местам из книг. Карта для путешествий и обзорных экскурсий."
+          />
+          <meta
+            name="keywords"
+            content="литературные маршруты, путешествия, туризм, экскурсии"
+          />
+          <meta property="og:url" content="https://booksroutes.info/add/" />
+          <meta
+            property="og:title"
+            content="Предложить туристический маршрут по мотивам любимой книги"
+          />
+          <meta
+            property="og:description"
+            content="Предложить свой литературные маршруты. Туристический путеводитель по местам из книг. Карта для путешествий и обзорных экскурсий."
+          />
+          <meta property="og:type" content="article" />
+          <meta
+            property="og:image"
+            content="https://booksroutes.info/images/og-image.jpg"
           />
         </Helmet>
         <Link
@@ -28,6 +48,15 @@ export default class AddBookPage extends Component {
             Вернуться к списку книг
           </Typography>
         </Link>
+        <Typography
+          style={{ textAlign: "center", padding: "15px 0" }}
+          color="inherit"
+          variant="title"
+          noWrap
+          component="h2"
+        >
+          Предложить туристический маршрут по мотивам любимой книги
+        </Typography>
         <BookForm />
       </div>
     );

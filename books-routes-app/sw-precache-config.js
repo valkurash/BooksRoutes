@@ -25,5 +25,8 @@ module.exports = {
       urlPattern: /api/,
       handler: "fastest"
     }
+  ],
+  importScripts: [
+    "https://rawgit.com/GoogleChromeLabs/sw-toolbox/catch-quota-errors/sw-toolbox.js"
   ]
 };

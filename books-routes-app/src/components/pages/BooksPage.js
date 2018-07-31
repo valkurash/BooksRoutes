@@ -8,8 +8,29 @@ export default class BooksPage extends Component {
     return (
       <div>
         <Helmet>
-          <title>Маршруты по книгам</title>
-          <meta name="description" content="Литературная карта. Маршруты для путешествий или обзорных экскурсий по местам из своих любимых книг." />
+          <title>Туристические маршруты по мотивам книг</title>
+          <meta
+            name="description"
+            content="Литературные маршруты. Туристический путеводитель по местам из книг. Карта для путешествий и обзорных экскурсий."
+          />
+          <meta
+            name="keywords"
+            content="литературные маршруты, путешествия, туризм, экскурсии"
+          />
+          <meta property="og:url" content="https://booksroutes.info/books/" />
+          <meta
+            property="og:title"
+            content="Туристические маршруты по мотивам книг"
+          />
+          <meta
+            property="og:description"
+            content="Литературные маршруты. Туристический путеводитель по местам из книг. Карта для путешествий и обзорных экскурсий."
+          />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:image"
+            content="https://booksroutes.info/images/og-image.jpg"
+          />
         </Helmet>
         <FilterBooks />
         <BookList />

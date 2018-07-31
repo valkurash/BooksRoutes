@@ -29,7 +29,8 @@
     "redux-immutable": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "reselect": "^3.0.1"
+    "reselect": "^3.0.1",
+    "sw-toolbox": "git://github.com/GoogleChromeLabs/sw-toolbox.git#catch-quota-errors"
   },
   "scripts": {
     "start": "react-scripts start",

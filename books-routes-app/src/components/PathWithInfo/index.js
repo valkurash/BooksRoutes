@@ -51,7 +51,7 @@ export default class PathWithInfo extends PureComponent {
           message={
             <div
               style={{
-                maxHeight: "calc(50vh - 140px)",
+                maxHeight: "calc(50vh - 108px)",
                 overflowY: "auto",
                 overflowX: "hidden",
                 minHeight: "40px",

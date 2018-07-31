@@ -79,7 +79,8 @@ class BookRoutesPage extends Component {
   static propTypes = {
     match: PropTypes.shape({
       params: PropTypes.shape({
-        id: PropTypes.node
+        bookId: PropTypes.node,
+        routeId: PropTypes.node
       }).isRequired
     }).isRequired,
     book: PropTypes.shape({
@@ -119,7 +120,7 @@ class BookRoutesPage extends Component {
   }
 
   render() {
-    const { book, drawerToggle, mobileOpen, classes } = this.props;
+    const { book, drawerToggle, mobileOpen, classes, match } = this.props;
 
     if (!book) return null;
 
@@ -209,7 +210,6 @@ class BookRoutesPage extends Component {
               <List component="nav">{routesList}</List>
               <Divider />
             </div>
-
             <Book key={bookData.id} book={bookData} />
           </div>
         )}
@@ -219,13 +219,41 @@ class BookRoutesPage extends Component {
       <div className={classes.singleBook}>
         {bookData && (
           <Helmet>
-            <title>{`Маршруты по книге ${bookData.title}`}</title>
+            <title>{`Туристические маршруты по мотивам книги «${
+              bookData.title
+            }»`}</title>
             <meta
               name="description"
-              content={`Литературная карта. Маршруты для путешествий или обзорных экскурсий по местам из книги ${
+              content={`Литературные маршруты. Туристический путеводитель по местам из книги «${
                 bookData.title
+              }». Карта для путешествий и обзорных экскурсий.`}
+            />
+            <meta
+              name="keywords"
+              content={`литературные маршруты, путешествия, туризм, экскурсии, книга «${
+                bookData.title
+              }», ${bookData.authors.map(author => author.name).join(", ")}`}
+            />
+            <meta
+              property="og:url"
+              content={`https://booksroutes.info/books/${bookData.id}/${
+                match.params.routeId ? match.params.routeId + "/" : ""
               }`}
             />
+            <meta
+              property="og:title"
+              content={`Туристические маршруты по мотивам книги «${
+                bookData.title
+              }»`}
+            />
+            <meta
+              property="og:description"
+              content={`Литературные маршруты. Туристический путеводитель по местам из книги «${
+                bookData.title
+              }». Карта для путешествий и обзорных экскурсий.`}
+            />
+            <meta property="og:type" content="book" />
+            <meta property="og:image" content={bookData.cover} />
           </Helmet>
         )}
         <AppBar className={classes.appBar}>
@@ -250,7 +278,7 @@ class BookRoutesPage extends Component {
                 </ContentLoader>
               </div>
             ) : (
-              <Typography color="inherit" variant="title" noWrap>
+              <Typography color="inherit" variant="title" noWrap component="h2">
                 {bookData.title}
               </Typography>
             )}
@@ -330,10 +358,10 @@ class BookRoutesPage extends Component {
 }
 export default connect(
   (state, props) => ({
-    book: state.get("singleBooks").entities.get(props.match.params.id)
+    book: state.get("singleBooks").entities.get(props.match.params.bookId)
   }),
   (dispatch, ownProps) => ({
-    fetchBook: () => dispatch(fetchBook(ownProps.match.params.id))
+    fetchBook: () => dispatch(fetchBook(ownProps.match.params.bookId))
   })
 )(
   withStyles(styles, {

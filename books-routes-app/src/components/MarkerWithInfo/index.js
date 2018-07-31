@@ -33,7 +33,7 @@ export default class MarkerWithInfo extends PureComponent {
           title={pointData.name}
           icon={{
             path: "M 0 0 L -10 -20 A 10 10, 0, 1, 1, 10 -20 z",
-            fillColor: isHovered ? "#009688" : "#ff6e40",
+            fillColor: isHovered || isOpen ? "#009688" : "#ff6e40",
             fillOpacity: 1,
             strokeColor: "#000",
             strokeWeight: 1
@@ -63,7 +63,7 @@ export default class MarkerWithInfo extends PureComponent {
           message={
             <div
               style={{
-                maxHeight: "calc(50vh - 140px)",
+                maxHeight: "calc(50vh - 108px)",
                 overflowY: "auto",
                 overflowX: "hidden",
                 minHeight: "40px",
