@@ -9,8 +9,8 @@ const { Polyline } = require("react-google-maps");
 export default class PathWithInfo extends PureComponent {
   static propTypes = {
     pointData: PropTypes.object.isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    isHovered: PropTypes.bool.isRequired,
+    isOpen: PropTypes.bool,
+    isHovered: PropTypes.bool,
     onToggleOpen: PropTypes.func.isRequired,
     onToggleHover: PropTypes.func.isRequired,
     zoomToBound: PropTypes.func.isRequired
@@ -19,8 +19,8 @@ export default class PathWithInfo extends PureComponent {
   render() {
     const {
       pointData,
-      isOpen,
-      isHovered,
+      isOpen = false,
+      isHovered = false,
       onToggleOpen,
       onToggleHover,
       zoomToBound

@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import RouteMap from "../RouteMap";
 import Book from "../Book";
 import NotFoundPage from "./NotFoundPage";
+import ShareButtons from "../ShareButtons";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ContentLoader from "react-content-loader";
 import { withStyles } from "@material-ui/core/styles";
@@ -126,7 +127,15 @@ class BookRoutesPage extends Component {
 
     const bookData = book.get("entities");
     const loading = book.get("loading");
-
+    const title = bookData
+      ? match.params.routeId && bookData.routes && bookData.routes.length > 1
+        ? `${bookData.title}: ${
+            bookData.routes.find(
+              route => route.id.toString() === match.params.routeId
+            ).name
+          }`
+        : bookData.title
+      : "";
     if (book.get("error"))
       return book.get("error").status === 404 ? (
         <NotFoundPage />
@@ -219,20 +228,17 @@ class BookRoutesPage extends Component {
       <div className={classes.singleBook}>
         {bookData && (
           <Helmet>
-            <title>{`Туристические маршруты по мотивам книги «${
-              bookData.title
-            }»`}</title>
+            <title
+            >{`Туристические маршруты по мотивам книги «${title}»`}</title>
             <meta
               name="description"
-              content={`Литературные маршруты. Туристический путеводитель по местам из книги «${
-                bookData.title
-              }». Карта для путешествий и обзорных экскурсий.`}
+              content={`Литературные маршруты. Туристический путеводитель по местам из книги «${title}». Карта для путешествий и обзорных экскурсий.`}
             />
             <meta
               name="keywords"
-              content={`литературные маршруты, путешествия, туризм, экскурсии, книга «${
-                bookData.title
-              }», ${bookData.authors.map(author => author.name).join(", ")}`}
+              content={`литературные маршруты, путешествия, туризм, экскурсии, книга «${title}», ${bookData.authors
+                .map(author => author.name)
+                .join(", ")}`}
             />
             <meta
               property="og:url"
@@ -242,15 +248,11 @@ class BookRoutesPage extends Component {
             />
             <meta
               property="og:title"
-              content={`Туристические маршруты по мотивам книги «${
-                bookData.title
-              }»`}
+              content={`Туристические маршруты по мотивам книги «${title}»`}
             />
             <meta
               property="og:description"
-              content={`Литературные маршруты. Туристический путеводитель по местам из книги «${
-                bookData.title
-              }». Карта для путешествий и обзорных экскурсий.`}
+              content={`Литературные маршруты. Туристический путеводитель по местам из книги «${title}». Карта для путешествий и обзорных экскурсий.`}
             />
             <meta property="og:type" content="book" />
             <meta property="og:image" content={bookData.cover} />
@@ -279,7 +281,7 @@ class BookRoutesPage extends Component {
               </div>
             ) : (
               <Typography color="inherit" variant="title" noWrap component="h2">
-                {bookData.title}
+                {title}
               </Typography>
             )}
           </Toolbar>
@@ -352,6 +354,15 @@ class BookRoutesPage extends Component {
             </Switch>
           )}
         </main>
+        {bookData && (
+          <ShareButtons
+            shareUrl={`https://booksroutes.info/books/${bookData.id}/${
+              match.params.routeId ? match.params.routeId + "/" : ""
+            }`}
+            title={title}
+            cover={bookData.cover}
+          />
+        )}
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 export default class NotFoundPage extends Component {
   render() {
@@ -30,7 +31,11 @@ export default class NotFoundPage extends Component {
             content="https://booksroutes.info/images/og-image.jpg"
           />
         </Helmet>
-        <h2>404. Туристический маршрут не найден</h2>
+        <h2>404. Такой туристический маршрут не найден</h2>
+        <div>
+          Вы можете <Link to="/add">предложить новый маршрут</Link> или{" "}
+          <Link to="/books">вернуться к списку всех доступных книг</Link>.
+        </div>
       </div>
     );
   }
