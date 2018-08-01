@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import NotFoundPage from "../pages/NotFoundPage";
 import MarkerWithInfo from "../MarkerWithInfo";
 import PathWithInfo from "../PathWithInfo";
+import PolygonWithInfo from "../PolygonWithInfo";
 const {
   compose,
   withProps,
@@ -96,7 +97,10 @@ const MapWithAMarkedInfoWindow = compose(
   withGoogleMap
 )(props => {
   const pointsData = props.route.points;
-  const firstPoint = pointsData[0].point || pointsData[0].polyline[0];
+  const firstPoint =
+    pointsData[0].point ||
+    pointsData[0].polyline[0] ||
+    pointsData[0].polygon[0];
   return (
     <GoogleMap
       ref={props.onMapMounted}
@@ -124,8 +128,18 @@ const MapWithAMarkedInfoWindow = compose(
                 onToggleHover={props.onToggleHover}
                 panToMarker={props.panToMarker}
               />
-            ) : (
+            ) : pointData.polyline ? (
               <PathWithInfo
+                key={pointData.order}
+                pointData={pointData}
+                isOpen={props.isOpen[pointData.id.toString()]}
+                isHovered={props.isHovered[pointData.id.toString()]}
+                onToggleOpen={props.onToggleOpen}
+                onToggleHover={props.onToggleHover}
+                zoomToBound={props.zoomToBound}
+              />
+            ) : (
+              <PolygonWithInfo
                 key={pointData.order}
                 pointData={pointData}
                 isOpen={props.isOpen[pointData.id.toString()]}
@@ -168,6 +182,8 @@ class RouteMap extends Component {
               lng: pointData.point.y
             }
           : pointData.polyline
+            ? pointData.polyline
+            : pointData.polygon
       );
     }, []);
     return <MapWithAMarkedInfoWindow route={route} bound={bound} />;

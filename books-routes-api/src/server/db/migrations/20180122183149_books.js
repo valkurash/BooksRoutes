@@ -24,6 +24,7 @@ exports.up = function(knex) {
       table.string("name").notNullable();
       table.specificType("point", "Point").nullable();
       table.specificType("polyline", "Path").nullable();
+      table.specificType("polygon", "Path").nullable();
       table.integer("order").notNullable();
       table.text("description").nullable();
       table

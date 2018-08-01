@@ -28,10 +28,28 @@ export const bookReducer = (
   const { type, payload, response, error } = action;
   switch (type) {
     case actionTypes.FETCH_BOOK + actionTypes.SUCCESS:
+      //TODO: optimize
       response.routes.forEach(r => {
         r.points.forEach(p => {
           if (p.polyline) {
             p.polyline = p.polyline
+              .replace(/\s*/g, "")
+              .replace("((", "(")
+              .replace("))", ")")
+              .match(/\((.*?)\)/g)
+              .map(p => {
+                let coords = p.replace(/[()]/g, "").split(",");
+                return {
+                  lat: parseFloat(coords[0]),
+                  lng: parseFloat(coords[1])
+                };
+              });
+            p.strokeColor = `hsl(${Math.floor(
+              Math.random() * 360
+            )}, 100%, 50%)`;
+          }
+          if (p.polygon) {
+            p.polygon = p.polygon
               .replace(/\s*/g, "")
               .replace("((", "(")
               .replace("))", ")")
