@@ -3,6 +3,20 @@ import { Record } from "immutable";
 import { arrToMap } from "./utils";
 import { initialStoreState } from "../store/configureStore";
 
+const formatPath = pathArr =>
+  pathArr
+    .replace(/\s*/g, "")
+    .replace("((", "(")
+    .replace("))", ")")
+    .match(/\((.*?)\)/g)
+    .map(p => {
+      let coords = p.replace(/[()]/g, "").split(",");
+      return {
+        lat: parseFloat(coords[0]),
+        lng: parseFloat(coords[1])
+      };
+    });
+const formatPolygon = arr => arr.reduce((acc, wrap) => acc.concat(wrap), []);
 const singleBookRecord = Record({
   id: null,
   title: null,
@@ -32,35 +46,13 @@ export const bookReducer = (
       response.routes.forEach(r => {
         r.points.forEach(p => {
           if (p.polyline) {
-            p.polyline = p.polyline
-              .replace(/\s*/g, "")
-              .replace("((", "(")
-              .replace("))", ")")
-              .match(/\((.*?)\)/g)
-              .map(p => {
-                let coords = p.replace(/[()]/g, "").split(",");
-                return {
-                  lat: parseFloat(coords[0]),
-                  lng: parseFloat(coords[1])
-                };
-              });
+            p.polyline = formatPath(p.polyline);
             p.strokeColor = `hsl(${Math.floor(
               Math.random() * 360
             )}, 100%, 50%)`;
           }
           if (p.polygon) {
-            p.polygon = p.polygon
-              .replace(/\s*/g, "")
-              .replace("((", "(")
-              .replace("))", ")")
-              .match(/\((.*?)\)/g)
-              .map(p => {
-                let coords = p.replace(/[()]/g, "").split(",");
-                return {
-                  lat: parseFloat(coords[0]),
-                  lng: parseFloat(coords[1])
-                };
-              });
+            p.polygon = formatPolygon(JSON.parse(p.polygon));
             p.strokeColor = `hsl(${Math.floor(
               Math.random() * 360
             )}, 100%, 50%)`;

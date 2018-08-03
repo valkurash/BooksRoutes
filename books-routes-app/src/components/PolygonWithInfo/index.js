@@ -38,7 +38,10 @@ export default class PathWithInfo extends PureComponent {
           }}
           onClick={() => {
             onToggleOpen(pointData.id, true);
-            zoomToBound(pointData.polygon, false);
+            zoomToBound(
+              pointData.polygon.reduce((acc, arr) => acc.concat(arr), []),
+              false
+            );
           }}
           onMouseOver={() => onToggleHover(pointData.id, true)}
           onMouseOut={() => onToggleHover(pointData.id, false)}

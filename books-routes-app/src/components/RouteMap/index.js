@@ -99,8 +99,9 @@ const MapWithAMarkedInfoWindow = compose(
   const pointsData = props.route.points;
   const firstPoint =
     pointsData[0].point ||
-    pointsData[0].polyline[0] ||
-    pointsData[0].polygon[0];
+    (pointsData[0].polyline
+      ? pointsData[0].polyline[0]
+      : pointsData[0].polygon[0][0]);
   return (
     <GoogleMap
       ref={props.onMapMounted}
@@ -175,6 +176,7 @@ class RouteMap extends Component {
     if (!route) return <NotFoundPage />;
 
     const bound = route.points.reduce((acc, pointData) => {
+      //const polygonBound = pointData.polygon ? pointData.polygon. : [];
       return acc.concat(
         pointData.point
           ? {
@@ -183,7 +185,7 @@ class RouteMap extends Component {
             }
           : pointData.polyline
             ? pointData.polyline
-            : pointData.polygon
+            : pointData.polygon.reduce((acc, arr) => acc.concat(arr), [])
       );
     }, []);
     return <MapWithAMarkedInfoWindow route={route} bound={bound} />;

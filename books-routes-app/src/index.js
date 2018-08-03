@@ -10,5 +10,10 @@ if (rootElement.hasChildNodes()) {
 } else {
   render(<App />, rootElement);
 }
-registerServiceWorker();
-//unregister();
+const notSnap = navigator.userAgent !== "ReactSnap";
+const production = process.env.NODE_ENV === "production";
+
+if (production && notSnap) {
+  registerServiceWorker();
+  //unregister();
+}
