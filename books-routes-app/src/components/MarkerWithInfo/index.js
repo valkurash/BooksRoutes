@@ -38,16 +38,10 @@ export default class MarkerWithInfo extends PureComponent {
             strokeColor: "#000",
             strokeWeight: 1
           }}
-          position={{
-            lat: pointData.point.x,
-            lng: pointData.point.y
-          }}
+          position={pointData.point}
           onClick={() => {
             onToggleOpen(pointData.id, true);
-            panToMarker({
-              lat: pointData.point.x,
-              lng: pointData.point.y
-            });
+            panToMarker(pointData.point);
           }}
           onMouseOver={() => onToggleHover(pointData.id, true)}
           onMouseOut={() => onToggleHover(pointData.id, false)}

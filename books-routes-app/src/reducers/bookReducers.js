@@ -16,7 +16,7 @@ const formatPath = pathArr =>
         lng: parseFloat(coords[1])
       };
     });
-const formatPolygon = arr => arr.reduce((acc, wrap) => acc.concat(wrap), []);
+
 const singleBookRecord = Record({
   id: null,
   title: null,
@@ -45,6 +45,12 @@ export const bookReducer = (
       //TODO: optimize
       response.routes.forEach(r => {
         r.points.forEach(p => {
+          if (p.point) {
+            p.point = {
+              lat: p.point.x,
+              lng: p.point.y
+            };
+          }
           if (p.polyline) {
             p.polyline = formatPath(p.polyline);
             p.strokeColor = `hsl(${Math.floor(
@@ -52,7 +58,7 @@ export const bookReducer = (
             )}, 100%, 50%)`;
           }
           if (p.polygon) {
-            p.polygon = formatPolygon(JSON.parse(p.polygon));
+            p.polygon = JSON.parse(p.polygon);
             p.strokeColor = `hsl(${Math.floor(
               Math.random() * 360
             )}, 100%, 50%)`;

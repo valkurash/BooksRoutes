@@ -127,13 +127,17 @@ class BookRoutesPage extends Component {
 
     const bookData = book.get("entities");
     const loading = book.get("loading");
+    const routeData = bookData
+      ? bookData.routes.find(
+          route => route.id.toString() === match.params.routeId
+        )
+      : "";
     const title = bookData
-      ? match.params.routeId && bookData.routes && bookData.routes.length > 1
-        ? `${bookData.title}: ${
-            bookData.routes.find(
-              route => route.id.toString() === match.params.routeId
-            ).name
-          }`
+      ? match.params.routeId &&
+        bookData.routes &&
+        bookData.routes.length > 1 &&
+        routeData
+        ? `${bookData.title}: ${routeData.name}`
         : bookData.title
       : "";
     if (book.get("error"))

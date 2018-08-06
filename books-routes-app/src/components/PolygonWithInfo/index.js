@@ -4,96 +4,94 @@ import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 
-const { Polygon } = require("react-google-maps");
+//const { Polygon } = require("react-google-maps");
+import PolygonDataLayer from "../PolygonDataLayer";
 
-export default class PathWithInfo extends PureComponent {
+export default class PolygonWithInfo extends PureComponent {
   static propTypes = {
-    pointData: PropTypes.object.isRequired,
-    isOpen: PropTypes.bool,
-    isHovered: PropTypes.bool,
+    polygonsData: PropTypes.array.isRequired,
+    isOpenObj: PropTypes.object.isRequired,
+    isHoveredObj: PropTypes.object.isRequired,
     onToggleOpen: PropTypes.func.isRequired,
     onToggleHover: PropTypes.func.isRequired,
-    zoomToBound: PropTypes.func.isRequired
+    zoomToBound: PropTypes.func.isRequired,
+    map: PropTypes.object
   };
 
   render() {
     const {
-      pointData,
-      isOpen = false,
-      isHovered = false,
+      polygonsData,
+      isOpenObj,
+      isHoveredObj,
       onToggleOpen,
       onToggleHover,
-      zoomToBound
+      zoomToBound,
+      map
     } = this.props;
     return (
-      <div key={pointData.order}>
-        <Polygon
-          paths={pointData.polygon}
-          options={{
-            geodesic: true,
-            strokeColor: pointData.strokeColor,
-            strokeWeight: isOpen || isHovered ? 8 : 4,
-            fillColor: pointData.strokeColor,
-            fillOpacity: isOpen || isHovered ? 0.4 : 0.2
-          }}
-          onClick={() => {
-            onToggleOpen(pointData.id, true);
-            zoomToBound(
-              pointData.polygon.reduce((acc, arr) => acc.concat(arr), []),
-              false
-            );
-          }}
-          onMouseOver={() => onToggleHover(pointData.id, true)}
-          onMouseOut={() => onToggleHover(pointData.id, false)}
+      <div>
+        <PolygonDataLayer
+          polygonsData={polygonsData}
+          map={map}
+          isOpenObj={isOpenObj}
+          isHoveredObj={isHoveredObj}
+          onToggleOpen={onToggleOpen}
+          onToggleHover={onToggleHover}
+          zoomToBound={zoomToBound}
         />
-        <Snackbar
-          open={isOpen}
-          onClose={this.handleClose}
-          ContentProps={{
-            "aria-describedby": "message-id"
-          }}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          message={
-            <div
-              style={{
-                maxHeight: "calc(50vh - 108px)",
-                overflowY: "auto",
-                overflowX: "hidden",
-                minHeight: "40px",
-                wordBreak: "break-all"
-              }}
-            >
-              <div className="point-header" style={{ fontWeight: "bold" }}>
-                {pointData.name}
+        {polygonsData.map(pointData => (
+          <Snackbar
+            key={pointData.order}
+            open={isOpenObj[pointData.id.toString()]}
+            onClose={this.handleClose}
+            ContentProps={{
+              "aria-describedby": "message-id"
+            }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            message={
+              <div
+                style={{
+                  maxHeight: "calc(50vh - 108px)",
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                  minHeight: "40px",
+                  wordBreak: "break-all"
+                }}
+              >
+                <div className="point-header" style={{ fontWeight: "bold" }}>
+                  {pointData.name}
+                </div>
+                <div className="point-descr">
+                  {(pointData.description || "")
+                    .split("\n")
+                    .map((item, key) => {
+                      return (
+                        <div key={key}>
+                          <span dangerouslySetInnerHTML={{ __html: item }} />
+                        </div>
+                      );
+                    })}
+                </div>
               </div>
-              <div className="point-descr">
-                {(pointData.description || "").split("\n").map((item, key) => {
-                  return (
-                    <div key={key}>
-                      <span dangerouslySetInnerHTML={{ __html: item }} />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          }
-          action={
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              size="small"
-              style={{
-                position: "absolute",
-                right: "-10px",
-                top: "-10px"
-              }}
-              onClick={() => onToggleOpen(pointData.id, false)}
-            >
-              <CloseIcon />
-            </IconButton>
-          }
-        />
+            }
+            action={
+              <IconButton
+                key="close"
+                aria-label="Close"
+                color="inherit"
+                size="small"
+                style={{
+                  position: "absolute",
+                  right: "-10px",
+                  top: "-10px"
+                }}
+                onClick={() => onToggleOpen(pointData.id, false)}
+              >
+                <CloseIcon />
+              </IconButton>
+            }
+          />
+        ))}
       </div>
     );
   }

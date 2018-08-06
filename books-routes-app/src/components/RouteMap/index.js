@@ -5,6 +5,7 @@ import NotFoundPage from "../pages/NotFoundPage";
 import MarkerWithInfo from "../MarkerWithInfo";
 import PathWithInfo from "../PathWithInfo";
 import PolygonWithInfo from "../PolygonWithInfo";
+
 const {
   compose,
   withProps,
@@ -17,6 +18,7 @@ const { withGoogleMap, GoogleMap } = require("react-google-maps");
 const {
   MarkerClusterer
 } = require("react-google-maps/lib/components/addons/MarkerClusterer");
+
 const refs = { map: undefined };
 
 const zoomToBound = (coords, fullMap) => {
@@ -57,7 +59,8 @@ const MapWithAMarkedInfoWindow = compose(
       isHovered: props.route.points.reduce((acc, curr) => {
         acc[curr.id.toString()] = false;
         return acc;
-      }, {})
+      }, {}),
+      map: undefined
     }),
     {
       onToggleOpen: ({ isOpen }) => (id, flag) => {
@@ -77,12 +80,14 @@ const MapWithAMarkedInfoWindow = compose(
         }
         state[id.toString()] = flag;
         return { isHovered: state };
-      }
+      },
+      setMap: () => ref => ({ map: ref })
     }
   ),
   withHandlers({
     onMapMounted: props => ref => {
       if (ref) {
+        props.setMap(ref);
         refs.map = ref;
         zoomToBound(props.bound, true);
       }
@@ -101,15 +106,13 @@ const MapWithAMarkedInfoWindow = compose(
     pointsData[0].point ||
     (pointsData[0].polyline
       ? pointsData[0].polyline[0]
-      : pointsData[0].polygon[0][0]);
+      : pointsData[0].polygon[0][0][0]);
+  const polygonsData = pointsData.filter(p => p.polygon);
   return (
     <GoogleMap
       ref={props.onMapMounted}
       defaultZoom={8}
-      defaultCenter={{
-        lat: firstPoint.x || firstPoint.lat,
-        lng: firstPoint.y || firstPoint.lng
-      }}
+      defaultCenter={firstPoint}
     >
       <MarkerClusterer
         onClick={props.onMarkerClustererClick}
@@ -117,9 +120,9 @@ const MapWithAMarkedInfoWindow = compose(
         enableRetinaIcons
         gridSize={40}
       >
-        {pointsData.map(
-          pointData =>
-            pointData.point ? (
+        {pointsData.map(pointData => {
+          if (pointData.point)
+            return (
               <MarkerWithInfo
                 key={pointData.order}
                 pointData={pointData}
@@ -129,7 +132,9 @@ const MapWithAMarkedInfoWindow = compose(
                 onToggleHover={props.onToggleHover}
                 panToMarker={props.panToMarker}
               />
-            ) : pointData.polyline ? (
+            );
+          if (pointData.polyline)
+            return (
               <PathWithInfo
                 key={pointData.order}
                 pointData={pointData}
@@ -139,17 +144,18 @@ const MapWithAMarkedInfoWindow = compose(
                 onToggleHover={props.onToggleHover}
                 zoomToBound={props.zoomToBound}
               />
-            ) : (
-              <PolygonWithInfo
-                key={pointData.order}
-                pointData={pointData}
-                isOpen={props.isOpen[pointData.id.toString()]}
-                isHovered={props.isHovered[pointData.id.toString()]}
-                onToggleOpen={props.onToggleOpen}
-                onToggleHover={props.onToggleHover}
-                zoomToBound={props.zoomToBound}
-              />
-            )
+            );
+        })}
+        {polygonsData.length && (
+          <PolygonWithInfo
+            map={props.map}
+            polygonsData={polygonsData}
+            isOpenObj={props.isOpen}
+            isHoveredObj={props.isHovered}
+            onToggleOpen={props.onToggleOpen}
+            onToggleHover={props.onToggleHover}
+            zoomToBound={props.zoomToBound}
+          />
         )}
       </MarkerClusterer>
     </GoogleMap>
@@ -176,16 +182,14 @@ class RouteMap extends Component {
     if (!route) return <NotFoundPage />;
 
     const bound = route.points.reduce((acc, pointData) => {
-      //const polygonBound = pointData.polygon ? pointData.polygon. : [];
       return acc.concat(
-        pointData.point
-          ? {
-              lat: pointData.point.x,
-              lng: pointData.point.y
-            }
-          : pointData.polyline
-            ? pointData.polyline
-            : pointData.polygon.reduce((acc, arr) => acc.concat(arr), [])
+        pointData.point ||
+          pointData.polyline ||
+          pointData.polygon.reduce(
+            (acc, wrap) =>
+              acc.concat(wrap.reduce((acc, arr) => acc.concat(arr), [])),
+            []
+          )
       );
     }, []);
     return <MapWithAMarkedInfoWindow route={route} bound={bound} />;
