@@ -5,6 +5,7 @@ const newBookDataRecord = Record({
   title: "",
   authors: "",
   route: "",
+  googleMyMaps: "",
   points: [],
   loading: false,
   loaded: false,
@@ -37,6 +38,7 @@ export const newBookReducer = (state = new newBookDataRecord(), action) => {
         .set("loaded", true)
         .set("error", false)
         .set("title", "")
+        .set("googleMyMaps", "")
         .set("authors", "")
         .set("route", "")
         .set("points", []);

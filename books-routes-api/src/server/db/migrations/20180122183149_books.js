@@ -14,6 +14,7 @@ exports.up = function(knex) {
     .createTable("routes", function(table) {
       table.increments("id").primary();
       table.string("name").notNullable();
+      table.string("googlemymap").nullable();
       table
         .integer("book_id")
         .references("books.id")
@@ -23,7 +24,7 @@ exports.up = function(knex) {
       table.increments("id").primary();
       table.string("name").notNullable();
       table.specificType("point", "Point").nullable();
-      table.specificType("polyline", "Path").nullable();
+      table.text("polyline").nullable();
       table.text("polygon").nullable();
       table.integer("order").notNullable();
       table.text("description").nullable();

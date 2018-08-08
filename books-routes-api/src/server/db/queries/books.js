@@ -54,6 +54,7 @@ function addBookWithRelations(bookData) {
     await asyncForEach(bookData.routes, async routeData => {
       const route = await Models.Route.forge({
         name: routeData.name,
+        googlemymap: routeData.googlemymap,
         book_id: book.id
       }).save(null, { transacting: t });
 

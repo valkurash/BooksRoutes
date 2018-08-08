@@ -16,6 +16,7 @@ class BookForm extends Component {
     title: PropTypes.string,
     authors: PropTypes.string,
     route: PropTypes.string,
+    googleMyMaps: PropTypes.string,
     points: PropTypes.array,
     changeNewBooksData: PropTypes.func.isRequired,
     sendNewBook: PropTypes.func.isRequired,
@@ -46,6 +47,7 @@ class BookForm extends Component {
       authors,
       route,
       points,
+      googleMyMaps,
       changeNewBooksData,
       sendNewBook,
       loading,
@@ -65,7 +67,8 @@ class BookForm extends Component {
         }
       });
       if (valid) {
-        sendNewBook({ title, authors, route, points });
+        this.setState({ close: false });
+        sendNewBook({ title, authors, route, points, googleMyMaps });
       }
     };
     return (
@@ -107,6 +110,17 @@ class BookForm extends Component {
                 rows="4"
                 fullWidth
               />
+              <TextField
+                id="googlemymaps"
+                label="Ссылка на маршрут в Google My Maps"
+                value={googleMyMaps}
+                onChange={e =>
+                  changeNewBooksData("googleMyMaps", e.target.value)
+                }
+                helperText="Этот маршрут должен быть доступен для просмотра всем пользователям, имеющим ссылку"
+                margin="normal"
+                fullWidth
+              />
               <Button
                 variant="raised"
                 color="secondary"
@@ -125,8 +139,23 @@ class BookForm extends Component {
               )}
             </Grid>
             <Grid item xs={12} md={8}>
-              <FormLabel component="legend" style={{ margin: "15px 0" }}>
+              <FormLabel component="legend" style={{ margin: "15px 0 0 0" }}>
                 Точки маршрута
+              </FormLabel>
+              <FormLabel
+                component="legend"
+                style={{ margin: "10px 0 15px 0", fontSize: ".8rem" }}
+              >
+                Если маршрут включает более сложную геометрию, например, пути
+                или целые области, то лучше составить его в{" "}
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://www.google.com/maps/d/u/0/"
+                >
+                  Google My Maps
+                </a>{" "}
+                и указать ссылку на него в этой форме.
               </FormLabel>
               <RouteMapSuggestion />
             </Grid>
@@ -175,6 +204,7 @@ export default connect(
     title: state.get("newBook").get("title"),
     authors: state.get("newBook").get("authors"),
     route: state.get("newBook").get("route"),
+    googleMyMaps: state.get("newBook").get("googleMyMaps"),
     points: state.get("newBook").get("points"),
     loading: state.get("newBook").get("loading"),
     loaded: state.get("newBook").get("loaded"),

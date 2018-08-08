@@ -58,6 +58,7 @@ router.post(`${BASE_URL}`, async ctx => {
       routes: [
         {
           name: body.route,
+          googlemymap: body.googleMyMaps,
           path: body.points.map((point, i) => {
             return {
               name: point.key,

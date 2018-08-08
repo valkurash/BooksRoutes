@@ -4,18 +4,12 @@ import { arrToMap } from "./utils";
 import { initialStoreState } from "../store/configureStore";
 
 const formatPath = pathArr =>
-  pathArr
-    .replace(/\s*/g, "")
-    .replace("((", "(")
-    .replace("))", ")")
-    .match(/\((.*?)\)/g)
-    .map(p => {
-      let coords = p.replace(/[()]/g, "").split(",");
-      return {
-        lat: parseFloat(coords[0]),
-        lng: parseFloat(coords[1])
-      };
-    });
+  pathArr.map(p => {
+    return {
+      lat: p[0],
+      lng: p[1]
+    };
+  });
 
 const singleBookRecord = Record({
   id: null,
@@ -52,7 +46,7 @@ export const bookReducer = (
             };
           }
           if (p.polyline) {
-            p.polyline = formatPath(p.polyline);
+            p.polyline = formatPath(JSON.parse(p.polyline));
             p.strokeColor = `hsl(${Math.floor(
               Math.random() * 360
             )}, 100%, 50%)`;
