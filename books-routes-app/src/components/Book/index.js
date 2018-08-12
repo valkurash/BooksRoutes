@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import ProgressiveImage from "react-progressive-image";
+import ozonLogo from "../../images/ozon_logo.png";
+import litresLogo from "../../images/litres_logo.png";
 
 export default class Book extends Component {
   static propTypes = {
@@ -34,6 +36,28 @@ export default class Book extends Component {
           overflow: "hidden"
         }}
       >
+        {(book.ozon || book.litres) && (
+          <div
+            className="book-links"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: "10px"
+            }}
+          >
+            {book.litres && (
+              <a href={book.litres} target="_blank" rel="noopener noreferrer">
+                <img alt="litres_logo" src={litresLogo} />
+              </a>
+            )}
+            {book.ozon && (
+              <a href={book.ozon} target="_blank" rel="noopener noreferrer">
+                <img alt="ozon_logo" src={ozonLogo} />
+              </a>
+            )}
+          </div>
+        )}
         <div className="book-cover">
           <ProgressiveImage
             className="cover"

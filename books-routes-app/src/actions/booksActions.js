@@ -1,22 +1,35 @@
 import * as actionTypes from "../constants/ActionTypes";
 
-const api = "https://booksroutes-api.azurewebsites.net/api/v1/books";
-//const api = "http://localhost:1337/api/v1/books";
+const api = "https://booksroutes-api.azurewebsites.net/api/v1";
+//const api = "http://localhost:1337/api/v1";
 export function fetchBooks() {
   return {
     type: actionTypes.FETCH_BOOKS,
-    callAPI: api
+    callAPI: `${api}/books`
   };
 }
 export function fetchBook(id) {
   return {
     type: actionTypes.FETCH_BOOK,
     payload: { id },
-    callAPI: `${api}/${id}`
+    callAPI: `${api}/books/${id}`
   };
 }
 export const searchTermChanged = searchTerm => {
   return { type: actionTypes.SEARCH_INPUT_CHANGED, searchTerm };
+};
+export const selectedCountriesChanged = selectedCountries => {
+  return { type: actionTypes.COUNTRIES_CHANGED, selectedCountries };
+};
+export const selectedLanguagesChanged = selectedLanguages => {
+  return { type: actionTypes.LANGUAGES_CHANGED, selectedLanguages };
+};
+
+export const loadCountriesLanguages = () => {
+  return {
+    type: actionTypes.FETCH_COUNTRIES_LANGUAGES,
+    callAPI: `${api}/countries-languages`
+  };
 };
 export function changeNewBooksPoint(points) {
   return {
@@ -46,7 +59,7 @@ export function sendNewBook(bookData) {
   return {
     type: actionTypes.SEND_NEW_BOOK,
     payload: { ...bookData },
-    callAPI: api,
+    callAPI: `${api}/books`,
     method: "POST"
   };
 }

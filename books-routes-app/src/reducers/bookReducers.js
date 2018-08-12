@@ -17,7 +17,9 @@ const singleBookRecord = Record({
   cover: null,
   description: null,
   authors: null,
-  routes: null
+  routes: null,
+  ozon: null,
+  litres: null
 });
 const singleBookWrapper = Record({
   entities: singleBookRecord,

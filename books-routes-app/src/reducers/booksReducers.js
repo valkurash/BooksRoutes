@@ -8,7 +8,8 @@ const bookForListRecord = Record({
   title: null,
   cover: null,
   description: null,
-  authors: null
+  authors: null,
+  routes: null
 });
 
 const defaultBooksState = Record({

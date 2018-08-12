@@ -43,6 +43,21 @@ router.get(`${BASE_URL}/:id`, async ctx => {
     };
   }
 });
+router.get(`/api/v1/countries-languages`, async ctx => {
+  try {
+    const cl = await queries.getCountriesAndLanguages();
+    ctx.body = {
+      status: "success",
+      data: { countries: cl[0], languages: cl[1] }
+    };
+  } catch (err) {
+    ctx.status = 400;
+    ctx.body = {
+      status: "error",
+      message: err.message || "Извините, возникла ошибка."
+    };
+  }
+});
 
 router.post(`${BASE_URL}`, async ctx => {
   try {

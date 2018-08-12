@@ -113,7 +113,10 @@ class BookList extends Component {
         </div>
       );
 
-    if (error) return <div className="error-msg">{error.message}</div>;
+    if (error)
+      return (
+        <div className="error-msg">{error.message || error.statusText}</div>
+      );
 
     if (!books.length)
       return (
@@ -151,7 +154,7 @@ class BookList extends Component {
                     style={{
                       textDecoration: "none"
                     }}
-                    to={`/books/${book.id}`}
+                    to={`/books/${book.id}/${book.routes[0].id}`}
                   >
                     <div className={classes.coverWrapper}>
                       <div className={classes.cover}>

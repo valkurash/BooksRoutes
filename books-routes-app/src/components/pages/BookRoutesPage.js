@@ -140,32 +140,28 @@ class BookRoutesPage extends Component {
         ? `${bookData.title}: ${routeData.name}`
         : bookData.title
       : "";
-    if (book.get("error"))
-      return book.get("error").status === 404 ? (
+    if (book.get("error")) {
+      const errorObj = book.get("error");
+      return errorObj.status === 404 ? (
         <NotFoundPage />
       ) : (
-        <div className="error-msg">{book.get("error").statusText}</div>
+        <div className="error-msg">{errorObj.message || errorObj.statusText}</div>
       );
+    }
 
     const routesList = bookData
-      ? bookData.routes
-          .sort((a, b) => {
-            if (a.name > b.name) return 1;
-            if (a.name < b.name) return -1;
-            return 0;
-          })
-          .map(route => (
-            <ListItem
-              component={NavLink}
-              className={classes.routesNavLink}
-              key={route.id}
-              to={`/books/${bookData.id}/${route.id}`}
-              onClick={drawerToggle}
-              button
-            >
-              {route.name}
-            </ListItem>
-          ))
+      ? bookData.routes.map(route => (
+          <ListItem
+            component={NavLink}
+            className={classes.routesNavLink}
+            key={route.id}
+            to={`/books/${bookData.id}/${route.id}`}
+            onClick={drawerToggle}
+            button
+          >
+            {route.name}
+          </ListItem>
+        ))
       : [];
 
     const drawer = (

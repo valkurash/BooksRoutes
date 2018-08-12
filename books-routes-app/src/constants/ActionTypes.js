@@ -1,6 +1,9 @@
 export const FETCH_BOOKS = "FETCH_BOOKS";
 export const FETCH_BOOK = "FETCH_BOOK";
 export const SEARCH_INPUT_CHANGED = "SEARCH_INPUT_CHANGED";
+export const COUNTRIES_CHANGED = "COUNTRIES_CHANGED";
+export const LANGUAGES_CHANGED = "LANGUAGES_CHANGED";
+export const FETCH_COUNTRIES_LANGUAGES = "FETCH_COUNTRIES_LANGUAGES";
 export const START = "_START";
 export const SUCCESS = "_SUCCESS";
 export const FAIL = "_FAIL";

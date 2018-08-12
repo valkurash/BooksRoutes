@@ -3,17 +3,49 @@ const Models = require("../models");
 const bookshelf = require("../bookshelf");
 
 function getAllBooks() {
-  return Models.Book.where("moderated", "true").fetchAll({
-    withRelated: ["authors"]
-  });
+  return Models.Book.where("moderated", "true")
+    .orderBy("title", "ASC")
+    .fetchAll({
+      withRelated: [
+        "authors",
+        "routes",
+        {
+          routes: function(query) {
+            query.orderBy("name");
+          }
+        },
+        "routes.languages",
+        "routes.countries"
+      ]
+    });
 }
 
 function getSingleBook(id) {
   return Models.Book.where({ id: parseInt(id) }).fetch({
-    withRelated: ["authors", "routes", "routes.points"]
+    withRelated: [
+      "authors",
+      {
+        routes: function(query) {
+          query.orderBy("name");
+        }
+      },
+      "routes.points"
+    ]
   });
 }
-
+function getCountriesAndLanguages() {
+  const countries = knex("countries_routes")
+    .distinct("ru_name")
+    .join("countries", "countries_routes.country_id", "countries.id")
+    .select("ru_name")
+    .orderBy("ru_name", "asc");
+  const languages = knex("languages_routes")
+    .distinct("ru_name")
+    .join("languages", "languages_routes.language_id", "languages.id")
+    .select("ru_name")
+    .orderBy("ru_name", "asc");
+  return Promise.all([countries, languages]);
+}
 function addBookWithRelations(bookData) {
   async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
@@ -102,5 +134,6 @@ module.exports = {
   addBookWithRelations,
   addBook,
   updateBook,
-  deleteBook
+  deleteBook,
+  getCountriesAndLanguages
 };

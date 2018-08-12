@@ -59,7 +59,8 @@
     "imagemin-mozjpeg": "^7.0.0",
     "imagemin-pngquant": "^6.0.0",
     "prettier-eslint": "^8.8.2",
-    "redux-devtools": "^3.4.1"
+    "redux-devtools": "^3.4.1",
+    "sw-precache": "^5.2.1"
   },
   "reactSnap": {
     "sitemap": true
