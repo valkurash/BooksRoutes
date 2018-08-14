@@ -1,7 +1,10 @@
 import * as actionTypes from "../constants/ActionTypes";
 
-const api = "https://booksroutes-api.azurewebsites.net/api/v1";
-//const api = "http://localhost:1337/api/v1";
+const api =
+  process.env.NODE_ENV === "production"
+    ? "https://booksroutes-api.azurewebsites.net/api/v1"
+    : "http://localhost:1337/api/v1";
+
 export function fetchBooks() {
   return {
     type: actionTypes.FETCH_BOOKS,
