@@ -4,7 +4,7 @@ try {
   const db_strings = require("./db_strings.js");
   db_test = db_strings.db_test;
   db_dev = db_strings.db_dev;
-  db_prod = process.env.db_prod;
+  db_prod = db_strings.db_prod;
 } catch (e) {
   db_test = process.env.DB_TEST;
   db_dev = process.env.DB_DEV;
