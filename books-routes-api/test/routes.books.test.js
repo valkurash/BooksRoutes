@@ -65,6 +65,17 @@ describe("routes : books", function() {
             "name",
             "avatar"
           );
+          res.body.data[0]["routes"].length.should.eql(1);
+          res.body.data[0]["routes"][0].should.include.keys(
+            "id",
+            "name",
+            "book_id",
+            "googlemymap",
+            "countries",
+            "languages"
+          );
+          res.body.data[0]["routes"][0]["countries"].length.should.eql(1);
+          res.body.data[0]["routes"][0]["languages"].length.should.eql(1);
           done();
         });
     });
@@ -108,7 +119,9 @@ describe("routes : books", function() {
           res.body.data["routes"][0].should.include.keys(
             "id",
             "name",
-            "book_id"
+            "book_id",
+            "googlemymap",
+            "points"
           );
           res.body.data["routes"][0]["points"].length.should.eql(9);
           res.body.data["routes"][0]["points"][0].should.include.keys(

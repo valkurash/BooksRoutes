@@ -8,7 +8,6 @@ function getAllBooks() {
     .fetchAll({
       withRelated: [
         "authors",
-        "routes",
         {
           routes: function(query) {
             query.orderBy("name");
