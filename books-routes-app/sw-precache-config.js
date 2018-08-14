@@ -7,7 +7,8 @@ module.exports = {
     "build/static/images/*.jpg",
     "build/200.html",
     "build/index.html",
-    "build/manifest.json"
+    "build/manifest.json",
+    "build/sitemap.xml"
   ],
   stripPrefix: "build",
   publicPath: ".",
