@@ -139,7 +139,7 @@ router.delete(`${BASE_URL}/:id`, async ctx => {
       ctx.status = 404;
       ctx.body = {
         status: "error",
-        message: "That book does not exist."
+        message: "Такой книги не существует."
       };
     }
   } catch (err) {

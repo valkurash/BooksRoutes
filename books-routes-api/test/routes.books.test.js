@@ -9,7 +9,7 @@ const server = require("../src/server/index");
 const knex = require("../src/server/db/connection");
 
 describe("routes : books", function() {
-  this.timeout(15000);
+  this.timeout(150000);
 
   beforeEach(function(done) {
     knex.migrate.rollback().then(function() {
@@ -53,7 +53,11 @@ describe("routes : books", function() {
             "isbn",
             "cover",
             "description",
-            "authors"
+            "authors",
+            "moderated",
+            "litres",
+            "ozon",
+            "routes"
           );
           res.body.data[0]["authors"].length.should.eql(1);
           res.body.data[0]["authors"][0].should.include.keys(
@@ -88,6 +92,9 @@ describe("routes : books", function() {
             "isbn",
             "cover",
             "description",
+            "moderated",
+            "litres",
+            "ozon",
             "authors",
             "routes"
           );
@@ -146,6 +153,7 @@ describe("routes : books", function() {
           title: "labore aute",
           authors: "Goble, Frank",
           route: "Secret path",
+          googlemymap: "link",
           points: [
             {
               position: { lat: 45.55622355539127, lng: 41.59034374999999 },
@@ -312,7 +320,7 @@ describe("routes : books", function() {
           res.body.status.should.eql("error");
           // the JSON response body should have a key-value pair of {"message": "That book
           // does not exist."}
-          res.body.message.should.eql("That book does not exist.");
+          res.body.message.should.eql("Такой книги не существует.");
           done();
         });
     });

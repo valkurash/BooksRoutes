@@ -18,10 +18,10 @@ module.exports = {
     client: "pg",
     connection: db_test,
     migrations: {
-      directory: path.join(BASE_PATH, "migrations")
+      directory: path.join(BASE_PATH, "migrations", "test")
     },
     seeds: {
-      directory: path.join(BASE_PATH, "seeds")
+      directory: path.join(BASE_PATH, "seeds", "test")
     },
     pool: {
       min: 2,
