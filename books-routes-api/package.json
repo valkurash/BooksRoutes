@@ -27,6 +27,7 @@
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.2.1",
-    "pg": "^7.4.3"
+    "pg": "^7.4.3",
+    "speakingurl": "^14.0.1"
   }
 }

@@ -8,7 +8,8 @@ module.exports = {
     "build/200.html",
     "build/index.html",
     "build/manifest.json",
-    "build/sitemap.xml"
+    "build/sitemap.xml",
+    "build/robots.txt"
   ],
   stripPrefix: "build",
   publicPath: ".",
