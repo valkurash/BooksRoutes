@@ -27,11 +27,11 @@ describe("routes : books", function() {
     });
   });
 
-  describe("GET /api/v1/books", () => {
+  describe("GET /api/books", () => {
     it("should return all books", done => {
       chai
         .request(server)
-        .get("/api/v1/books")
+        .get("/api/books")
         .end((err, res) => {
           // there should be no errors
           should.not.exist(err);
@@ -81,11 +81,11 @@ describe("routes : books", function() {
     });
   });
 
-  describe("GET /api/v1/books/:id", () => {
+  describe("GET /api/books/book/:id", () => {
     it("should respond with a single book", done => {
       chai
         .request(server)
-        .get("/api/v1/books/1")
+        .get("/api/books/book/1")
         .end((err, res) => {
           // there should be no errors
           should.not.exist(err);
@@ -139,7 +139,7 @@ describe("routes : books", function() {
     it("should throw an error if the book does not exist", done => {
       chai
         .request(server)
-        .get("/api/v1/books/9999999")
+        .get("/api/books/book/9999999")
         .end((err, res) => {
           // there should an error
           should.exist(err);
@@ -157,11 +157,11 @@ describe("routes : books", function() {
     });
   });
 
-  describe("POST /api/v1/book", () => {
+  describe("POST /api/book", () => {
     it("should return the book that was added", done => {
       chai
         .request(server)
-        .post("/api/v1/books")
+        .post("/api/books")
         .send({
           title: "labore aute",
           authors: "Goble, Frank",
@@ -205,7 +205,7 @@ describe("routes : books", function() {
     it("should throw an error if the payload is malformed", done => {
       chai
         .request(server)
-        .post("/api/v1/books")
+        .post("/api/books")
         .send({ description: "labore aute description" })
         .end((err, res) => {
           // there should an error
@@ -223,7 +223,7 @@ describe("routes : books", function() {
     });
   });
 
-  describe("PUT /api/v1/books", () => {
+  describe("PUT /api/books", () => {
     it("should return the book that was updated", done => {
       knex("books")
         .select("*")
@@ -231,7 +231,7 @@ describe("routes : books", function() {
           const bookObject = book[0];
           chai
             .request(server)
-            .put(`/api/v1/books/${bookObject.id}`)
+            .put(`/api/books/${bookObject.id}`)
             .send({ isbn: "0000-0000-0000" })
             .end((err, res) => {
               // there should be no errors
@@ -261,7 +261,7 @@ describe("routes : books", function() {
     it("should throw an error if the book does not exist", done => {
       chai
         .request(server)
-        .put("/api/v1/books/9999999")
+        .put("/api/books/book/9999999")
         .send({ isbn: "0000-0000-0000" })
         .end((err, res) => {
           // there should an error
@@ -280,7 +280,7 @@ describe("routes : books", function() {
     });
   });
 
-  describe("DELETE /api/v1/books/:id", () => {
+  describe("DELETE /api/books/book/:id", () => {
     it("should return the book that was deleted", done => {
       knex("books")
         .select("*")
@@ -289,7 +289,7 @@ describe("routes : books", function() {
           const lengthBeforeDelete = books.length;
           chai
             .request(server)
-            .delete(`/api/v1/books/${bookObject.id}`)
+            .delete(`/api/books/book/${bookObject.id}`)
             .end((err, res) => {
               // there should be no errors
               should.not.exist(err);
@@ -321,7 +321,7 @@ describe("routes : books", function() {
     it("should throw an error if the book does not exist", done => {
       chai
         .request(server)
-        .delete("/api/v1/books/9999999")
+        .delete("/api/books/book/9999999")
         .end((err, res) => {
           // there should an error
           should.exist(err);

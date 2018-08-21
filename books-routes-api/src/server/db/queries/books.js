@@ -1,11 +1,76 @@
 const knex = require("../connection");
 const Models = require("../models");
 const bookshelf = require("../bookshelf");
+bookshelf.plugin("pagination");
 
-function getAllBooks() {
-  return Models.Book.where("moderated", "true")
+async function getAllBooks(query) {
+  const term = query.searchTerm || "";
+  const countries = query.selectedCountries
+    ? query.selectedCountries.split(",")
+    : [];
+  const languages = query.selectedLanguages
+    ? query.selectedLanguages.split(",")
+    : [];
+
+  return Models.Book.query(function(qb) {
+    qb.where("books.moderated", "true");
+
+    if (term) {
+      qb.join("authors_books", "books.id", "=", "authors_books.book_id");
+      qb.join("authors", "authors_books.author_id", "=", "authors.id");
+      qb.andWhere(
+        knex.raw("(LOWER(books.title) LIKE ? OR LOWER(authors.name) LIKE ?)", [
+          "%" + term.toLowerCase() + "%",
+          "%" + term.toLowerCase() + "%"
+        ])
+      );
+    }
+
+    if (countries.length || languages.length) {
+      qb.leftJoin("routes", "books.id", "routes.book_id");
+      if (countries.length) {
+        qb.join(
+          "countries_routes",
+          "routes.id",
+          "=",
+          "countries_routes.route_id"
+        );
+        qb.join(
+          "countries",
+          "countries_routes.country_id",
+          "=",
+          "countries.id"
+        );
+
+        qb.andWhere("countries.ru_name", "in", countries);
+      }
+
+      if (languages.length) {
+        qb.join(
+          "languages_routes",
+          "routes.id",
+          "=",
+          "languages_routes.route_id"
+        );
+        qb.join(
+          "languages",
+          "languages_routes.language_id",
+          "=",
+          "languages.id"
+        );
+        qb.andWhere("languages.ru_name", "in", languages);
+      }
+    }
+
+    qb
+      .groupBy("books.id")
+      .distinct("books.id")
+      .select("books.*");
+  })
     .orderBy("title", "ASC")
-    .fetchAll({
+    .fetchPage({
+      pageSize: query.pageSize, // Defaults to 10 if not specified
+      page: query.page, // Defaults to 1 if not specified
       withRelated: [
         "authors",
         {

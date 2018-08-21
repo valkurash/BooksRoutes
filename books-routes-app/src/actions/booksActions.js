@@ -2,20 +2,27 @@ import * as actionTypes from "../constants/ActionTypes";
 
 const api =
   process.env.NODE_ENV === "production"
-    ? "https://booksroutes-api.azurewebsites.net/api/v1"
-    : "http://localhost:1337/api/v1";
+    ? "https://booksroutes-api.azurewebsites.net/api"
+    : "http://localhost:1337/api";
 
-export function fetchBooks() {
+export function fetchBooks(fullQuery, filterQuery) {
   return {
     type: actionTypes.FETCH_BOOKS,
-    callAPI: `${api}/books`
+    payload: { fullQuery, filterQuery },
+    callAPI: `${api}/books/${fullQuery}`
+  };
+}
+export function showBooks(fullQuery, filterQuery) {
+  return {
+    type: actionTypes.SHOW_BOOKS,
+    payload: { fullQuery, filterQuery }
   };
 }
 export function fetchBook(id) {
   return {
     type: actionTypes.FETCH_BOOK,
     payload: { id },
-    callAPI: `${api}/books/${id}`
+    callAPI: `${api}/books/book/${id}`
   };
 }
 export const searchTermChanged = searchTerm => {

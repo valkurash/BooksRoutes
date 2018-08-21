@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchBooks } from "../../actions/booksActions";
-import { filtratedBooksSelector } from "../../selectors";
+import { fetchBooks, showBooks } from "../../actions/booksActions";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import BookCard from "../BookCard";
 import ContentLoader from "react-content-loader";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import Paper from "@material-ui/core/Paper";
 import Zoom from "@material-ui/core/Zoom";
 import { withStyles } from "@material-ui/core/styles";
-import ProgressiveImage from "react-progressive-image";
+import Pagination from "rc-pagination";
+import "rc-pagination/assets/index.css";
+import localeInfo from "rc-pagination/lib/locale/ru_RU";
 
 const styles = theme => ({
   bookList: {
@@ -34,38 +35,70 @@ const styles = theme => ({
       }
     }
   },
-  coverWrapper: {
-    marginBottom: "15px",
-    position: "relative",
-    width: "100%",
-    paddingTop: "160%"
-  },
-  cover: {
-    position: "absolute",
-    top: "0",
-    left: "0",
-    width: "100%",
-    height: "100%"
+  pagination: {
+    display: "flex",
+    justifyContent: "center",
+    margin: "30px 0",
+    "& .rc-pagination-item-active": {
+      backgroundColor: theme.palette.primary.main,
+      borderColor: theme.palette.primary.main,
+      "&:hover a": {
+        color: "#fff"
+      }
+    },
+    "& .rc-pagination-item:hover": {
+      borderColor: theme.palette.primary.main,
+      "& a": {
+        color: theme.palette.primary.main
+      }
+    }
   }
 });
 
 class BookList extends Component {
   static propTypes = {
-    books: PropTypes.array.isRequired,
-    loading: PropTypes.bool,
-    loaded: PropTypes.bool,
-    error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+    booksData: PropTypes.shape({
+      entities: PropTypes.array,
+      loading: PropTypes.bool,
+      loaded: PropTypes.bool,
+      error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+      paginationData: PropTypes.object
+    }),
+    fullQuery: PropTypes.string.isRequired,
+    filterQuery: PropTypes.string.isRequired,
+    defaultPageSize: PropTypes.number.isRequired,
+    existedQueries: PropTypes.array,
     fetchBooks: PropTypes.func,
+    showBooks: PropTypes.func,
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired
   };
 
   componentDidMount() {
-    const { loading, loaded, fetchBooks } = this.props;
-    if (!loading && !loaded) fetchBooks();
+    const { booksData, fetchBooks, fullQuery, filterQuery } = this.props;
+    if (!booksData || (!booksData.get("loading") && !booksData.get("loaded")))
+      fetchBooks(fullQuery, filterQuery);
+  }
+  componentDidUpdate() {
+    window.scrollTo(0, 0);
   }
   render() {
-    const { books, loading, error, classes, theme } = this.props;
+    const {
+      booksData,
+      classes,
+      theme,
+      fetchBooks,
+      showBooks,
+      defaultPageSize,
+      existedQueries,
+      filterQuery
+    } = this.props;
+    if (!booksData) return null;
+
+    const books = booksData.get("entities");
+    const loading = booksData.get("loading");
+    const error = booksData.get("error");
+    const paginationData = booksData.get("paginationData");
 
     const transitionDuration = {
       enter: theme.transitions.duration.enteringScreen,
@@ -149,53 +182,25 @@ class BookList extends Component {
             })
             .map(book => (
               <Grid key={book.id} item xs={12} sm={6} md={3} lg={2}>
-                <Paper className={classes.bookCard}>
-                  <Link
-                    style={{
-                      textDecoration: "none"
-                    }}
-                    to={`/books/${book.id}/${book.routes[0].id}`}
-                  >
-                    <div className={classes.coverWrapper}>
-                      <div className={classes.cover}>
-                        <ProgressiveImage
-                          src={book.cover}
-                          placeholder={
-                            "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KIDwhLS0gQ3JlYXRlZCB3aXRoIE1ldGhvZCBEcmF3IC0gaHR0cDovL2dpdGh1Yi5jb20vZHVvcGl4ZWwvTWV0aG9kLURyYXcvIC0tPgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9IiNmZmYiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSIzMjIiIHdpZHRoPSIyMDIiIHk9Ii0xIiB4PSItMSIvPgogIDxnIGRpc3BsYXk9Im5vbmUiIG92ZXJmbG93PSJ2aXNpYmxlIiB5PSIwIiB4PSIwIiBoZWlnaHQ9IjEwMCUiIHdpZHRoPSIxMDAlIiBpZD0iY2FudmFzR3JpZCI+CiAgIDxyZWN0IGZpbGw9InVybCgjZ3JpZHBhdHRlcm4pIiBzdHJva2Utd2lkdGg9IjAiIHk9IjAiIHg9IjAiIGhlaWdodD0iMTAwJSIgd2lkdGg9IjEwMCUiLz4KICA8L2c+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHJlY3QgaWQ9InN2Z18xIiBoZWlnaHQ9IjMyMCIgd2lkdGg9IjIwMCIgeT0iMCIgeD0iMCIgc3Ryb2tlLXdpZHRoPSIwIiBzdHJva2U9IiMwMDAiIGZpbGw9IiNmM2YzZjMiLz4KIDwvZz4KPC9zdmc+"
-                          }
-                        >
-                          {src => (
-                            <img
-                              style={{
-                                display: "block",
-                                width: "100%"
-                              }}
-                              src={src}
-                              alt={book.title}
-                            />
-                          )}
-                        </ProgressiveImage>
-                      </div>
-                    </div>
-                    <Typography
-                      variant="title"
-                      component="div"
-                      className="title"
-                    >
-                      {book.title}
-                    </Typography>
-                    <Typography
-                      variant="subheading"
-                      component="div"
-                      className="title"
-                    >
-                      {book.authors.map(author => author.name).join(", ")}
-                    </Typography>
-                  </Link>
-                </Paper>
+                <BookCard book={book} />
               </Grid>
             ))}
         </Grid>
+        <Pagination
+          className={classes.pagination}
+          onChange={newPage => {
+            const q = `?page=${newPage}&pageSize=${defaultPageSize}${filterQuery}`;
+            existedQueries.indexOf(q) > -1
+              ? showBooks(q, filterQuery)
+              : fetchBooks(q, filterQuery);
+          }}
+          current={paginationData.page}
+          total={paginationData.rowCount}
+          pageSize={paginationData.pageSize}
+          defaultPageSize={defaultPageSize}
+          hideOnSinglePage={true}
+          locale={localeInfo}
+        />
         <Zoom
           key="secondary"
           in={true}
@@ -220,13 +225,20 @@ class BookList extends Component {
   }
 }
 export default connect(
-  state => ({
-    books: filtratedBooksSelector(state),
-    loading: state.get("books").loading,
-    loaded: state.get("books").loaded,
-    error: state.get("books").error
-  }),
-  { fetchBooks }
+  state => {
+    const fullQuery = state.get("books").fullQuery;
+    return {
+      booksData: state.get("books").entities.get(fullQuery),
+      fullQuery: fullQuery,
+      filterQuery: state.get("books").filterQuery,
+      defaultPageSize: state.get("books").defaultPageSize,
+      existedQueries: state
+        .get("books")
+        .entities.keySeq()
+        .toArray()
+    };
+  },
+  { fetchBooks, showBooks }
 )(
   withStyles(styles, {
     withTheme: true,

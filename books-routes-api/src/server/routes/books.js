@@ -2,14 +2,15 @@ const Router = require("koa-router");
 const queries = require("../db/queries/books");
 
 const router = new Router();
-const BASE_URL = `/api/v1/books`;
+const BASE_URL = `/api/books`;
 
-router.get(BASE_URL, async ctx => {
+router.get(`${BASE_URL}`, async ctx => {
   try {
-    const books = await queries.getAllBooks();
+    const books = await queries.getAllBooks(ctx.request.query);
+    const paginationData = books.pagination;
     ctx.body = {
       status: "success",
-      data: books
+      data: { books, paginationData }
     };
   } catch (err) {
     ctx.status = 400;
@@ -20,7 +21,7 @@ router.get(BASE_URL, async ctx => {
   }
 });
 
-router.get(`${BASE_URL}/:id`, async ctx => {
+router.get(`${BASE_URL}/book/:id`, async ctx => {
   try {
     const book = await queries.getSingleBook(ctx.params.id);
     if (book) {
@@ -43,7 +44,7 @@ router.get(`${BASE_URL}/:id`, async ctx => {
     };
   }
 });
-router.get(`/api/v1/countries-languages`, async ctx => {
+router.get(`/api/countries-languages`, async ctx => {
   try {
     const cl = await queries.getCountriesAndLanguages();
     ctx.body = {
