@@ -201,6 +201,28 @@ class BookList extends Component {
           hideOnSinglePage={true}
           locale={localeInfo}
         />
+        <footer
+          style={{
+            boxSizing: "border-box",
+            textAlign: "center",
+            backgroundColor: "#eee",
+            border: "1px solid #e0e0e0",
+            borderRadius: "8px",
+            padding: "20px 0"
+          }}
+        >
+          <div className="mui-container mui--text-center">
+            Made with ♥ by{" "}
+            <a
+              href="http://ideas-band.space"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Ideas Band LLC
+            </a>{" "}
+            © 2018
+          </div>
+        </footer>
         <Zoom
           key="secondary"
           in={true}

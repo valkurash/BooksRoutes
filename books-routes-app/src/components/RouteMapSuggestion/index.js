@@ -27,7 +27,9 @@ const Map = compose(
     googleMapURL:
       "https://maps.googleapis.com/maps/api/js?key=AIzaSyBKSJA0XS-xvJTzsqwPBo1DqKSolCw_NeQ&v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `100%`, minHeight: "500px" }} />,
+    containerElement: (
+      <div style={{ height: `100vh`, minHeight: "calc(100vh - 232px)" }} />
+    ),
     mapElement: <div style={{ height: `100%` }} />
   }),
   withStateHandlers(

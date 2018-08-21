@@ -93,27 +93,6 @@ class Root extends Component {
             <Route component={NotFoundPage} />
           </Switch>
         </div>
-        <footer
-          style={{
-            boxSizing: "border-box",
-            textAlign: "center",
-            backgroundColor: "#eee",
-            borderTop: "1px solid #e0e0e0",
-            padding: "20px 0"
-          }}
-        >
-          <div className="mui-container mui--text-center">
-            Made with ♥ by{" "}
-            <a
-              href="http://ideas-band.space"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Ideas Band LLC
-            </a>{" "}
-            © 2018
-          </div>
-        </footer>
       </div>
     );
   }
