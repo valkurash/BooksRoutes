@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { fetchBooks, showBooks } from "../../actions/booksActions";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import BookCard from "../BookCard";
@@ -9,20 +7,11 @@ import ContentLoader from "react-content-loader";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import Paper from "@material-ui/core/Paper";
-import Zoom from "@material-ui/core/Zoom";
 import { withStyles } from "@material-ui/core/styles";
-import Pagination from "rc-pagination";
-import "rc-pagination/assets/index.css";
-import localeInfo from "rc-pagination/lib/locale/ru_RU";
 
-const styles = theme => ({
+const styles = () => ({
   bookList: {
     flexGrow: 1
-  },
-  fab: {
-    position: "fixed",
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2
   },
   bookCard: {
     overflow: "hidden",
@@ -34,76 +23,20 @@ const styles = theme => ({
         color: "rgb(0, 105, 95)"
       }
     }
-  },
-  pagination: {
-    display: "flex",
-    justifyContent: "center",
-    margin: "30px 0",
-    "& .rc-pagination-item-active": {
-      backgroundColor: theme.palette.primary.main,
-      borderColor: theme.palette.primary.main,
-      "&:hover a": {
-        color: "#fff"
-      }
-    },
-    "& .rc-pagination-item:hover": {
-      borderColor: theme.palette.primary.main,
-      "& a": {
-        color: theme.palette.primary.main
-      }
-    }
   }
 });
 
 class BookList extends Component {
   static propTypes = {
-    booksData: PropTypes.shape({
-      entities: PropTypes.array,
+      books: PropTypes.array,
       loading: PropTypes.bool,
       loaded: PropTypes.bool,
       error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-      paginationData: PropTypes.object
-    }),
-    fullQuery: PropTypes.string.isRequired,
-    filterQuery: PropTypes.string.isRequired,
-    defaultPageSize: PropTypes.number.isRequired,
-    existedQueries: PropTypes.array,
-    fetchBooks: PropTypes.func,
-    showBooks: PropTypes.func,
-    classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired
   };
 
-  componentDidMount() {
-    const { booksData, fetchBooks, fullQuery, filterQuery } = this.props;
-    if (!booksData || (!booksData.get("loading") && !booksData.get("loaded")))
-      fetchBooks(fullQuery, filterQuery);
-  }
-  componentDidUpdate() {
-    window.scrollTo(0, 0);
-  }
   render() {
-    const {
-      booksData,
-      classes,
-      theme,
-      fetchBooks,
-      showBooks,
-      defaultPageSize,
-      existedQueries,
-      filterQuery
-    } = this.props;
-    if (!booksData) return null;
-
-    const books = booksData.get("entities");
-    const loading = booksData.get("loading");
-    const error = booksData.get("error");
-    const paginationData = booksData.get("paginationData");
-
-    const transitionDuration = {
-      enter: theme.transitions.duration.enteringScreen,
-      exit: theme.transitions.duration.leavingScreen
-    };
+    const { books, loading, error, classes } = this.props;
 
     const range = n => {
       let arr = [];
@@ -186,85 +119,14 @@ class BookList extends Component {
               </Grid>
             ))}
         </Grid>
-        <Pagination
-          className={classes.pagination}
-          onChange={newPage => {
-            const q = `?page=${newPage}&pageSize=${defaultPageSize}${filterQuery}`;
-            existedQueries.indexOf(q) > -1
-              ? showBooks(q, filterQuery)
-              : fetchBooks(q, filterQuery);
-          }}
-          current={paginationData.page}
-          total={paginationData.rowCount}
-          pageSize={paginationData.pageSize}
-          defaultPageSize={defaultPageSize}
-          hideOnSinglePage={true}
-          locale={localeInfo}
-        />
-        <footer
-          style={{
-            boxSizing: "border-box",
-            textAlign: "center",
-            backgroundColor: "#eee",
-            border: "1px solid #e0e0e0",
-            borderRadius: "8px",
-            padding: "20px 0"
-          }}
-        >
-          <div className="mui-container mui--text-center">
-            Made with ♥ by{" "}
-            <a
-              href="http://ideas-band.space"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Ideas Band LLC
-            </a>{" "}
-            © 2018
-          </div>
-        </footer>
-        <Zoom
-          key="secondary"
-          in={true}
-          timeout={transitionDuration}
-          style={{
-            transitionDelay: transitionDuration.exit
-          }}
-          unmountOnExit
-        >
-          <Button
-            component={Link}
-            to="/add"
-            variant="fab"
-            className={classes.fab}
-            color="secondary"
-          >
-            <AddIcon />
-          </Button>
-        </Zoom>
       </div>
     );
   }
 }
-export default connect(
-  state => {
-    const fullQuery = state.get("books").fullQuery;
-    return {
-      booksData: state.get("books").entities.get(fullQuery),
-      fullQuery: fullQuery,
-      filterQuery: state.get("books").filterQuery,
-      defaultPageSize: state.get("books").defaultPageSize,
-      existedQueries: state
-        .get("books")
-        .entities.keySeq()
-        .toArray()
-    };
-  },
-  { fetchBooks, showBooks }
-)(
+export default 
   withStyles(styles, {
     withTheme: true,
     name: "BooksList",
     classNamePrefix: "books-list-"
   })(BookList)
-);
+

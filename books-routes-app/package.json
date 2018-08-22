@@ -11,7 +11,6 @@
     "immutable": "^4.0.0-rc.9",
     "immutable-stringify": "^1.0.5",
     "jss": "^9.8.7",
-    "rc-pagination": "^1.16.5",
     "react": "^16.4.1",
     "react-content-loader": "^3.1.2",
     "react-dom": "^16.4.1",

@@ -18,7 +18,6 @@ const bookForListWrapper = Record({
 const defaultBooksState = Record({
   entities: arrToMap([], bookForListWrapper),
   fullQuery: "?page=1&pageSize=18",
-  filterQuery: "",
   defaultPageSize: 18
 });
 
@@ -29,9 +28,7 @@ export const booksReducer = (
   const { type, payload, response, error } = action;
   switch (type) {
     case actionTypes.SHOW_BOOKS:
-      return state
-        .set("fullQuery", payload.fullQuery)
-        .set("filterQuery", payload.filterQuery);
+      return state.set("fullQuery", payload.fullQuery);
     case actionTypes.FETCH_BOOKS + actionTypes.SUCCESS:
       return state
         .setIn(["entities", payload.fullQuery, "entities"], response.books)
@@ -45,7 +42,6 @@ export const booksReducer = (
     case actionTypes.FETCH_BOOKS + actionTypes.START:
       return state
         .set("fullQuery", payload.fullQuery)
-        .set("filterQuery", payload.filterQuery)
         .setIn(["entities", payload.fullQuery, "loading"], true);
     case actionTypes.FETCH_BOOKS + actionTypes.FAIL:
       return state

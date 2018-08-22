@@ -86,7 +86,9 @@ class Root extends Component {
         <div style={{ padding: "10px 20px" }}>
           <Switch>
             <Redirect from="/" exact to="/books" />
+            <Redirect from="/books/page/1" exact to="/books" />
             <Route exact path="/books" component={BooksPage} />
+            <Route path="/books/page/:pageId" component={BooksPage} />
             <Route path="/books/:bookId/:routeId?" component={BookRoutesPage} />
             <Route exact path="/add" component={AddBookPage} />
             <Route exact path="/politica" component={Politica} />

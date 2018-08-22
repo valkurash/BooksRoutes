@@ -8,31 +8,38 @@ const initialFilters = {
   countries: [],
   loading: false,
   loaded: false,
-  error: false
+  error: false,
+  filterQuery: ""
 };
 
 export const filtersReducer = (filters = initialFilters, action) => {
-  switch (action.type) {
+  const { type, payload, response, error } = action;
+  switch (type) {
     case actionTypes.SEARCH_INPUT_CHANGED:
       return {
         ...filters,
-        searchTerm: action.searchTerm
+        searchTerm: payload.searchTerm
       };
     case actionTypes.COUNTRIES_CHANGED:
       return {
         ...filters,
-        selectedCountries: action.selectedCountries
+        selectedCountries: payload.selectedCountries
       };
     case actionTypes.LANGUAGES_CHANGED:
       return {
         ...filters,
-        selectedLanguages: action.selectedLanguages
+        selectedLanguages: payload.selectedLanguages
+      };
+    case actionTypes.FILTER_CHANGED:
+      return {
+        ...filters,
+        filterQuery: payload.filterQuery
       };
     case actionTypes.FETCH_COUNTRIES_LANGUAGES + actionTypes.SUCCESS:
       return {
         ...filters,
-        languages: action.response.languages,
-        countries: action.response.countries,
+        languages: response.languages,
+        countries: response.countries,
         loading: false,
         loaded: true,
         error: false
@@ -42,12 +49,13 @@ export const filtersReducer = (filters = initialFilters, action) => {
         ...filters,
         loading: true
       };
+
     case actionTypes.FETCH_COUNTRIES_LANGUAGES + actionTypes.FAIL:
       return {
         ...filters,
         loading: true,
         loaded: false,
-        error: action.error
+        error: error
       };
     default:
       return filters;

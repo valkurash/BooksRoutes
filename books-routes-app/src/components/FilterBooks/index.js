@@ -6,8 +6,7 @@ import {
   selectedCountriesChanged,
   selectedLanguagesChanged,
   loadCountriesLanguages,
-  fetchBooks,
-  showBooks
+  filterChanged
 } from "../../actions/booksActions";
 import TextField from "@material-ui/core/TextField";
 import Input from "@material-ui/core/Input";
@@ -36,17 +35,14 @@ class FilterBooks extends Component {
     selectedCountriesChanged: PropTypes.func.isRequired,
     selectedLanguagesChanged: PropTypes.func.isRequired,
     loadCountriesLanguages: PropTypes.func.isRequired,
-    fetchBooks: PropTypes.func.isRequired,
-    showBooks: PropTypes.func.isRequired,
+    filterChanged: PropTypes.func.isRequired,
     countries: PropTypes.array,
     selectedCountries: PropTypes.array,
     languages: PropTypes.array,
     selectedLanguages: PropTypes.array,
     loading: PropTypes.bool,
     loaded: PropTypes.bool,
-    error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-    defaultPageSize: PropTypes.number.isRequired,
-    existedQueries: PropTypes.array
+    error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object])
   };
   componentDidMount() {
     const { loading, loaded, loadCountriesLanguages } = this.props;
@@ -58,19 +54,15 @@ class FilterBooks extends Component {
       searchTermChanged,
       selectedCountriesChanged,
       selectedLanguagesChanged,
-      fetchBooks,
-      showBooks,
+      filterChanged,
       selectedCountries,
       selectedLanguages,
       languages,
       countries,
       loading,
-      error,
-      defaultPageSize,
-      existedQueries
+      error
     } = this.props;
 
-    const defaultQuery = `?page=1&pageSize=${defaultPageSize}`;
     const term = searchTerm ? `&searchTerm=${searchTerm}` : "";
     const country =
       selectedCountries && selectedCountries.length
@@ -80,6 +72,30 @@ class FilterBooks extends Component {
       selectedLanguages && selectedLanguages.length
         ? `&selectedLanguages=${selectedLanguages}`
         : "";
+
+    const filterChange = (
+      value,
+      type,
+      newTerm = term,
+      newCountry = country,
+      newLang = lang
+    ) => {
+      const filter = `${newTerm}${newCountry}${newLang}`;
+      switch (type) {
+        case "term":
+          searchTermChanged(value);
+          break;
+        case "country":
+          selectedCountriesChanged(value);
+          break;
+        case "lang":
+          selectedLanguagesChanged(value);
+          break;
+        default:
+          break;
+      }
+      filterChanged(filter);
+    };
 
     return (
       <div
@@ -99,14 +115,7 @@ class FilterBooks extends Component {
             const newTerm = e.target.value
               ? `&searchTerm=${e.target.value}`
               : "";
-            const filter = `${newTerm}${country}${lang}`;
-            const q = `${defaultQuery}${filter}`;
-            searchTermChanged(e.target.value);
-            if (existedQueries.indexOf(q) > -1) {
-              showBooks(q, filter);
-            } else {
-              fetchBooks(q, filter);
-            }
+            filterChange(e.target.value, "term", newTerm);
           }}
           style={{ margin: "0 10px 25px", maxWidth: 700 }}
           fullWidth
@@ -130,14 +139,13 @@ class FilterBooks extends Component {
                     e.target.value && e.target.value.length
                       ? `&selectedCountries=${e.target.value}`
                       : "";
-                  const filter = `${term}${newCountry}${lang}`;
-                  const q = `${defaultQuery}${filter}`;
-                  selectedCountriesChanged(e.target.value);
-                  if (existedQueries.indexOf(q) > -1) {
-                    showBooks(q, filter);
-                  } else {
-                    fetchBooks(q, filter);
-                  }
+                  filterChange(
+                    e.target.value,
+                    "country",
+                    term,
+                    newCountry,
+                    lang
+                  );
                 }}
                 input={<Input id="select-multiple-checkbox" />}
                 renderValue={selected => selected.join(", ")}
@@ -170,14 +178,7 @@ class FilterBooks extends Component {
                     e.target.value && e.target.value.length
                       ? `&selectedLanguages=${e.target.value}`
                       : "";
-                  const filter = `${term}${country}${newLang}`;
-                  const q = `${defaultQuery}${filter}`;
-                  selectedLanguagesChanged(e.target.value);
-                  if (existedQueries.indexOf(q) > -1) {
-                    showBooks(q, filter);
-                  } else {
-                    fetchBooks(q, filter);
-                  }
+                  filterChange(e.target.value, "lang", term, country, newLang);
                 }}
                 input={<Input id="select-multiple-checkbox" />}
                 renderValue={selected => selected.join(", ")}
@@ -209,12 +210,7 @@ export default connect(
       countries: state.get("filters").countries,
       loading: state.get("filters").loading,
       loaded: state.get("filters").loaded,
-      error: state.get("filters").error,
-      defaultPageSize: state.get("books").defaultPageSize,
-      existedQueries: state
-        .get("books")
-        .entities.keySeq()
-        .toArray()
+      error: state.get("filters").error
     };
   },
   {
@@ -222,7 +218,6 @@ export default connect(
     selectedCountriesChanged,
     selectedLanguagesChanged,
     loadCountriesLanguages,
-    fetchBooks,
-    showBooks
+    filterChanged
   }
 )(FilterBooks);

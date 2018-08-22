@@ -5,17 +5,17 @@ const api =
     ? "https://booksroutes-api.azurewebsites.net/api"
     : "http://localhost:1337/api";
 
-export function fetchBooks(fullQuery, filterQuery) {
+export function fetchBooks(fullQuery) {
   return {
     type: actionTypes.FETCH_BOOKS,
-    payload: { fullQuery, filterQuery },
+    payload: { fullQuery },
     callAPI: `${api}/books/${fullQuery}`
   };
 }
-export function showBooks(fullQuery, filterQuery) {
+export function showBooks(fullQuery) {
   return {
     type: actionTypes.SHOW_BOOKS,
-    payload: { fullQuery, filterQuery }
+    payload: { fullQuery }
   };
 }
 export function fetchBook(id) {
@@ -26,15 +26,23 @@ export function fetchBook(id) {
   };
 }
 export const searchTermChanged = searchTerm => {
-  return { type: actionTypes.SEARCH_INPUT_CHANGED, searchTerm };
+  return { type: actionTypes.SEARCH_INPUT_CHANGED, payload: { searchTerm } };
 };
 export const selectedCountriesChanged = selectedCountries => {
-  return { type: actionTypes.COUNTRIES_CHANGED, selectedCountries };
+  return {
+    type: actionTypes.COUNTRIES_CHANGED,
+    payload: { selectedCountries }
+  };
 };
 export const selectedLanguagesChanged = selectedLanguages => {
-  return { type: actionTypes.LANGUAGES_CHANGED, selectedLanguages };
+  return {
+    type: actionTypes.LANGUAGES_CHANGED,
+    payload: { selectedLanguages }
+  };
 };
-
+export const filterChanged = filterQuery => {
+  return { type: actionTypes.FILTER_CHANGED, payload: { filterQuery } };
+};
 export const loadCountriesLanguages = () => {
   return {
     type: actionTypes.FETCH_COUNTRIES_LANGUAGES,
