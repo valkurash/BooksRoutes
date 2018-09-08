@@ -6,7 +6,3 @@ export function arrToMap(arr, RecordModel = Map, key = "id") {
     new Map({})
   );
 }
-
-export function mapToArr(obj) {
-  return Object.values(obj);
-}
