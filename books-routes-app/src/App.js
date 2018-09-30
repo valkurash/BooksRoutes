@@ -13,6 +13,7 @@ import {
 import JssProvider from "react-jss/lib/JssProvider";
 import { create } from "jss";
 import ReactGA from "react-ga";
+import { YMInitializer } from "react-yandex-metrika";
 import "./index.css";
 
 const notSnap = navigator.userAgent !== "ReactSnap";
@@ -72,6 +73,14 @@ export default class App extends Component {
           <ConnectedRouter history={history}>
             <MuiThemeProvider theme={theme}>
               <Root />
+              {production &&
+                notSnap && (
+                  <YMInitializer
+                    accounts={[50546509]}
+                    version="2"
+                    options={{ defer: true }}
+                  />
+                )}
             </MuiThemeProvider>
           </ConnectedRouter>
         </Provider>
