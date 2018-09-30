@@ -1,5 +1,4 @@
 import ReactGA from "react-ga";
-import ym from "react-yandex-metrika";
 
 const options = {};
 
@@ -9,8 +8,6 @@ const trackPage = page => {
     ...options
   });
   ReactGA.pageview(page);
-
-  ym("hit", page);
 };
 
 let currentPage = "";
