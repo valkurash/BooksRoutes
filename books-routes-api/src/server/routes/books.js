@@ -66,6 +66,7 @@ router.post(`${BASE_URL}`, async ctx => {
     const bookData = {
       book: {
         title: body.title,
+        description: body.route,
         moderated: "false"
       },
       authors: (body.authors.replace(/\s\s+/g, " ") || "unknown")
@@ -73,7 +74,7 @@ router.post(`${BASE_URL}`, async ctx => {
         .map(name => ({ name: name.trim() })),
       routes: [
         {
-          name: body.route,
+          name: "Основной маршрут",
           googlemymap: body.googleMyMaps,
           path: body.points.map((point, i) => {
             return {
