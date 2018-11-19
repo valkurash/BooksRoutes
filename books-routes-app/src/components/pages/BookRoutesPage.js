@@ -145,7 +145,9 @@ class BookRoutesPage extends Component {
       return errorObj.status === 404 ? (
         <NotFoundPage />
       ) : (
-        <div className="error-msg">{errorObj.message || errorObj.statusText}</div>
+        <div className="error-msg">
+          {errorObj.message || errorObj.statusText}
+        </div>
       );
     }
 
@@ -229,7 +231,7 @@ class BookRoutesPage extends Component {
         {bookData && (
           <Helmet>
             <title
-            >{`Туристические маршруты по мотивам книги «${title}»`}</title>
+            >{`Туристические маршруты для путешествий по книге «${title}»`}</title>
             <meta
               name="description"
               content={`Литературные маршруты. Туристический путеводитель по местам из книги «${title}». Карта для путешествий и обзорных экскурсий.`}
@@ -248,7 +250,7 @@ class BookRoutesPage extends Component {
             />
             <meta
               property="og:title"
-              content={`Туристические маршруты по мотивам книги «${title}»`}
+              content={`Туристические маршруты для путешествий книге «${title}»`}
             />
             <meta
               property="og:description"
