@@ -5,6 +5,7 @@ module.exports = {
     "build/static/css/*.css",
     "build/static/js/*.js",
     "build/static/images/*.jpg",
+    "build/images/*.jpg",
     "build/200.html",
     "build/index.html",
     "build/manifest.json",

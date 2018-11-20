@@ -1,4 +1,6 @@
-import { START, SUCCESS, FAIL } from "../constants/ActionTypes";
+const START = "_START";
+const SUCCESS = "_SUCCESS";
+const FAIL = "_FAIL";
 
 export default () => next => action => {
   const { callAPI, type, ...rest } = action;

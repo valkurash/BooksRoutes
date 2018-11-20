@@ -6,8 +6,9 @@ import {
   selectedCountriesChanged,
   selectedLanguagesChanged,
   loadCountriesLanguages,
-  filterChanged
-} from "../../actions/booksActions";
+  filterChanged,
+  stateSelector as filterSelector
+} from "../../ducks/filters";
 import TextField from "@material-ui/core/TextField";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -203,14 +204,14 @@ class FilterBooks extends Component {
 export default connect(
   state => {
     return {
-      searchTerm: state.get("filters").searchTerm,
-      selectedCountries: state.get("filters").selectedCountries,
-      selectedLanguages: state.get("filters").selectedLanguages,
-      languages: state.get("filters").languages,
-      countries: state.get("filters").countries,
-      loading: state.get("filters").loading,
-      loaded: state.get("filters").loaded,
-      error: state.get("filters").error
+      searchTerm: filterSelector(state).searchTerm,
+      selectedCountries: filterSelector(state).selectedCountries,
+      selectedLanguages: filterSelector(state).selectedLanguages,
+      languages: filterSelector(state).languages,
+      countries: filterSelector(state).countries,
+      loading: filterSelector(state).loading,
+      loaded: filterSelector(state).loaded,
+      error: filterSelector(state).error
     };
   },
   {

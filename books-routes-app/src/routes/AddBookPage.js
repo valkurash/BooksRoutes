@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import ArrowIcon from "@material-ui/icons/ArrowLeft";
-import BookForm from "../BookForm";
+import BookForm from "../components/newBook/BookForm";
 import { Helmet } from "react-helmet";
 
 export default class AddBookPage extends Component {

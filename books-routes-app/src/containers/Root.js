@@ -9,11 +9,11 @@ import Popper from "@material-ui/core/Popper";
 import IconButton from "@material-ui/core/IconButton";
 import MailIcon from "@material-ui/icons/Mail";
 import logo from "../images/ib-logo.png";
-import Politica from "../components/pages/Politica";
-import BooksPage from "../components/pages/BooksPage";
-import BookRoutesPage from "../components/pages/BookRoutesPage";
-import AddBookPage from "../components/pages/AddBookPage";
-import NotFoundPage from "../components/pages/NotFoundPage";
+import Politica from "../routes/Politica";
+import BooksPage from "../routes/BooksPage";
+import BookRoutesPage from "../routes/BookRoutesPage";
+import AddBookPage from "../routes/AddBookPage";
+import NotFoundPage from "../routes/NotFoundPage";
 
 class Root extends Component {
   state = {

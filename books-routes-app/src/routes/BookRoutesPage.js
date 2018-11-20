@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Link, Route, Redirect, Switch, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { fetchBook } from "../../actions/booksActions";
-import drawerToggle from "../decorators/handleDrawerToggle";
+import { fetchBook, bookSelector } from "../ducks/book";
+import drawerToggle from "../components/decorators/handleDrawerToggle";
 import PropTypes from "prop-types";
-import RouteMap from "../RouteMap";
-import Book from "../Book";
+import RouteMap from "../components/bookMap/RouteMap";
+import Book from "../components/bookMap/Book";
 import NotFoundPage from "./NotFoundPage";
-import ShareButtons from "../ShareButtons";
+import ShareButtons from "../components/bookMap/ShareButtons";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ContentLoader from "react-content-loader";
 import { withStyles } from "@material-ui/core/styles";
@@ -371,7 +371,7 @@ class BookRoutesPage extends Component {
 }
 export default connect(
   (state, props) => ({
-    book: state.get("singleBooks").entities.get(props.match.params.bookId)
+    book: bookSelector(state, props)
   }),
   (dispatch, ownProps) => ({
     fetchBook: () => dispatch(fetchBook(ownProps.match.params.bookId))
@@ -379,7 +379,7 @@ export default connect(
 )(
   withStyles(styles, {
     withTheme: true,
-    name: "BooksRoutesPage",
+    name: "BookRoutesPage",
     classNamePrefix: "books-routes-"
   })(drawerToggle(BookRoutesPage))
 );

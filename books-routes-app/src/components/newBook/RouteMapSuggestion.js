@@ -4,8 +4,9 @@ import { connect } from "react-redux";
 import {
   changeNewBooksPoint,
   removeNewBooksPoint,
-  newBookPointDescrChanged
-} from "../../actions/booksActions";
+  newBookPointDescrChanged,
+  stateSelector as newBookSelector
+} from "../../ducks/newBook";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
@@ -156,7 +157,7 @@ class RouteMapSuggestion extends Component {
 }
 export default connect(
   state => ({
-    points: state.get("newBook").get("points")
+    points: newBookSelector(state).get("points")
   }),
   dispatch => ({
     changeNewBooksPoint: points => dispatch(changeNewBooksPoint(points)),

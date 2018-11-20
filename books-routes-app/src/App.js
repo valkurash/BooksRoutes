@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Root from "./containers/Root";
 import { Provider } from "react-redux";
-import { ConnectedRouter } from "react-router-redux";
-import store from "./store/configureStore";
+import { ConnectedRouter } from "connected-react-router";
+import configureStore from "./redux";
 import history from "./history";
 import {
   MuiThemeProvider,
@@ -14,6 +14,8 @@ import JssProvider from "react-jss/lib/JssProvider";
 import { create } from "jss";
 import ReactGA from "react-ga";
 import "./index.css";
+
+const store = configureStore();
 
 const notSnap = navigator.userAgent !== "ReactSnap";
 const production = process.env.NODE_ENV === "production";

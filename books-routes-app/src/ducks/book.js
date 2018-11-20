@@ -1,8 +1,23 @@
-import * as actionTypes from "../constants/ActionTypes";
+import { appName, api } from "../config";
 import { Record } from "immutable";
 import { arrToMap } from "./utils";
-import { initialStoreState } from "../redux";
+import { createSelector } from "reselect";
+/**
+ * Actions
+ * */
+export const moduleName = "book";
 
+const prefix = `${appName}/${moduleName}`;
+
+export const START = "_START";
+export const SUCCESS = "_SUCCESS";
+export const FAIL = "_FAIL";
+
+export const FETCH_BOOK = `${prefix}/FETCH_BOOK`;
+
+/**
+ * Reducer
+ * */
 const formatPath = pathArr =>
   pathArr.map(p => {
     return {
@@ -11,7 +26,7 @@ const formatPath = pathArr =>
     };
   });
 
-const singleBookRecord = Record({
+export const singleBookRecord = Record({
   id: null,
   title: null,
   cover: null,
@@ -21,23 +36,20 @@ const singleBookRecord = Record({
   ozon: null,
   litres: null
 });
-const singleBookWrapper = Record({
+export const singleBookWrapper = Record({
   entities: singleBookRecord,
   loading: false,
   loaded: false,
   error: false
 });
-const defaultSingleBooksState = Record({
+export const defaultSingleBooksState = Record({
   entities: arrToMap([], singleBookWrapper)
 });
 
-export const bookReducer = (
-  state = initialStoreState.get("singleBooks") || new defaultSingleBooksState(),
-  action
-) => {
+export default function reducer(state = new defaultSingleBooksState(), action) {
   const { type, payload, response, error } = action;
   switch (type) {
-    case actionTypes.FETCH_BOOK + actionTypes.SUCCESS:
+    case FETCH_BOOK + SUCCESS:
       //TODO: optimize
       response.routes.forEach(r => {
         r.points.forEach(p => {
@@ -69,9 +81,9 @@ export const bookReducer = (
         .setIn(["entities", payload.id, "loading"], false)
         .setIn(["entities", payload.id, "loaded"], true)
         .setIn(["entities", payload.id, "error"], false);
-    case actionTypes.FETCH_BOOK + actionTypes.START:
+    case FETCH_BOOK + START:
       return state.setIn(["entities", payload.id, "loading"], true);
-    case actionTypes.FETCH_BOOK + actionTypes.FAIL:
+    case FETCH_BOOK + FAIL:
       return state
         .setIn(["entities", payload.id, "loading"], false)
         .setIn(["entities", payload.id, "loaded"], false)
@@ -79,4 +91,47 @@ export const bookReducer = (
     default:
       return state;
   }
-};
+}
+
+/**
+ * Selectors
+ * */
+export const stateSelector = state => state[moduleName];
+
+export const bookIdSelector = (state, props) => props.match.params.bookId;
+export const routeIdSelector = (state, props) => props.match.params.routeId;
+
+export const bookSelector = createSelector(
+  stateSelector,
+  bookIdSelector,
+  (state, bookId) => state.entities.get(bookId)
+);
+
+export const routeSelector = createSelector(
+  stateSelector,
+  bookIdSelector,
+  routeIdSelector,
+  (state, bookId, routeId) =>
+    state
+      .get("entities")
+      .get(bookId)
+      .get("entities")
+      .get("routes")
+      .find(route => route.id.toString() === routeId)
+);
+
+/**
+ * Action Creators
+ * */
+
+export function fetchBook(id) {
+  return {
+    type: FETCH_BOOK,
+    payload: { id },
+    callAPI: `${api}/books/book/${id}`
+  };
+}
+
+/**
+ * Sagas
+ **/

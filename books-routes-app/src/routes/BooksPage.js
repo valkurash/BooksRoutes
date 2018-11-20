@@ -1,8 +1,16 @@
 import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
-import BookList from "../BooksList";
-import FilterBooks from "../FilterBooks";
-import { fetchBooks, showBooks } from "../../actions/booksActions";
+import BookList from "../components/books/BooksList";
+import FilterBooks from "../components/filters/FilterBooks";
+import {
+  fetchBooks,
+  showBooks,
+  defaultPageSizeSelector,
+  booksDataSelector,
+  existedQueriesSelector
+} from "../ducks/books";
+import history from "../history";
+import { filterQuerySelector } from "../ducks/filters";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -10,8 +18,6 @@ import Zoom from "@material-ui/core/Zoom";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import { withStyles } from "@material-ui/core/styles";
-import store from "../../store/configureStore";
-import { push } from "react-router-redux";
 
 const styles = theme => ({
   wrapper: {
@@ -94,7 +100,7 @@ class BooksPage extends Component {
     window.scrollTo(0, 0);
     if (pageId !== prevProps.pageId || filterQuery !== prevProps.filterQuery) {
       if (filterQuery !== prevProps.filterQuery && pageId !== "1")
-        store.dispatch(push("/books"));
+        history.push("/books");
       const q = `?page=${pageId}&pageSize=${defaultPageSize}${filterQuery}`;
       existedQueries.indexOf(q) > -1 ? showBooks(q) : fetchBooks(q);
     }
@@ -207,19 +213,18 @@ class BooksPage extends Component {
 }
 export default connect(
   (state, props) => {
-    const fullQuery = state.get("books").fullQuery;
     return {
-      defaultPageSize: state.get("books").defaultPageSize,
+      defaultPageSize: defaultPageSizeSelector(state),
       pageId: props.match.params.pageId || "1",
-      filterQuery: state.get("filters").filterQuery,
-      booksData: state.get("books").entities.get(fullQuery),
-      existedQueries: state
-        .get("books")
-        .entities.keySeq()
-        .toArray()
+      filterQuery: filterQuerySelector(state),
+      booksData: booksDataSelector(state),
+      existedQueries: existedQueriesSelector(state)
     };
   },
-  { fetchBooks, showBooks }
+  {
+    fetchBooks,
+    showBooks
+  }
 )(
   withStyles(styles, {
     withTheme: true,

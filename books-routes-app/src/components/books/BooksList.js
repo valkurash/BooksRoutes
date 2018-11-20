@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import BookCard from "../BookCard";
+import BookCard from "./BookCard";
 import ContentLoader from "react-content-loader";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
@@ -28,10 +28,10 @@ const styles = () => ({
 
 class BookList extends Component {
   static propTypes = {
-      books: PropTypes.array,
-      loading: PropTypes.bool,
-      loaded: PropTypes.bool,
-      error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+    books: PropTypes.array,
+    loading: PropTypes.bool,
+    loaded: PropTypes.bool,
+    error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
     classes: PropTypes.object.isRequired
   };
 
@@ -123,10 +123,8 @@ class BookList extends Component {
     );
   }
 }
-export default 
-  withStyles(styles, {
-    withTheme: true,
-    name: "BooksList",
-    classNamePrefix: "books-list-"
-  })(BookList)
-
+export default withStyles(styles, {
+  withTheme: true,
+  name: "BooksList",
+  classNamePrefix: "books-list-"
+})(BookList);

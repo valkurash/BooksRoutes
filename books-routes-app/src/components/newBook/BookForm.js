@@ -6,10 +6,10 @@ import Grid from "@material-ui/core/Grid";
 import Snackbar from "@material-ui/core/Snackbar";
 import CustomSnackbarContentWrapper from "../decorators/customSnackBar";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import RouteMapSuggestion from "../RouteMapSuggestion";
+import RouteMapSuggestion from "./RouteMapSuggestion";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { changeNewBooksData, sendNewBook } from "../../actions/booksActions";
+import { changeNewBooksData, sendNewBook, stateSelector as newBookSelector } from "../../ducks/newBook";
 
 class BookForm extends Component {
   static propTypes = {
@@ -201,14 +201,14 @@ class BookForm extends Component {
 }
 export default connect(
   state => ({
-    title: state.get("newBook").get("title"),
-    authors: state.get("newBook").get("authors"),
-    route: state.get("newBook").get("route"),
-    googleMyMaps: state.get("newBook").get("googleMyMaps"),
-    points: state.get("newBook").get("points"),
-    loading: state.get("newBook").get("loading"),
-    loaded: state.get("newBook").get("loaded"),
-    error: state.get("newBook").get("error")
+    title: newBookSelector(state).get("title"),
+    authors: newBookSelector(state).get("authors"),
+    route: newBookSelector(state).get("route"),
+    googleMyMaps: newBookSelector(state).get("googleMyMaps"),
+    points: newBookSelector(state).get("points"),
+    loading: newBookSelector(state).get("loading"),
+    loaded: newBookSelector(state).get("loaded"),
+    error: newBookSelector(state).get("error")
   }),
   dispatch => ({
     changeNewBooksData: (name, value) =>

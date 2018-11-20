@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import NotFoundPage from "../pages/NotFoundPage";
-import MarkerWithInfo from "../MarkerWithInfo";
-import PathWithInfo from "../PathWithInfo";
-import PolygonWithInfo from "../PolygonWithInfo";
+import { routeSelector } from "../../ducks/book";
+import NotFoundPage from "../../routes/NotFoundPage";
+import MarkerWithInfo from "./MarkerWithInfo";
+import PathWithInfo from "./PathWithInfo";
+import PolygonWithInfo from "./PolygonWithInfo";
 
 const {
   compose,
@@ -201,11 +202,5 @@ class RouteMap extends Component {
   }
 }
 export default connect((state, props) => ({
-  route: state
-    .get("singleBooks")
-    .get("entities")
-    .get(props.match.params.bookId)
-    .get("entities")
-    .get("routes")
-    .find(route => route.id.toString() === props.match.params.routeId)
+  route: routeSelector(state, props)
 }))(RouteMap);

@@ -1,10 +1,13 @@
+import { appName, api } from "../config";
 import { Record } from "immutable";
 import { arrToMap } from "./utils";
-import { initialStoreState } from "../redux";
-import { appName } from "../config";
+import { createSelector } from "reselect";
 
+/**
+ * Actions
+ * */
 export const moduleName = "books";
-console.log(moduleName);
+
 const prefix = `${appName}/${moduleName}`;
 
 export const START = "_START";
@@ -14,7 +17,10 @@ export const FAIL = "_FAIL";
 export const FETCH_BOOKS = `${prefix}/FETCH_BOOKS`;
 export const SHOW_BOOKS = `${prefix}/SHOW_BOOKS`;
 
-const bookForListWrapper = Record({
+/**
+ * Reducer
+ * */
+export const bookForListWrapper = Record({
   entities: [],
   loading: false,
   loaded: false,
@@ -26,16 +32,13 @@ const bookForListWrapper = Record({
     pageCount: null
   }
 });
-const defaultBooksState = Record({
+export const defaultBooksState = Record({
   entities: arrToMap([], bookForListWrapper),
   fullQuery: "?page=1&pageSize=18",
   defaultPageSize: 18
 });
 
-export const booksReducer = (
-  state = initialStoreState.get("books") || new defaultBooksState(),
-  action
-) => {
+export default function reducer(state = new defaultBooksState(), action) {
   const { type, payload, response, error } = action;
   switch (type) {
     case SHOW_BOOKS:
@@ -62,4 +65,50 @@ export const booksReducer = (
     default:
       return state;
   }
-};
+}
+
+/**
+ * Selectors
+ * */
+
+export const stateSelector = state => state[moduleName];
+
+export const fullQuerySelector = createSelector(
+  stateSelector,
+  state => state.fullQuery
+);
+export const booksDataSelector = createSelector(
+  stateSelector,
+  fullQuerySelector,
+  (state, fullQuery) => state.entities.get(fullQuery)
+);
+
+export const defaultPageSizeSelector = createSelector(
+  stateSelector,
+  state => state.defaultPageSize
+);
+export const existedQueriesSelector = createSelector(stateSelector, state =>
+  state.entities.keySeq().toArray()
+);
+
+/**
+ * Action Creators
+ * */
+
+export function fetchBooks(fullQuery) {
+  return {
+    type: FETCH_BOOKS,
+    payload: { fullQuery },
+    callAPI: `${api}/books/${fullQuery}`
+  };
+}
+export function showBooks(fullQuery) {
+  return {
+    type: SHOW_BOOKS,
+    payload: { fullQuery }
+  };
+}
+
+/**
+ * Sagas
+ **/

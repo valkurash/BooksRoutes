@@ -5,7 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 
 //const { Polygon } = require("react-google-maps");
-import PolygonDataLayer from "../PolygonDataLayer";
+import PolygonDataLayer from "./PolygonDataLayer";
 
 export default class PolygonWithInfo extends PureComponent {
   static propTypes = {
