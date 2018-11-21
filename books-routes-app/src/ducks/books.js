@@ -1,8 +1,8 @@
 import { appName, api } from "../config";
 import { Record } from "immutable";
-import { arrToMap } from "./utils";
+import { arrToMap, fetchAPI } from "./utils";
 import { createSelector } from "reselect";
-
+import { put, call, all, takeEvery } from "redux-saga/effects";
 /**
  * Actions
  * */
@@ -97,9 +97,8 @@ export const existedQueriesSelector = createSelector(stateSelector, state =>
 
 export function fetchBooks(fullQuery) {
   return {
-    type: FETCH_BOOKS,
-    payload: { fullQuery },
-    callAPI: `${api}/books/${fullQuery}`
+    type: FETCH_BOOKS + START,
+    payload: { fullQuery }
   };
 }
 export function showBooks(fullQuery) {
@@ -112,3 +111,26 @@ export function showBooks(fullQuery) {
 /**
  * Sagas
  **/
+
+export function* fetchBooksSaga({ payload }) {
+  try {
+    const result = yield call(
+      fetchAPI,
+      `${api}/books/${payload.fullQuery}`,
+      payload
+    );
+    yield put({
+      type: FETCH_BOOKS + SUCCESS,
+      ...result
+    });
+  } catch (error) {
+    yield put({
+      type: FETCH_BOOKS + FAIL,
+      ...error
+    });
+  }
+}
+
+export function* saga() {
+  yield all([takeEvery(FETCH_BOOKS + START, fetchBooksSaga)]);
+}

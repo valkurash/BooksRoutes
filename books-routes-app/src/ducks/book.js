@@ -1,7 +1,8 @@
 import { appName, api } from "../config";
 import { Record } from "immutable";
-import { arrToMap } from "./utils";
+import { arrToMap, fetchAPI } from "./utils";
 import { createSelector } from "reselect";
+import { put, call, all, takeEvery } from "redux-saga/effects";
 /**
  * Actions
  * */
@@ -126,12 +127,33 @@ export const routeSelector = createSelector(
 
 export function fetchBook(id) {
   return {
-    type: FETCH_BOOK,
-    payload: { id },
-    callAPI: `${api}/books/book/${id}`
+    type: FETCH_BOOK + START,
+    payload: { id }
   };
 }
 
 /**
  * Sagas
  **/
+export function* fetchBookSaga({ payload }) {
+  try {
+    const result = yield call(
+      fetchAPI,
+      `${api}/books/book/${payload.id}`,
+      payload
+    );
+    yield put({
+      type: FETCH_BOOK + SUCCESS,
+      ...result
+    });
+  } catch (error) {
+    yield put({
+      type: FETCH_BOOK + FAIL,
+      ...error
+    });
+  }
+}
+
+export function* saga() {
+  yield all([takeEvery(FETCH_BOOK + START, fetchBookSaga)]);
+}

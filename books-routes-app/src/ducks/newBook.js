@@ -1,5 +1,7 @@
 import { appName, api } from "../config";
 import { Record } from "immutable";
+import { fetchAPI } from "./utils";
+import { put, call, all, takeEvery } from "redux-saga/effects";
 
 /**
  * Actions
@@ -109,12 +111,28 @@ export function changeNewBooksData(name, value) {
 }
 export function sendNewBook(bookData) {
   return {
-    type: SEND_NEW_BOOK,
-    payload: { ...bookData },
-    callAPI: `${api}/books`,
-    method: "POST"
+    type: SEND_NEW_BOOK + START,
+    payload: { ...bookData }
   };
 }
 /**
  * Sagas
  **/
+export function* sendNewBookSaga({ payload }) {
+  try {
+    const result = yield call(fetchAPI, `${api}/books`, payload, "POST");
+    yield put({
+      type: SEND_NEW_BOOK + SUCCESS,
+      ...result
+    });
+  } catch (error) {
+    yield put({
+      type: SEND_NEW_BOOK + FAIL,
+      ...error
+    });
+  }
+}
+
+export function* saga() {
+  yield all([takeEvery(SEND_NEW_BOOK + START, sendNewBookSaga)]);
+}

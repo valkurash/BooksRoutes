@@ -1,15 +1,15 @@
 import { createStore, applyMiddleware } from "redux";
 import logger from "redux-logger";
 import reducer from "./reducer";
+import monitorReducersEnhancer from "../enhancers/monitorReducers";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { googleAnalytics } from "../middlewares/reactGAMiddlewares";
 import { routerMiddleware } from "connected-react-router";
 import history from "../history";
 import { dehydrateImmutable, hydrateImmutable } from "immutable-stringify";
 import { Map } from "immutable";
-
-import callAPI from "../middlewares/callAPI";
-import thunk from "redux-thunk";
+import rootSaga from "./saga";
+import createSagaMiddleware from "redux-saga";
 
 export default function configureStore() {
   // Grab the state from a global variable injected into the server-generated HTML
@@ -17,18 +17,37 @@ export default function configureStore() {
     ? hydrateImmutable(window.__PRELOADED_STATE__).toObject()
     : {};
 
-  let middleware = [thunk, callAPI, routerMiddleware(history)];
+  const sagaMiddleware = createSagaMiddleware();
+
+  let middleware = [sagaMiddleware, routerMiddleware(history)];
+
   if (process.env.NODE_ENV !== "production") {
     middleware = [...middleware, logger];
+    enhancers;
   } else if (navigator.userAgent !== "ReactSnap") {
     middleware = [...middleware, googleAnalytics];
   }
-  const composedEnhancers = composeWithDevTools(applyMiddleware(...middleware));
+
+  let enhancers = [applyMiddleware(...middleware)];
+  if (
+    process.env.NODE_ENV !== "production" &&
+    navigator.userAgent !== "ReactSnap"
+  ) {
+    enhancers = [...enhancers, monitorReducersEnhancer];
+  }
+
+  const composedEnhancers = composeWithDevTools(
+    applyMiddleware(...middleware),
+    enhancers
+  );
   const store = createStore(
     reducer(history),
     preloadedState,
     composedEnhancers
   );
+
+  sagaMiddleware.run(rootSaga);
+
   // Tell react-snap how to save Redux state
   window.snapSaveState = () => ({
     __PRELOADED_STATE__: dehydrateImmutable(Map(store.getState()))

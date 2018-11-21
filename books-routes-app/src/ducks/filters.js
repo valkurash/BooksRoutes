@@ -1,6 +1,7 @@
 import { appName, api } from "../config";
 import { createSelector } from "reselect";
-
+import { fetchAPI } from "./utils";
+import { put, call, all, takeEvery } from "redux-saga/effects";
 /**
  * Actions
  * */
@@ -116,11 +117,30 @@ export const filterChanged = filterQuery => {
 };
 export const loadCountriesLanguages = () => {
   return {
-    type: FETCH_COUNTRIES_LANGUAGES,
-    callAPI: `${api}/countries-languages`
+    type: FETCH_COUNTRIES_LANGUAGES + START
   };
 };
 
 /**
  * Sagas
  **/
+export function* fetchCountriesLanguagesSaga() {
+  try {
+    const result = yield call(fetchAPI, `${api}/countries-languages`);
+    yield put({
+      type: FETCH_COUNTRIES_LANGUAGES + SUCCESS,
+      ...result
+    });
+  } catch (error) {
+    yield put({
+      type: FETCH_COUNTRIES_LANGUAGES + FAIL,
+      ...error
+    });
+  }
+}
+
+export function* saga() {
+  yield all([
+    takeEvery(FETCH_COUNTRIES_LANGUAGES + START, fetchCountriesLanguagesSaga)
+  ]);
+}
