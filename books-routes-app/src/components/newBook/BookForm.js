@@ -9,124 +9,98 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import RouteMapSuggestion from "./RouteMapSuggestion";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { changeNewBooksData, sendNewBook, stateSelector as newBookSelector } from "../../ducks/newBook";
+import { Field, reduxForm } from "redux-form/immutable";
+import { stateSelector as newBookSelector } from "../../ducks/newBook";
+
+const validate = values => {
+  const errors = {};
+  if (!values.get("title")) {
+    errors.title = true;
+  }
+  if (!values.get("authors")) {
+    errors.authors = true;
+  }
+  if (!values.get("route")) {
+    errors.route = true;
+  }
+
+  return errors;
+};
+
+const renderTextField = ({ input, meta: { touched, error }, ...custom }) => (
+  <TextField error={touched && error} {...input} {...custom} />
+);
 
 class BookForm extends Component {
   static propTypes = {
-    title: PropTypes.string,
-    authors: PropTypes.string,
-    route: PropTypes.string,
-    googleMyMaps: PropTypes.string,
-    points: PropTypes.array,
-    changeNewBooksData: PropTypes.func.isRequired,
-    sendNewBook: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.any,
+    handleClose: PropTypes.any,
+    close: PropTypes.bool,
+    submitting: PropTypes.bool,
+    pristine: PropTypes.bool,
     loading: PropTypes.bool,
     loaded: PropTypes.bool,
     error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object])
   };
 
-  state = {
-    close: false,
-    validation: ["title", "authors", "route"],
-    titleError: false,
-    authors: false,
-    route: false
-  };
-
-  handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.setState({ close: true });
-  };
-
   render() {
     const {
-      title,
-      authors,
-      route,
-      points,
-      googleMyMaps,
-      changeNewBooksData,
-      sendNewBook,
+      handleSubmit,
+      handleClose,
+      close,
+      pristine,
+      submitting,
       loading,
       loaded,
       error
     } = this.props;
 
-    const handleSubmit = () => {
-      let valid = true;
-      this.state.validation.forEach(el => {
-        let name = `${el}Error`;
-        if (!this.props[el]) {
-          valid = false;
-          this.setState({ [name]: true });
-        } else {
-          this.setState({ [name]: false });
-        }
-      });
-      if (valid) {
-        this.setState({ close: false });
-        sendNewBook({ title, authors, route, points, googleMyMaps });
-      }
-    };
     return (
       <div>
-        <form noValidate autoComplete="off">
+        <form onSubmit={handleSubmit} noValidate autoComplete="off">
           <Grid container spacing={24}>
             <Grid item xs={12} md={4}>
-              <TextField
-                error={this.state.titleError}
-                required
+              <Field
+                component={renderTextField}
+                name="title"
                 id="title"
                 label="Название книги"
-                value={title}
-                onChange={e => changeNewBooksData("title", e.target.value)}
                 margin="normal"
                 fullWidth
               />
-              <TextField
-                error={this.state.authorsError}
-                required
-                id="authors"
+              <Field
+                component={renderTextField}
+                name="authors"
                 label="Автор"
-                value={authors}
-                onChange={e => changeNewBooksData("authors", e.target.value)}
                 helperText="Если авторов несколько, перечислите их через запятую"
                 margin="normal"
                 fullWidth
               />
-              <TextField
-                error={this.state.routeError}
-                required
-                id="route"
+              <Field
+                component={renderTextField}
+                name="route"
                 label="Название или описание маршрута"
-                value={route}
-                onChange={e => changeNewBooksData("route", e.target.value)}
                 helperText="Предложите свой маршрут"
                 margin="normal"
                 multiline
                 rows="4"
                 fullWidth
               />
-              <TextField
-                id="googlemymaps"
+              <Field
+                component={renderTextField}
+                name="googlemymaps"
                 label="Ссылка на маршрут в Google My Maps"
-                value={googleMyMaps}
-                onChange={e =>
-                  changeNewBooksData("googleMyMaps", e.target.value)
-                }
                 helperText="Этот маршрут должен быть доступен для просмотра всем пользователям, имеющим ссылку"
                 margin="normal"
                 fullWidth
               />
               <Button
+                type="submit"
+                disabled={pristine || submitting}
                 variant="raised"
                 color="secondary"
                 size="large"
                 style={{ margin: "15px 0" }}
-                onClick={() => handleSubmit()}
               >
                 Отправить
               </Button>
@@ -161,17 +135,16 @@ class BookForm extends Component {
             </Grid>
           </Grid>
         </form>
-
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "left"
           }}
-          open={!this.state.close && !!error}
+          open={!close && !!error}
           autoHideDuration={6000}
         >
           <CustomSnackbarContentWrapper
-            onClose={this.handleClose}
+            onClose={handleClose}
             variant="error"
             message={
               error
@@ -186,11 +159,11 @@ class BookForm extends Component {
             vertical: "bottom",
             horizontal: "left"
           }}
-          open={!this.state.close && loaded}
+          open={!close && loaded}
           autoHideDuration={6000}
         >
           <CustomSnackbarContentWrapper
-            onClose={this.handleClose}
+            onClose={handleClose}
             variant="success"
             message="Ваше предложение принято, спасибо!"
           />
@@ -199,20 +172,12 @@ class BookForm extends Component {
     );
   }
 }
-export default connect(
-  state => ({
-    title: newBookSelector(state).get("title"),
-    authors: newBookSelector(state).get("authors"),
-    route: newBookSelector(state).get("route"),
-    googleMyMaps: newBookSelector(state).get("googleMyMaps"),
-    points: newBookSelector(state).get("points"),
-    loading: newBookSelector(state).get("loading"),
-    loaded: newBookSelector(state).get("loaded"),
-    error: newBookSelector(state).get("error")
-  }),
-  dispatch => ({
-    changeNewBooksData: (name, value) =>
-      dispatch(changeNewBooksData(name, value)),
-    sendNewBook: bookData => dispatch(sendNewBook(bookData))
-  })
-)(BookForm);
+export default connect((state, props) => ({
+  initialValues: newBookSelector(state),
+  loading: newBookSelector(state).get("loading"),
+  loaded: newBookSelector(state).get("loaded"),
+  error: newBookSelector(state).get("error"),
+  close: props.close,
+  handleClose: props.handleClose,
+  onSubmit: props.onSubmit
+}))(reduxForm({ form: "newBook", validate })(BookForm));

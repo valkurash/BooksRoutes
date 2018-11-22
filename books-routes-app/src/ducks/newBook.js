@@ -43,9 +43,6 @@ export function removeNewBooksPoint(index) {
 export function newBookPointDescrChanged(value, index) {
   return action(ADD_DESCRIPTION_NEW_BOOK_POINTS, { payload: { value, index } });
 }
-export function changeNewBooksData(name, value) {
-  return action(CHANGE_NEW_BOOK_DATA, { payload: { name, value } });
-}
 
 /**
  * Reducer

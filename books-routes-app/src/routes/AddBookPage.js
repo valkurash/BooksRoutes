@@ -4,8 +4,37 @@ import Typography from "@material-ui/core/Typography";
 import ArrowIcon from "@material-ui/icons/ArrowLeft";
 import BookForm from "../components/newBook/BookForm";
 import { Helmet } from "react-helmet";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { sendNewBook } from "../ducks/newBook";
 
-export default class AddBookPage extends Component {
+class AddBookPage extends Component {
+  static propTypes = {
+    sendNewBook: PropTypes.func.isRequired
+  };
+  state = {
+    close: false
+  };
+
+  handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ close: true });
+  };
+
+  handleSubmit = values => {
+    this.setState({ close: false });
+    sendNewBook({
+      title: values.get("title"),
+      authors: values.get("authors"),
+      route: values.get("route"),
+      points: values.get("googleMyMaps"),
+      googleMyMaps: values.get("googleMyMaps")
+    });
+  };
+
   render() {
     return (
       <div>
@@ -57,8 +86,19 @@ export default class AddBookPage extends Component {
         >
           Предложить туристический маршрут по мотивам любимой книги
         </Typography>
-        <BookForm />
+        <BookForm
+          handleClose={this.handleClose}
+          onSubmit={this.handleSubmit}
+          close={this.state.close}
+        />
       </div>
     );
   }
 }
+
+export default connect(
+  null,
+  dispatch => ({
+    sendNewBook: bookData => dispatch(sendNewBook(bookData))
+  })
+)(AddBookPage);
