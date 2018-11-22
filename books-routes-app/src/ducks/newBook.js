@@ -1,7 +1,15 @@
 import { appName, api } from "../config";
 import { Record } from "immutable";
-import { fetchAPI } from "./utils";
-import { put, call, all, takeEvery } from "redux-saga/effects";
+import {
+  createRequestTypes,
+  action,
+  fetchEntity,
+  fetchActionCreator,
+  REQUEST,
+  SUCCESS,
+  FAILURE
+} from "./utils";
+import { all, take, fork } from "redux-saga/effects";
 
 /**
  * Actions
@@ -10,15 +18,34 @@ export const moduleName = "newBook";
 
 const prefix = `${appName}/${moduleName}`;
 
-export const START = "_START";
-export const SUCCESS = "_SUCCESS";
-export const FAIL = "_FAIL";
+const NEW_BOOK = createRequestTypes(`${prefix}/NEW_BOOK`);
+const SEND_NEW_BOOK = `${prefix}/SEND_NEW_BOOK`;
 
-export const CHANGE_NEW_BOOK_POINTS = `${prefix}/CHANGE_NEW_BOOK_POINTS`;
-export const REMOVE_NEW_BOOK_POINTS = `${prefix}/REMOVE_NEW_BOOK_POINTS`;
-export const ADD_DESCRIPTION_NEW_BOOK_POINTS = `${prefix}/ADD_DESCRIPTION_NEW_BOOK_POINTS`;
-export const CHANGE_NEW_BOOK_DATA = `${prefix}/CHANGE_NEW_BOOK_DATA`;
-export const SEND_NEW_BOOK = `${prefix}/SEND_NEW_BOOK`;
+const CHANGE_NEW_BOOK_POINTS = `${prefix}/CHANGE_NEW_BOOK_POINTS`;
+const REMOVE_NEW_BOOK_POINTS = `${prefix}/REMOVE_NEW_BOOK_POINTS`;
+const ADD_DESCRIPTION_NEW_BOOK_POINTS = `${prefix}/ADD_DESCRIPTION_NEW_BOOK_POINTS`;
+const CHANGE_NEW_BOOK_DATA = `${prefix}/CHANGE_NEW_BOOK_DATA`;
+
+/**
+ * Action Creators
+ * */
+const newBook = fetchActionCreator(NEW_BOOK);
+
+export function sendNewBook(bookData) {
+  return action(SEND_NEW_BOOK, { payload: { bookData } });
+}
+export function changeNewBooksPoint(points) {
+  return action(CHANGE_NEW_BOOK_POINTS, { payload: { points } });
+}
+export function removeNewBooksPoint(index) {
+  return action(REMOVE_NEW_BOOK_POINTS, { payload: { index } });
+}
+export function newBookPointDescrChanged(value, index) {
+  return action(ADD_DESCRIPTION_NEW_BOOK_POINTS, { payload: { value, index } });
+}
+export function changeNewBooksData(name, value) {
+  return action(CHANGE_NEW_BOOK_DATA, { payload: { name, value } });
+}
 
 /**
  * Reducer
@@ -54,7 +81,7 @@ export default function reducer(state = new newBookDataRecord(), action) {
       ]);
     case CHANGE_NEW_BOOK_DATA:
       return state.set(payload.name, payload.value);
-    case SEND_NEW_BOOK + SUCCESS:
+    case SEND_NEW_BOOK[SUCCESS]:
       return state
         .set("loading", false)
         .set("loaded", true)
@@ -64,10 +91,9 @@ export default function reducer(state = new newBookDataRecord(), action) {
         .set("authors", "")
         .set("route", "")
         .set("points", []);
-
-    case SEND_NEW_BOOK + START:
+    case NEW_BOOK[REQUEST]:
       return state.set("loading", true).set("loaded", false);
-    case SEND_NEW_BOOK + FAIL:
+    case NEW_BOOK[FAILURE]:
       return state
         .set("loading", false)
         .set("loaded", false)
@@ -83,56 +109,17 @@ export default function reducer(state = new newBookDataRecord(), action) {
 export const stateSelector = state => state[moduleName];
 
 /**
- * Action Creators
- * */
-export function changeNewBooksPoint(points) {
-  return {
-    type: CHANGE_NEW_BOOK_POINTS,
-    payload: { points }
-  };
-}
-export function removeNewBooksPoint(index) {
-  return {
-    type: REMOVE_NEW_BOOK_POINTS,
-    payload: { index }
-  };
-}
-export function newBookPointDescrChanged(value, index) {
-  return {
-    type: ADD_DESCRIPTION_NEW_BOOK_POINTS,
-    payload: { value, index }
-  };
-}
-export function changeNewBooksData(name, value) {
-  return {
-    type: CHANGE_NEW_BOOK_DATA,
-    payload: { name, value }
-  };
-}
-export function sendNewBook(bookData) {
-  return {
-    type: SEND_NEW_BOOK + START,
-    payload: { ...bookData }
-  };
-}
-/**
  * Sagas
  **/
-export function* sendNewBookSaga({ payload }) {
-  try {
-    const result = yield call(fetchAPI, `${api}/books`, payload, "POST");
-    yield put({
-      type: SEND_NEW_BOOK + SUCCESS,
-      ...result
-    });
-  } catch (error) {
-    yield put({
-      type: SEND_NEW_BOOK + FAIL,
-      ...error
-    });
+const sendNewBookSaga = fetchEntity.bind(null, newBook, () => `${api}/books`);
+
+function* watchSendNewBookSaga() {
+  while (true) {
+    const { payload } = yield take(SEND_NEW_BOOK);
+    yield fork(sendNewBookSaga, payload, "POST");
   }
 }
 
 export function* saga() {
-  yield all([takeEvery(SEND_NEW_BOOK + START, sendNewBookSaga)]);
+  yield all([fork(watchSendNewBookSaga)]);
 }

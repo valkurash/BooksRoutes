@@ -1,7 +1,15 @@
 import { appName, api } from "../config";
 import { createSelector } from "reselect";
-import { fetchAPI } from "./utils";
-import { put, call, all, takeEvery } from "redux-saga/effects";
+import {
+  createRequestTypes,
+  action,
+  fetchEntity,
+  fetchActionCreator,
+  REQUEST,
+  SUCCESS,
+  FAILURE
+} from "./utils";
+import { all, take, fork } from "redux-saga/effects";
 /**
  * Actions
  * */
@@ -9,15 +17,35 @@ export const moduleName = "filters";
 
 const prefix = `${appName}/${moduleName}`;
 
-export const START = "_START";
-export const SUCCESS = "_SUCCESS";
-export const FAIL = "_FAIL";
+const COUNTRIES_LANGUAGES = createRequestTypes(`${prefix}/COUNTRIES_LANGUAGES`);
+const FETCH_COUNTRIES_LANGUAGES = `${prefix}/FETCH_COUNTRIES_LANGUAGES`;
 
-export const SEARCH_INPUT_CHANGED = `${prefix}/SEARCH_INPUT_CHANGED`;
-export const COUNTRIES_CHANGED = `${prefix}/COUNTRIES_CHANGED`;
-export const LANGUAGES_CHANGED = `${prefix}/LANGUAGES_CHANGED`;
-export const FILTER_CHANGED = `${prefix}/FILTER_CHANGED`;
-export const FETCH_COUNTRIES_LANGUAGES = `${prefix}/FETCH_COUNTRIES_LANGUAGES`;
+const SEARCH_INPUT_CHANGED = `${prefix}/SEARCH_INPUT_CHANGED`;
+const COUNTRIES_CHANGED = `${prefix}/COUNTRIES_CHANGED`;
+const LANGUAGES_CHANGED = `${prefix}/LANGUAGES_CHANGED`;
+const FILTER_CHANGED = `${prefix}/FILTER_CHANGED`;
+
+/**
+ * Action Creators
+ * */
+const countriesLanguages = fetchActionCreator(COUNTRIES_LANGUAGES);
+
+export function loadCountriesLanguages() {
+  return action(FETCH_COUNTRIES_LANGUAGES);
+}
+
+export function searchTermChanged(searchTerm) {
+  return action(SEARCH_INPUT_CHANGED, { payload: { searchTerm } });
+}
+export function selectedCountriesChanged(selectedCountries) {
+  return action(COUNTRIES_CHANGED, { payload: { selectedCountries } });
+}
+export function selectedLanguagesChanged(selectedLanguages) {
+  return action(LANGUAGES_CHANGED, { payload: { selectedLanguages } });
+}
+export function filterChanged(filterQuery) {
+  return action(FILTER_CHANGED, { payload: { filterQuery } });
+}
 
 /**
  * Reducer
@@ -57,7 +85,7 @@ export default function reducer(filters = initialFilters, action) {
         ...filters,
         filterQuery: payload.filterQuery
       };
-    case FETCH_COUNTRIES_LANGUAGES + SUCCESS:
+    case COUNTRIES_LANGUAGES[SUCCESS]:
       return {
         ...filters,
         languages: response.languages,
@@ -66,13 +94,13 @@ export default function reducer(filters = initialFilters, action) {
         loaded: true,
         error: false
       };
-    case FETCH_COUNTRIES_LANGUAGES + START:
+    case COUNTRIES_LANGUAGES[REQUEST]:
       return {
         ...filters,
         loading: true
       };
 
-    case FETCH_COUNTRIES_LANGUAGES + FAIL:
+    case COUNTRIES_LANGUAGES[FAILURE]:
       return {
         ...filters,
         loading: true,
@@ -95,52 +123,21 @@ export const filterQuerySelector = createSelector(
 );
 
 /**
- * Action Creators
- * */
-export const searchTermChanged = searchTerm => {
-  return { type: SEARCH_INPUT_CHANGED, payload: { searchTerm } };
-};
-export const selectedCountriesChanged = selectedCountries => {
-  return {
-    type: COUNTRIES_CHANGED,
-    payload: { selectedCountries }
-  };
-};
-export const selectedLanguagesChanged = selectedLanguages => {
-  return {
-    type: LANGUAGES_CHANGED,
-    payload: { selectedLanguages }
-  };
-};
-export const filterChanged = filterQuery => {
-  return { type: FILTER_CHANGED, payload: { filterQuery } };
-};
-export const loadCountriesLanguages = () => {
-  return {
-    type: FETCH_COUNTRIES_LANGUAGES + START
-  };
-};
-
-/**
  * Sagas
  **/
-export function* fetchCountriesLanguagesSaga() {
-  try {
-    const result = yield call(fetchAPI, `${api}/countries-languages`);
-    yield put({
-      type: FETCH_COUNTRIES_LANGUAGES + SUCCESS,
-      ...result
-    });
-  } catch (error) {
-    yield put({
-      type: FETCH_COUNTRIES_LANGUAGES + FAIL,
-      ...error
-    });
+const fetchCountriesLanguagesSaga = fetchEntity.bind(
+  null,
+  countriesLanguages,
+  () => `${api}/countries-languages`
+);
+
+function* watchFetchCountriesLanguagesSaga() {
+  while (true) {
+    const { payload } = yield take(FETCH_COUNTRIES_LANGUAGES);
+    yield fork(fetchCountriesLanguagesSaga, payload);
   }
 }
 
 export function* saga() {
-  yield all([
-    takeEvery(FETCH_COUNTRIES_LANGUAGES + START, fetchCountriesLanguagesSaga)
-  ]);
+  yield all([fork(watchFetchCountriesLanguagesSaga)]);
 }

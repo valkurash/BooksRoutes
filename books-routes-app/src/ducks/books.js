@@ -1,8 +1,17 @@
 import { appName, api } from "../config";
 import { Record } from "immutable";
-import { arrToMap, fetchAPI } from "./utils";
+import {
+  arrToMap,
+  createRequestTypes,
+  action,
+  fetchEntity,
+  fetchActionCreator,
+  REQUEST,
+  SUCCESS,
+  FAILURE
+} from "./utils";
 import { createSelector } from "reselect";
-import { put, call, all, takeEvery } from "redux-saga/effects";
+import { all, take, fork } from "redux-saga/effects";
 /**
  * Actions
  * */
@@ -10,17 +19,26 @@ export const moduleName = "books";
 
 const prefix = `${appName}/${moduleName}`;
 
-export const START = "_START";
-export const SUCCESS = "_SUCCESS";
-export const FAIL = "_FAIL";
+const BOOKS = createRequestTypes(`${prefix}/BOOKS`);
+const SHOW_BOOKS = `${prefix}/SHOW_BOOKS`;
+const FETCH_BOOKS = `${prefix}/FETCH_BOOKS`;
 
-export const FETCH_BOOKS = `${prefix}/FETCH_BOOKS`;
-export const SHOW_BOOKS = `${prefix}/SHOW_BOOKS`;
+/**
+ * Action Creators
+ * */
+const books = fetchActionCreator(BOOKS);
+
+export function fetchBooks(fullQuery) {
+  return action(FETCH_BOOKS, { payload: { fullQuery } });
+}
+export function showBooks(fullQuery) {
+  return action(SHOW_BOOKS, { payload: { fullQuery } });
+}
 
 /**
  * Reducer
  * */
-export const bookForListWrapper = Record({
+const bookForListWrapper = Record({
   entities: [],
   loading: false,
   loaded: false,
@@ -32,7 +50,7 @@ export const bookForListWrapper = Record({
     pageCount: null
   }
 });
-export const defaultBooksState = Record({
+const defaultBooksState = Record({
   entities: arrToMap([], bookForListWrapper),
   fullQuery: "?page=1&pageSize=18",
   defaultPageSize: 18
@@ -43,7 +61,7 @@ export default function reducer(state = new defaultBooksState(), action) {
   switch (type) {
     case SHOW_BOOKS:
       return state.set("fullQuery", payload.fullQuery);
-    case FETCH_BOOKS + SUCCESS:
+    case BOOKS[SUCCESS]:
       return state
         .setIn(["entities", payload.fullQuery, "entities"], response.books)
         .setIn(
@@ -53,11 +71,11 @@ export default function reducer(state = new defaultBooksState(), action) {
         .setIn(["entities", payload.fullQuery, "loading"], false)
         .setIn(["entities", payload.fullQuery, "loaded"], true)
         .setIn(["entities", payload.fullQuery, "error"], false);
-    case FETCH_BOOKS + START:
+    case BOOKS[REQUEST]:
       return state
         .set("fullQuery", payload.fullQuery)
         .setIn(["entities", payload.fullQuery, "loading"], true);
-    case FETCH_BOOKS + FAIL:
+    case BOOKS[FAILURE]:
       return state
         .setIn(["entities", payload.fullQuery, "loading"], false)
         .setIn(["entities", payload.fullQuery, "loaded"], false)
@@ -92,45 +110,21 @@ export const existedQueriesSelector = createSelector(stateSelector, state =>
 );
 
 /**
- * Action Creators
- * */
-
-export function fetchBooks(fullQuery) {
-  return {
-    type: FETCH_BOOKS + START,
-    payload: { fullQuery }
-  };
-}
-export function showBooks(fullQuery) {
-  return {
-    type: SHOW_BOOKS,
-    payload: { fullQuery }
-  };
-}
-
-/**
  * Sagas
  **/
+const fetchBooksSaga = fetchEntity.bind(
+  null,
+  books,
+  payload => `${api}/books/${payload.fullQuery}`
+);
 
-export function* fetchBooksSaga({ payload }) {
-  try {
-    const result = yield call(
-      fetchAPI,
-      `${api}/books/${payload.fullQuery}`,
-      payload
-    );
-    yield put({
-      type: FETCH_BOOKS + SUCCESS,
-      ...result
-    });
-  } catch (error) {
-    yield put({
-      type: FETCH_BOOKS + FAIL,
-      ...error
-    });
+function* watchFetchBooksSaga() {
+  while (true) {
+    const { payload } = yield take(FETCH_BOOKS);
+    yield fork(fetchBooksSaga, payload);
   }
 }
 
 export function* saga() {
-  yield all([takeEvery(FETCH_BOOKS + START, fetchBooksSaga)]);
+  yield all([fork(watchFetchBooksSaga)]);
 }

@@ -23,7 +23,6 @@ export default function configureStore() {
 
   if (process.env.NODE_ENV !== "production") {
     middleware = [...middleware, logger];
-    enhancers;
   } else if (navigator.userAgent !== "ReactSnap") {
     middleware = [...middleware, googleAnalytics];
   }
@@ -36,10 +35,7 @@ export default function configureStore() {
     enhancers = [...enhancers, monitorReducersEnhancer];
   }
 
-  const composedEnhancers = composeWithDevTools(
-    applyMiddleware(...middleware),
-    enhancers
-  );
+  const composedEnhancers = composeWithDevTools(...enhancers);
   const store = createStore(
     reducer(history),
     preloadedState,

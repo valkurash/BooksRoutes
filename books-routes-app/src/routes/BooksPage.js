@@ -71,7 +71,6 @@ class BooksPage extends Component {
   };
   componentDidMount() {
     const {
-      booksData,
       fetchBooks,
       showBooks,
       pageId,
@@ -81,12 +80,9 @@ class BooksPage extends Component {
     } = this.props;
 
     const q = `?page=${pageId}&pageSize=${defaultPageSize}${filterQuery}`;
-    if (!booksData || (!booksData.get("loading") && !booksData.get("loaded")))
-      fetchBooks(q);
-    else {
-      existedQueries.indexOf(q) > -1 ? showBooks(q) : fetchBooks(q);
-    }
+    existedQueries.indexOf(q) > -1 ? showBooks(q) : fetchBooks(q);
   }
+
   componentDidUpdate(prevProps) {
     const {
       existedQueries,

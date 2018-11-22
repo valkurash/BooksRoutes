@@ -1,8 +1,18 @@
 import { appName, api } from "../config";
 import { Record } from "immutable";
-import { arrToMap, fetchAPI } from "./utils";
+import {
+  arrToMap,
+  createRequestTypes,
+  action,
+  fetchEntity,
+  fetchActionCreator,
+  REQUEST,
+  SUCCESS,
+  FAILURE
+} from "./utils";
 import { createSelector } from "reselect";
-import { put, call, all, takeEvery } from "redux-saga/effects";
+import { all, take, fork } from "redux-saga/effects";
+
 /**
  * Actions
  * */
@@ -10,11 +20,17 @@ export const moduleName = "book";
 
 const prefix = `${appName}/${moduleName}`;
 
-export const START = "_START";
-export const SUCCESS = "_SUCCESS";
-export const FAIL = "_FAIL";
+const BOOK = createRequestTypes(`${prefix}/BOOKS`);
+const FETCH_BOOK = `${prefix}/FETCH_BOOK`;
 
-export const FETCH_BOOK = `${prefix}/FETCH_BOOK`;
+/**
+ * Action Creators
+ * */
+const book = fetchActionCreator(BOOK);
+
+export function fetchBook(id) {
+  return action(FETCH_BOOK, { payload: { id } });
+}
 
 /**
  * Reducer
@@ -50,7 +66,7 @@ export const defaultSingleBooksState = Record({
 export default function reducer(state = new defaultSingleBooksState(), action) {
   const { type, payload, response, error } = action;
   switch (type) {
-    case FETCH_BOOK + SUCCESS:
+    case BOOK[SUCCESS]:
       //TODO: optimize
       response.routes.forEach(r => {
         r.points.forEach(p => {
@@ -82,9 +98,9 @@ export default function reducer(state = new defaultSingleBooksState(), action) {
         .setIn(["entities", payload.id, "loading"], false)
         .setIn(["entities", payload.id, "loaded"], true)
         .setIn(["entities", payload.id, "error"], false);
-    case FETCH_BOOK + START:
+    case BOOK[REQUEST]:
       return state.setIn(["entities", payload.id, "loading"], true);
-    case FETCH_BOOK + FAIL:
+    case BOOK[FAILURE]:
       return state
         .setIn(["entities", payload.id, "loading"], false)
         .setIn(["entities", payload.id, "loaded"], false)
@@ -122,38 +138,21 @@ export const routeSelector = createSelector(
 );
 
 /**
- * Action Creators
- * */
-
-export function fetchBook(id) {
-  return {
-    type: FETCH_BOOK + START,
-    payload: { id }
-  };
-}
-
-/**
  * Sagas
  **/
-export function* fetchBookSaga({ payload }) {
-  try {
-    const result = yield call(
-      fetchAPI,
-      `${api}/books/book/${payload.id}`,
-      payload
-    );
-    yield put({
-      type: FETCH_BOOK + SUCCESS,
-      ...result
-    });
-  } catch (error) {
-    yield put({
-      type: FETCH_BOOK + FAIL,
-      ...error
-    });
+const fetchBookSaga = fetchEntity.bind(
+  null,
+  book,
+  payload => `${api}/books/book/${payload.id}`
+);
+
+function* watchFetchBookSaga() {
+  while (true) {
+    const { payload } = yield take(FETCH_BOOK);
+    yield fork(fetchBookSaga, payload);
   }
 }
 
 export function* saga() {
-  yield all([takeEvery(FETCH_BOOK + START, fetchBookSaga)]);
+  yield all([fork(watchFetchBookSaga)]);
 }
