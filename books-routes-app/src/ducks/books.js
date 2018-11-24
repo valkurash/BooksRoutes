@@ -19,14 +19,14 @@ export const moduleName = "books";
 
 const prefix = `${appName}/${moduleName}`;
 
-const BOOKS = createRequestTypes(`${prefix}/BOOKS`);
-const SHOW_BOOKS = `${prefix}/SHOW_BOOKS`;
-const FETCH_BOOKS = `${prefix}/FETCH_BOOKS`;
+export const BOOKS = createRequestTypes(`${prefix}/BOOKS`);
+export const SHOW_BOOKS = `${prefix}/SHOW_BOOKS`;
+export const FETCH_BOOKS = `${prefix}/FETCH_BOOKS`;
 
 /**
  * Action Creators
  * */
-const books = fetchActionCreator(BOOKS);
+export const books = fetchActionCreator(BOOKS);
 
 export function fetchBooks(fullQuery) {
   return action(FETCH_BOOKS, { payload: { fullQuery } });
@@ -38,7 +38,7 @@ export function showBooks(fullQuery) {
 /**
  * Reducer
  * */
-const bookForListWrapper = Record({
+export const bookForListWrapper = Record({
   entities: [],
   loading: false,
   loaded: false,
@@ -50,7 +50,7 @@ const bookForListWrapper = Record({
     pageCount: null
   }
 });
-const defaultBooksState = Record({
+export const defaultBooksState = Record({
   entities: arrToMap([], bookForListWrapper),
   fullQuery: "?page=1&pageSize=18",
   defaultPageSize: 18
@@ -74,6 +74,7 @@ export default function reducer(state = new defaultBooksState(), action) {
     case BOOKS[REQUEST]:
       return state
         .set("fullQuery", payload.fullQuery)
+        .setIn(["entities", payload.fullQuery], new bookForListWrapper())
         .setIn(["entities", payload.fullQuery, "loading"], true);
     case BOOKS[FAILURE]:
       return state
@@ -112,7 +113,7 @@ export const existedQueriesSelector = createSelector(stateSelector, state =>
 /**
  * Sagas
  **/
-const fetchBooksSaga = fetchEntity.bind(
+export const fetchBooksSaga = fetchEntity.bind(
   null,
   books,
   payload => `${api}/books/${payload.fullQuery}`

@@ -19,8 +19,8 @@ export function createRequestTypes(base) {
   }, {});
 }
 
-export function action(type, payload = {}) {
-  return { type, ...payload };
+export function action(type, data = {}) {
+  return { type, ...data };
 }
 export function fetchActionCreator(type) {
   return {
@@ -44,7 +44,7 @@ export function* fetchEntity(entity, apiFn, payload, method = "GET") {
   }
 }
 
-export function fetchAPI(callAPI, payload, method) {
+export function fetchAPI(callAPI, payload, method = "GET") {
   let options = {};
   if (method === "POST")
     options = {

@@ -50,6 +50,7 @@
     "babel-preset-flow": "^6.23.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
+    "enzyme-redux": "^0.2.1",
     "eslint": "^5.2.0",
     "eslint-config-google": "^0.9.1",
     "eslint-config-standard": "^11.0.0",
