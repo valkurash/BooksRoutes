@@ -20,6 +20,7 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { Map, Record } from 'immutable';
+import { IBookData } from '../models';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -83,55 +84,6 @@ interface IPaginationData {
   pageSize: number;
   rowCount: number;
   pageCount: number;
-}
-
-interface IError {
-  status: string;
-  message: string;
-}
-
-interface IBookData {
-  id: number;
-  title: string;
-  isbn?: string;
-  cover?: string;
-  description?: string;
-  moderated: boolean;
-  litres?: string;
-  ozon?: string;
-  routes: IRoute[];
-  authors: IAuthor[];
-}
-
-interface IRoute {
-  id: number;
-  name: string;
-  googlemymap?: string;
-  languages: ILanguage[];
-  countries: ICountry[];
-}
-
-interface ILanguage {
-  id: number;
-  ru_name: string;
-  en_name: string;
-  iso639: string;
-}
-
-interface ICountry {
-  id: number;
-  iso: string;
-  ru_name: string;
-  en_name: string;
-  iso3?: string;
-  numcode?: number;
-  phonecode?: number;
-}
-
-interface IAuthor {
-  id: number;
-  name: string;
-  avatar?: string;
 }
 
 class BooksPage extends Component<IProps & WithStyles<typeof styles>> {

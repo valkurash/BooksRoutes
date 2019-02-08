@@ -4,6 +4,7 @@ import reducer from './reducer';
 import monitorReducersEnhancer from '../enhancers/monitorReducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { googleAnalytics } from '../middlewares/reactGAMiddlewares';
+import { yaMetrika } from '../middlewares/yaMetrikaMiddlewares';
 import { routerMiddleware } from 'connected-react-router';
 import history from '../history';
 import { dehydrateImmutable, hydrateImmutable } from 'immutable-stringify';
@@ -31,7 +32,7 @@ export default function configureStore() {
   if (process.env.NODE_ENV !== 'production') {
     middleware = [...middleware, logger];
   } else if (navigator.userAgent !== 'ReactSnap') {
-    middleware = [...middleware, googleAnalytics];
+    middleware = [...middleware, googleAnalytics, yaMetrika];
   }
 
   let enhancers = [applyMiddleware(...middleware)];
