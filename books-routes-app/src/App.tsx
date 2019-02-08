@@ -13,7 +13,6 @@ import {
 import JssProvider from 'react-jss/lib/JssProvider';
 import { create } from 'jss';
 import ReactGA from 'react-ga';
-import { YMInitializer } from 'react-yandex-metrika';
 import './index.css';
 
 const store = configureStore();
@@ -74,11 +73,6 @@ export default class App extends Component {
         <Provider store={store}>
           <ConnectedRouter history={history}>
             <MuiThemeProvider theme={theme}>
-              <YMInitializer
-                accounts={[52291750]}
-                options={{ defer: true }}
-                version="2"
-              />
               <Root />
             </MuiThemeProvider>
           </ConnectedRouter>
