@@ -13,7 +13,6 @@ import {
 import JssProvider from "react-jss/lib/JssProvider";
 import { create } from "jss";
 import ReactGA from "react-ga";
-import { YMInitializer } from 'react-yandex-metrika';
 import "./index.css";
 
 const notSnap = navigator.userAgent !== "ReactSnap";
@@ -63,8 +62,6 @@ export default class App extends Component {
 
   render() {
     return (
-      <>
-      <YMInitializer accounts={[52291750]}  options={{defer: true}} version="2" />
       <JssProvider
         jss={create(jssPreset())}
         generateClassName={createGenerateClassName({
@@ -79,7 +76,6 @@ export default class App extends Component {
           </ConnectedRouter>
         </Provider>
       </JssProvider>
-      </>
     );
   }
 }

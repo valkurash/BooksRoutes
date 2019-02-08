@@ -2,7 +2,6 @@ import { createStore, compose, applyMiddleware } from "redux";
 import logger from "redux-logger";
 import reducer from "../reducers";
 import { googleAnalytics } from "../middlewares/reactGAMiddlewares";
-import { yaMetrika } from "../middlewares/yaMetrikaMiddlewares";
 import callAPI from "../middlewares/callAPI";
 import thunk from "redux-thunk";
 import { routerMiddleware } from "react-router-redux";
@@ -26,7 +25,7 @@ let middleware = [thunk, callAPI, routerMiddleware(history)];
 if (process.env.NODE_ENV !== "production") {
   middleware = [...middleware, logger];
 } else if (navigator.userAgent !== "ReactSnap") {
-  middleware = [...middleware, googleAnalytics, yaMetrika];
+  middleware = [...middleware, googleAnalytics];
 }
 const enhancer = composeEnhancers(applyMiddleware(...middleware));
 
