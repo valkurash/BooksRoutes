@@ -9,8 +9,9 @@ const trackPage = (page: string) => {
     ...options,
   });
   ReactGA.pageview(page);
-
-  (window as any).ym('52291750', 'hit', page);
+  if ((window as any).ym && (window as any).ym instanceof Function) {
+    (window as any).ym('52291750', 'hit', page);
+  }
 };
 
 let currentPage = '';
