@@ -59,6 +59,36 @@ export default class App extends Component {
         js.src = '//connect.facebook.net/en_US/sdk.js';
         fjs.parentNode.insertBefore(js, fjs);
       })(document, 'script', 'facebook-jssdk');
+
+      ((m, e, t, r, i, k, a) => {
+        (m as any)[i] =
+          (m as any)[i] ||
+          // tslint:disable-next-line:only-arrow-functions
+          function() {
+            ((m as any)[i].a = (m as any)[i].a || []).push(arguments);
+          };
+        (m as any)[i].l = 1 * (new Date() as any);
+        (k as any) = e.createElement(t);
+        (a as any) = e.getElementsByTagName(t)[0];
+        (k as any).async = 1;
+        (k as any).src = r;
+        (a as any).parentNode.insertBefore(k, a);
+      })(
+        window,
+        document,
+        'script',
+        'https://mc.yandex.ru/metrika/tag.js',
+        'ym'
+      );
+
+      (window as any).ym(52291750, 'init', {
+        id: 52291750,
+        defer: true,
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true,
+      });
     }
   }
 
