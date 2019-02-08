@@ -1,39 +1,47 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import Typography from "@material-ui/core/Typography";
-import ArrowIcon from "@material-ui/icons/ArrowLeft";
-import BookForm from "../components/newBook/BookForm";
-import { Helmet } from "react-helmet";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { sendNewBook } from "../ducks/newBook";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
+import ArrowIcon from '@material-ui/icons/ArrowLeft';
+import BookForm from '../components/newBook/BookForm';
+import { Helmet } from 'react-helmet';
+import { connect } from 'react-redux';
+import { sendNewBook } from '../ducks/newBook';
 
-class AddBookPage extends Component {
-  static propTypes = {
-    sendNewBook: PropTypes.func.isRequired
-  };
-  state = {
-    close: false
+interface IState {
+  close: boolean;
+}
+
+interface IProps {
+  sendNewBook: () => void;
+}
+
+interface INewBook {
+  close: boolean;
+}
+
+class AddBookPage extends Component<IProps, IState> {
+  state: IState = {
+    close: false,
   };
 
-  handleClose = (event, reason) => {
-    if (reason === "clickaway") {
+  handleClose = (event: React.MouseEvent<HTMLElement>, reason: string) => {
+    if (reason === 'clickaway') {
       return;
     }
 
     this.setState({ close: true });
-  };
+  }
 
-  handleSubmit = values => {
+  handleSubmit = (values: INewBook) => {
     this.setState({ close: false });
     sendNewBook({
-      title: values.get("title"),
-      authors: values.get("authors"),
-      route: values.get("route"),
-      points: values.get("googleMyMaps"),
-      googleMyMaps: values.get("googleMyMaps")
+      title: values.get('title'),
+      authors: values.get('authors'),
+      route: values.get('route'),
+      points: values.get('googleMyMaps'),
+      googleMyMaps: values.get('googleMyMaps'),
     });
-  };
+  }
 
   render() {
     return (
@@ -68,8 +76,8 @@ class AddBookPage extends Component {
         <Link
           to="/books"
           style={{
-            display: "flex",
-            alignItems: "center"
+            display: 'flex',
+            alignItems: 'center',
           }}
         >
           <ArrowIcon />
@@ -78,10 +86,10 @@ class AddBookPage extends Component {
           </Typography>
         </Link>
         <Typography
-          style={{ textAlign: "center", padding: "15px 0" }}
+          style={{ textAlign: 'center', padding: '15px 0' }}
           color="inherit"
           variant="title"
-          noWrap
+          noWrap={true}
           component="h2"
         >
           Предложить туристический маршрут по мотивам любимой книги
@@ -99,6 +107,6 @@ class AddBookPage extends Component {
 export default connect(
   null,
   dispatch => ({
-    sendNewBook: bookData => dispatch(sendNewBook(bookData))
+    sendNewBook: bookData => dispatch(sendNewBook(bookData)),
   })
 )(AddBookPage);

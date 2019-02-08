@@ -1,19 +1,22 @@
-import ReactGA from "react-ga";
+import ReactGA from 'react-ga';
+import { Dispatch, AnyAction } from 'redux';
 
 const options = {};
 
-const trackPage = page => {
+const trackPage = (page: string) => {
   ReactGA.set({
     page,
-    ...options
+    ...options,
   });
   ReactGA.pageview(page);
 };
 
-let currentPage = "";
+let currentPage = '';
 
-export const googleAnalytics = () => next => action => {
-  if (action.type === "@@router/LOCATION_CHANGE") {
+export const googleAnalytics = () => (next: Dispatch) => (
+  action: AnyAction
+) => {
+  if (action.type === '@@router/LOCATION_CHANGE') {
     const nextPage = `${action.payload.pathname}${action.payload.search}`;
 
     if (currentPage !== nextPage) {
