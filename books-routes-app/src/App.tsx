@@ -60,7 +60,7 @@ export default class App extends Component {
         fjs.parentNode.insertBefore(js, fjs);
       })(document, 'script', 'facebook-jssdk');
 
-      ((m, e, t, r, i, k, a) => {
+      /*((m, e, t, r, i, k, a) => {
         (m as any)[i] =
           (m as any)[i] ||
           // tslint:disable-next-line:only-arrow-functions
@@ -88,7 +88,7 @@ export default class App extends Component {
         trackLinks: true,
         accurateTrackBounce: true,
         webvisor: true,
-      });
+      });*/
     }
   }
 
