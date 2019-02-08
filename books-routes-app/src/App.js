@@ -63,8 +63,6 @@ export default class App extends Component {
 
   render() {
     return (
-      <>
-      <YMInitializer accounts={[52291750]}  options={{defer: true}} version="2" />
       <JssProvider
         jss={create(jssPreset())}
         generateClassName={createGenerateClassName({
@@ -74,12 +72,12 @@ export default class App extends Component {
         <Provider store={store}>
           <ConnectedRouter history={history}>
             <MuiThemeProvider theme={theme}>
+            <YMInitializer accounts={[52291750]} options={{ defer: true }} version="2" />
               <Root />
             </MuiThemeProvider>
           </ConnectedRouter>
         </Provider>
       </JssProvider>
-      </>
     );
   }
 }
