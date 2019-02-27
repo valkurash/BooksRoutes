@@ -434,12 +434,12 @@ export default class NotFoundPage extends Component {
 
         <p>
           9.3. Все предложения или вопросы касательно настоящей Политики
-          конфиденциальности следует сообщать по адресу: valkurash@gmail.com
+          конфиденциальности следует сообщать по адресу: booksroutes.info@gmail.com
         </p>
 
         <p>
           9.4. Действующая Политика конфиденциальности размещена на странице по
-          адресу http://booksroutes.info/politika.html
+          адресу https://booksroutes.info/politica
         </p>
       </div>
     );
