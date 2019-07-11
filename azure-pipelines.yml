@@ -15,5 +15,5 @@ steps:
   inputs:
     containerRegistry: 'gutester'
     command: 'buildAndPush'
-    Dockerfile: 'books-routes-api/Dockerfile'
+    Dockerfile: 'books-routes-api/DockerFile'
 
