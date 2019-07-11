@@ -22,4 +22,4 @@ steps:
     containerRegistry: 'gutester'
     repository: 'booksroutes-app'
     command: 'buildAndPush'
-    Dockerfile: 'books-routes-app/Dockerfile'
+    Dockerfile: 'books-routes-app/DockerFile'
