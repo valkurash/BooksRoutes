@@ -16,4 +16,10 @@ steps:
     repository: 'booksroutes-api'
     command: 'buildAndPush'
     Dockerfile: 'books-routes-api/DockerFile'
-
+    
+- task: Docker@2
+  inputs:
+    containerRegistry: 'gutester'
+    repository: 'booksroutes-app'
+    command: 'buildAndPush'
+    Dockerfile: 'books-routes-app/Dockerfile'
