@@ -1,92 +1,23 @@
 version: "3"
 networks:
-  gutester:
+  booksroutesnet:
     ipam:
       driver: default
       config:
-      - subnet: 192.26.0.1/16
+        - subnet: 192.26.0.1/16
 services:
-  rabbitmq:
-    image: rabbitmq:3.7-management
-    container_name: rabbitmq
-    volumes:
-     - /etc/localtime:/etc/localtime:ro
+  app:
+    image: gutesterregistry.azurecr.io/booksroutes-app:latest
+    container_name: app
     networks:
-      - gutester
-    environment:
-      - RABBITMQ_DEFAULT_USER = user
-      - RABBITMQ_DEFAULT_PASS = user
+      - booksroutesnet
     ports:
-      - "5672:5672"
-      - "15672:15672"
-      - "25672:25672"
-      - "4369:4369"
-      - "5671:5671"
-      - "61613:61613"
-      - "61614:61614"
-      - "1883:1883"
-      - "8883:8883"
-  redis:
-    image: redis
-    volumes:
-     - /etc/localtime:/etc/localtime:ro
-    container_name: redis_cache
+      - "80:80"
+      - "8080:8080"
+  api:
+    image: gutesterregistry.azurecr.io/booksroutes-api:latest
+    container_name: api
     networks:
-      - gutester
-    expose:
-      - 6379
-  gutester-front:
-    image: gutesterregistry.azurecr.io/gutester-front:latest
-    container_name: gutester-front
-    volumes:
-     - /etc/localtime:/etc/localtime:ro
-    networks:
-      - gutester
+      - booksroutesnet
     ports:
-      - "3000:3000"
-  gutester-back:
-    image: gutesterregistry.azurecr.io/gutester-back:latest
-    container_name: gutester-back
-    volumes:
-     - /etc/localtime:/etc/localtime:ro
-     - /home/akozak/docker/avatars:/app/public/avatars
-    networks:
-      - gutester
-    links:
-      - redis
-      - gutester-eventbus
-    ports:
-      - "3100:3100"
-      - "5060:5060"
-    environment:
-      - EVENTBUS_ADDRESS=http://gutester-eventbus:3500
-      - SERVER_PORT=3100
-      - MONGO_CONNECTION=mongodb://10.250.9.1:27017/gutester
-      - REDIS=redis://redis_cache
-  gutester-eventbus:
-    image: gutesterregistry.azurecr.io/gutester-eventbus:latest
-    container_name: gutester-eventbus
-    volumes:
-     - /etc/localtime:/etc/localtime:ro
-    networks:
-      - gutester
-    links:
-      - rabbitmq
-    ports:
-      - 3500
-    command:
-      - /wait-for-it.sh
-      - rabbitmq:5672
-      - --
-      - npm
-      - run
-      - start-server
-    ports:
-      - "3500:3500"
-    environment:
-      - AMQP_ADDRESS=amqp://rabbitmq
-      - SERVER_PORT=3500
-      - BACKEND_ADDRESS=http://gutester-back:3100
-      - BACKEND_PUBLIC_ADDRESS=http://5.101.201.166:30021
-      - BOT_ADDRESS=http://gubotnotificator.azurewebsites.net
-      - EMAIL_NOTIFIERS=andrey.kozak@altarix.ru,paskoda@altarix.ru,victor.nikonov@altarix.ru
+      - "1337:1337"
