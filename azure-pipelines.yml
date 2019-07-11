@@ -14,6 +14,8 @@ steps:
   inputs:
     containerRegistry: 'gutester'
     repository: 'booksroutes-api'
+    tags: |
+      latest
     command: 'buildAndPush'
     Dockerfile: 'books-routes-api/DockerFile'
     
@@ -21,5 +23,7 @@ steps:
   inputs:
     containerRegistry: 'gutester'
     repository: 'booksroutes-app'
+    tags: |
+      latest
     command: 'buildAndPush'
     Dockerfile: 'books-routes-app/DockerFile'
