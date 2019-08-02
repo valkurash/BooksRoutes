@@ -21,7 +21,7 @@ steps:
         db_prod:
           "postgres://valkurash:Booksroutes2018postgres@84.201.156.161:5432/books_routes?tcp_keepalives_idle=600"
       };">db_strings.js
-    workingDirectory: 'books-routes-app'
+    workingDirectory: 'books-routes-api'
 - task: Docker@2
   inputs:
     containerRegistry: 'gutester'
