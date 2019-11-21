@@ -88,7 +88,7 @@ class BookForm extends Component {
               />
               <Field
                 component={renderTextField}
-                name="googlemymaps"
+                name="googleMyMaps"
                 label="Ссылка на маршрут в Google My Maps"
                 helperText="Этот маршрут должен быть доступен для просмотра всем пользователям, имеющим ссылку"
                 margin="normal"
