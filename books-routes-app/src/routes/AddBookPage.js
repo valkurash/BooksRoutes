@@ -22,11 +22,11 @@ class AddBookPage extends Component {
 
   handleSubmit = values => {
     this.setState({ close: false });
-    sendNewBook({
+    this.props.sendNewBook({
       title: values.get("title"),
       authors: values.get("authors"),
       route: values.get("route"),
-      points: values.get("googleMyMaps"),
+      points: values.get("points"),
       googleMyMaps: values.get("googleMyMaps")
     });
   };

@@ -32,7 +32,7 @@ const CHANGE_NEW_BOOK_DATA = `${prefix}/CHANGE_NEW_BOOK_DATA`;
 const newBook = fetchActionCreator(NEW_BOOK);
 
 export function sendNewBook(bookData) {
-  return action(SEND_NEW_BOOK, { payload: { bookData } });
+  return action(SEND_NEW_BOOK, { payload: bookData });
 }
 export function changeNewBooksPoint(points) {
   return action(CHANGE_NEW_BOOK_POINTS, { payload: { points } });
@@ -78,7 +78,7 @@ export default function reducer(state = new newBookDataRecord(), action) {
       ]);
     case CHANGE_NEW_BOOK_DATA:
       return state.set(payload.name, payload.value);
-    case SEND_NEW_BOOK[SUCCESS]:
+    case NEW_BOOK[SUCCESS]:
       return state
         .set("loading", false)
         .set("loaded", true)
