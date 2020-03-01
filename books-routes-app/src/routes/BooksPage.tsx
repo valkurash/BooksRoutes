@@ -200,7 +200,7 @@ class BooksPage extends Component<IProps & WithStyles<typeof styles>> {
             >
               Ideas Band LLC
             </a>{' '}
-            © 2018 - new Date().getFullYear()
+            © 2018 - {new Date().getFullYear()}
           </div>
         </footer>
         <Zoom
