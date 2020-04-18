@@ -18,12 +18,12 @@ import './index.css';
 const store = configureStore();
 
 const notSnap = navigator.userAgent !== 'ReactSnap';
-const production = process.env.NODE_ENV === 'development';
+const production = process.env.NODE_ENV === 'production';
 
 console.log('env: ', process.env);
 
 if (production && notSnap) {
-  ReactGA.initialize('UA-116041442-1');
+  ReactGA.initialize('UA-116041442-1',{debug: true});
   ReactGA.set({ dimension1: 'clientId' });
 }
 
