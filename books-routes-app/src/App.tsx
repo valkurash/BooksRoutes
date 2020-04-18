@@ -23,8 +23,11 @@ const production = process.env.NODE_ENV === 'production';
 console.log('env: ', process.env);
 
 if (production && notSnap) {
+  // TODO: remove debug
   ReactGA.initialize('UA-116041442-1',{debug: true});
-  ReactGA.set({ dimension1: 'clientId' });
+  ReactGA.ga((tracker:any) => {
+    ReactGA.set({ dimension1: tracker.get('clientId') });
+  });
 }
 
 const theme = createMuiTheme({

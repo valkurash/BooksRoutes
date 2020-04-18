@@ -1,4 +1,4 @@
-import logo from '../images/br-logo.png';
+import logo from '../images/br-logo.svg';
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
@@ -51,7 +51,7 @@ class Root extends Component<{}, IState> {
               <img
                 src={logo}
                 style={{
-                  height: '50px',
+                  height: '60px',
                   display: 'inline-block',
                 }}
                 alt="logo"
@@ -60,20 +60,20 @@ class Root extends Component<{}, IState> {
             <div>
               <IconButton
                 color="secondary"
-                href="blog.booksroutes.info"
+                href="//blog.booksroutes.info"
                 target="_blank"
               >
                 <BlogIcon />
               </IconButton>
               <IconButton
-                href="instagram.com/books_routes"
+                href="//instagram.com/books_routes"
                 target="_blank"
                 color="inherit"
               >
                 <InstagramIcon />
               </IconButton>
               <IconButton
-                href="twitter.com/booksroutes"
+                href="//twitter.com/booksroutes"
                 target="_blank"
                 color="inherit"
               >
