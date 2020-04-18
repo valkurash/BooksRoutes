@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, StoreEnhancer } from 'redux';
 import logger from 'redux-logger';
 import reducer from './reducer';
 import monitorReducersEnhancer from '../enhancers/monitorReducers';
@@ -11,16 +11,9 @@ import { Map } from 'immutable';
 import rootSaga from './saga';
 import createSagaMiddleware from 'redux-saga';
 
-// The top-level state object
-export interface ApplicationState {
-  layout: string;
-  heroes: string;
-  teams: string;
-}
-
 export default function configureStore() {
   // Grab the state from a global variable injected into the server-generated HTML
-  const preloadedState = (window as any).__PRELOADED_STATE__
+  const preloadedState:any = (window as any).__PRELOADED_STATE__
     ? hydrateImmutable((window as any).__PRELOADED_STATE__).toObject()
     : {};
 
@@ -34,7 +27,7 @@ export default function configureStore() {
     middleware = [...middleware, googleAnalytics];
   }
 
-  let enhancers = [applyMiddleware(...middleware)];
+  let enhancers:StoreEnhancer[] = [applyMiddleware(...middleware)];
   if (
     process.env.NODE_ENV !== 'production' &&
     navigator.userAgent !== 'ReactSnap'

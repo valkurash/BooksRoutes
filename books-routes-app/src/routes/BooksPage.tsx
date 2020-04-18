@@ -40,8 +40,8 @@ const styles = (theme: Theme) =>
     },
     fab: {
       position: 'fixed',
-      bottom: theme.spacing.unit * 2,
-      right: theme.spacing.unit * 2,
+      bottom: theme.spacing() * 2,
+      right: theme.spacing() * 2,
     },
     pagination: {
       display: 'flex',
@@ -86,7 +86,7 @@ interface IPaginationData {
   pageCount: number;
 }
 
-class BooksPage extends Component<IProps & WithStyles<typeof styles>> {
+class BooksPage extends Component<IProps & WithStyles<typeof styles, true>> {
   componentDidMount() {
     const {
       fetchBooks,
@@ -158,6 +158,7 @@ class BooksPage extends Component<IProps & WithStyles<typeof styles>> {
           ))
         : null;
 
+    // @ts-ignore
     return (
       <div className={classes.wrapper}>
         <Helmet>
@@ -219,7 +220,7 @@ class BooksPage extends Component<IProps & WithStyles<typeof styles>> {
             component={({ innerRef, ...props }) => (
               <Link {...props} to="/add" />
             )}
-            variant="fab"
+            variant="contained"
             className={classes.fab}
             color="secondary"
           >

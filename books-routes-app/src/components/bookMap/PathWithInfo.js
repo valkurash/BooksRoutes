@@ -80,8 +80,8 @@ export default class PathWithInfo extends PureComponent {
               size="small"
               style={{
                 position: "absolute",
-                right: "-10px",
-                top: "-10px"
+                right: 0,
+                top: 0
               }}
               onClick={() => onToggleOpen(pointData.id, false)}
             >

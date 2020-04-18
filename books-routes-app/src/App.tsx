@@ -8,9 +8,9 @@ import {
   MuiThemeProvider,
   createMuiTheme,
   createGenerateClassName,
+  StylesProvider,
   jssPreset
 } from '@material-ui/core/styles';
-import JssProvider from 'react-jss/lib/JssProvider';
 import { create } from 'jss';
 import ReactGA from 'react-ga';
 import './index.css';
@@ -18,10 +18,13 @@ import './index.css';
 const store = configureStore();
 
 const notSnap = navigator.userAgent !== 'ReactSnap';
-const production = process.env.NODE_ENV === 'production';
+const production = process.env.NODE_ENV === 'development';
+
+console.log('env: ', process.env);
 
 if (production && notSnap) {
   ReactGA.initialize('UA-116041442-1');
+  ReactGA.set({ dimension1: 'clientId' });
 }
 
 const theme = createMuiTheme({
@@ -75,10 +78,10 @@ export default class App extends Component {
 
   render() {
     return (
-      <JssProvider
+      <StylesProvider
         jss={create(jssPreset())}
         generateClassName={createGenerateClassName({
-          dangerouslyUseGlobalCSS: true,
+          disableGlobal: true,
         })}
       >
         <Provider store={store}>
@@ -88,7 +91,7 @@ export default class App extends Component {
             </MuiThemeProvider>
           </ConnectedRouter>
         </Provider>
-      </JssProvider>
+      </StylesProvider>
     );
   }
 }

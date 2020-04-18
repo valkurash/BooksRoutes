@@ -69,14 +69,14 @@ class AddBookPage extends Component {
           }}
         >
           <ArrowIcon />
-          <Typography variant="subheading" component="span">
+          <Typography variant="subtitle1" component="span">
             Вернуться к списку книг
           </Typography>
         </Link>
         <Typography
           style={{ textAlign: "center", padding: "15px 0" }}
           color="inherit"
-          variant="title"
+          variant="h6"
           noWrap={true}
           component="h2"
         >

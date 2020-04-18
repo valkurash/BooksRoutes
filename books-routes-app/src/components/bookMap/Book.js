@@ -75,10 +75,10 @@ export default class Book extends Component {
             )}
           </ProgressiveImage>
         </div>
-        <Typography variant="headline" component="div">
+        <Typography variant="h6" component="div">
           {book.title}
         </Typography>
-        <Typography variant="subheading" component="div">
+        <Typography variant="subtitle1" component="div">
           {book.authors.map(author => author.name).join(", ")}
         </Typography>
         <Typography

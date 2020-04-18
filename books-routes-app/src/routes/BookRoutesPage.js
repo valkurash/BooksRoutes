@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, forwardRef } from "react";
 import { Link, Route, Redirect, Switch, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchBook, bookSelector } from "../ducks/book";
@@ -154,7 +154,7 @@ class BookRoutesPage extends Component {
     const routesList = bookData
       ? bookData.routes.map(route => (
           <ListItem
-            component={NavLink}
+            component={forwardRef((props, ref) => <NavLink {...props} ref={ref} />)}
             className={classes.routesNavLink}
             key={route.id}
             to={`/books/${bookData.id}/${route.id}`}
@@ -177,7 +177,7 @@ class BookRoutesPage extends Component {
             }}
           >
             <ArrowIcon />
-            <Typography variant="subheading" component="span">
+            <Typography variant="subtitle1" component="span">
               Вернуться к списку книг
             </Typography>
           </Link>
@@ -282,7 +282,7 @@ class BookRoutesPage extends Component {
                 </ContentLoader>
               </div>
             ) : (
-              <Typography color="inherit" variant="title" noWrap component="h2">
+              <Typography color="inherit" variant="h6" noWrap component="h2">
                 {title}
               </Typography>
             )}

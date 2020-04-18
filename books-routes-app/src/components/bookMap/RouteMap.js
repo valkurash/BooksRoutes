@@ -6,14 +6,13 @@ import NotFoundPage from "../../routes/NotFoundPage";
 import MarkerWithInfo from "./MarkerWithInfo";
 import PathWithInfo from "./PathWithInfo";
 import PolygonWithInfo from "./PolygonWithInfo";
-
-const {
+import {
   compose,
   withProps,
   withStateHandlers,
   withHandlers,
   lifecycle
-} = require("recompose");
+} from "recompose";
 
 const { withGoogleMap, GoogleMap } = require("react-google-maps");
 const {

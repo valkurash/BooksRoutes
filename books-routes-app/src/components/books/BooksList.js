@@ -49,7 +49,7 @@ class BookList extends Component {
     if (loading)
       return (
         <div className={classes.bookList}>
-          <Grid container spacing={24}>
+          <Grid container spacing={2}>
             {range(12).map(el => (
               <Grid key={el} item xs={12} sm={6} md={3} lg={2}>
                 <Paper className={classes.bookCard}>
@@ -106,7 +106,7 @@ class BookList extends Component {
 
     return (
       <div className={classes.bookList}>
-        <Grid container spacing={24}>
+        <Grid container spacing={2}>
           {books
             .sort((a, b) => {
               if (a.title > b.title) return 1;

@@ -47,8 +47,8 @@ const styles = theme => ({
     padding: "0 15px"
   },
   infoTitle: {
-    margin: `0 ${theme.spacing.unit * 4}px`,
-    lineHeight: `${theme.spacing.unit * 4}px`,
+    margin: `0 ${theme.spacing() * 4}px`,
+    lineHeight: `${theme.spacing() * 4}px`,
     textAlign: "center"
   },
   infoContent: {
@@ -56,19 +56,19 @@ const styles = theme => ({
     justifyContent: "center",
     alignContent: "flex-start",
     flexWrap: "wrap",
-    padding: theme.spacing.unit / 2,
+    padding: theme.spacing() / 2,
     overflow: "auto",
-    height: `calc(100% - ${theme.spacing.unit * 4}px)`
+    height: `calc(100% - ${theme.spacing() * 4}px)`
   },
   close: {
-    width: theme.spacing.unit * 4,
-    height: theme.spacing.unit * 4,
+    width: theme.spacing() * 4,
+    height: theme.spacing() * 4,
     position: "absolute",
     top: "0",
     right: "0"
   },
   chip: {
-    margin: theme.spacing.unit / 2,
+    margin: theme.spacing() / 2,
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText
   },
@@ -76,7 +76,7 @@ const styles = theme => ({
     display: "flex",
     justifyContent: "space-evenly",
     flexWrap: "wrap",
-    padding: theme.spacing.unit / 2,
+    padding: theme.spacing() / 2,
     "& .btnIcon:not(:hover)": { background: "#fff" }
   }
 });
@@ -180,10 +180,10 @@ class BookCard extends Component {
                 className={classes.close}
                 onClick={this.handleClose}
               >
-                <CloseIcon />
+                <CloseIcon style={{padding: 0}}/>
               </IconButton>
               <Typography
-                variant="title"
+                variant="h6"
                 component="div"
                 className={classes.infoTitle}
               >
@@ -208,7 +208,7 @@ class BookCard extends Component {
                 <CloseIcon />
               </IconButton>
               <Typography
-                variant="title"
+                variant="h6"
                 component="div"
                 className={classes.infoTitle}
               >
@@ -227,10 +227,10 @@ class BookCard extends Component {
           to={`/books/${book.id}/${book.routes[0].id}`}
         >
           <div className={classes.titleWrapper}>
-            <Typography variant="title" component="div" className="title">
+            <Typography variant="h6" component="div" className="title">
               {book.title}
             </Typography>
-            <Typography variant="subheading" component="div" className="title">
+            <Typography variant="subtitle1" component="div" className="title">
               {book.authors.map(author => author.name).join(", ")}
             </Typography>
           </div>

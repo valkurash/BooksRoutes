@@ -1,14 +1,16 @@
-import logo from '../images/ib-logo.png';
+import logo from '../images/br-logo.png';
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import IconButton from '@material-ui/core/IconButton';
 import MailIcon from '@material-ui/icons/Mail';
+import BlogIcon from '@material-ui/icons/MenuBook';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import TwitterIcon from '@material-ui/icons/Twitter';
 import Politica from '../routes/Politica';
 import BooksPage from '../routes/BooksPage';
 import BookRoutesPage from '../routes/BookRoutesPage';
@@ -54,40 +56,57 @@ class Root extends Component<{}, IState> {
                 }}
                 alt="logo"
               />
-              <Typography
-                variant="title"
-                component="h1"
-                style={{
-                  verticalAlign: 'text-bottom',
-                  display: 'inline-block',
-                }}
-              >
-                Маршруты
-                <br />
-                из книг
-              </Typography>
             </a>
-            <IconButton
-              aria-describedby={id}
-              key="close"
-              aria-label="mail"
-              color="primary"
-              className="mailIconBtn"
-              onClick={this.handleClick}
-            >
-              <MailIcon style={{ fontSize: 36 }} />
-            </IconButton>
-            <Popper id={id} open={open} anchorEl={anchorEl} transition={true}>
-              {({ TransitionProps }) => (
-                <Fade {...TransitionProps} timeout={350}>
-                  <Paper style={{ padding: '15px' }}>
-                    <a href="mailto:booksroutes.info@gmail.com">
-                      booksroutes.info@gmail.com
-                    </a>
-                  </Paper>
-                </Fade>
-              )}
-            </Popper>
+            <div>
+              <IconButton
+                color="secondary"
+                href="blog.booksroutes.info"
+                target="_blank"
+              >
+                <BlogIcon />
+              </IconButton>
+              <IconButton
+                href="instagram.com/books_routes"
+                target="_blank"
+                color="inherit"
+              >
+                <InstagramIcon />
+              </IconButton>
+              <IconButton
+                href="twitter.com/booksroutes"
+                target="_blank"
+                color="inherit"
+              >
+                <TwitterIcon />
+              </IconButton>
+              <IconButton
+                aria-describedby={id}
+                key="close"
+                aria-label="mail"
+                color="inherit"
+                className="mailIconBtn"
+                onClick={this.handleClick}
+              >
+                <MailIcon />
+              </IconButton>
+              <Popper
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                transition={true}
+                style={{ zIndex: 1 }}
+              >
+                {({ TransitionProps }) => (
+                  <Fade {...TransitionProps} timeout={350}>
+                    <Paper style={{ padding: '15px' }}>
+                      <a href="mailto:booksroutes.info@gmail.com">
+                        booksroutes.info@gmail.com
+                      </a>
+                    </Paper>
+                  </Fade>
+                )}
+              </Popper>
+            </div>
           </Toolbar>
         </AppBar>
         <div style={{ padding: '10px 20px' }}>

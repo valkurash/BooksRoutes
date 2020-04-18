@@ -58,7 +58,7 @@ class BookForm extends Component {
     return (
       <div>
         <form onSubmit={handleSubmit} noValidate autoComplete="off">
-          <Grid container spacing={24}>
+          <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
               <Field
                 component={renderTextField}
