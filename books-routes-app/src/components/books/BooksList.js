@@ -93,7 +93,7 @@ class BookList extends Component {
             книги или маршрута.
           </div>
           <Button
-            variant="raised"
+            variant="outlined"
             color="primary"
             aria-label="add"
             component={Link}
