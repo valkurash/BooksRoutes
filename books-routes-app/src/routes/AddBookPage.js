@@ -74,7 +74,7 @@ class AddBookPage extends Component {
           </Typography>
         </Link>
         <Typography
-          style={{ textAlign: "center", padding: "15px 0" }}
+          style={{paddingTop: "20px" }}
           color="inherit"
           variant="h6"
           noWrap={true}

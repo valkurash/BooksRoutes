@@ -62,8 +62,7 @@ async function getAllBooks(query) {
       }
     }
 
-    qb
-      .groupBy("books.id")
+    qb.groupBy("books.id")
       .distinct("books.id")
       .select("books.*");
   })
@@ -97,6 +96,7 @@ function getSingleBook(id) {
     ]
   });
 }
+
 function getCountriesAndLanguages() {
   const countries = knex("countries_routes")
     .distinct("ru_name")
@@ -110,6 +110,7 @@ function getCountriesAndLanguages() {
     .orderBy("ru_name", "asc");
   return Promise.all([countries, languages]);
 }
+
 function addBookWithRelations(bookData) {
   async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
@@ -150,19 +151,21 @@ function addBookWithRelations(bookData) {
     await asyncForEach(bookData.routes, async routeData => {
       const route = await Models.Route.forge({
         name: routeData.name,
-        googlemymap: routeData.googlemymap,
+        googlemymap: bookData.googleMyMaps,
         book_id: book.id
       }).save(null, { transacting: t });
 
       //добавление точек
-      await asyncForEach(routeData.path, async point => {
+      await asyncForEach(routeData.path, async (geo, i) => {
         await route.related("points").create(
           {
-            name: point.name,
+            name: geo.name,
             route_id: route.id,
-            order: parseInt(point.order),
-            point: knex.raw(`Point(${point.lat}, ${point.lon})`),
-            description: point.description
+            order: i,
+            polyline: geo.polyline || null,
+            point: geo.point ? knex.raw(`Point(${geo.point.lat}, ${geo.point.lon})`) : null,
+            polygon: geo.polygon || null,
+            description: geo.description
           },
           { transacting: t }
         );

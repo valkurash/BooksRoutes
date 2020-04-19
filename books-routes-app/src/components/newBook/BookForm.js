@@ -11,6 +11,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form/immutable";
 import { stateSelector as newBookSelector } from "../../ducks/newBook";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from '@material-ui/core/FormGroup';
 
 const validate = values => {
   const errors = {};
@@ -42,7 +45,10 @@ class BookForm extends Component {
     loaded: PropTypes.bool,
     error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object])
   };
-
+  constructor(props) {
+    super(props);
+    this.state = { googleMap: true };
+  }
   render() {
     const {
       handleSubmit,
@@ -59,7 +65,7 @@ class BookForm extends Component {
       <div>
         <form onSubmit={handleSubmit} noValidate autoComplete="off">
           <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={this.state.googleMap?12:4}>
               <Field
                 component={renderTextField}
                 name="title"
@@ -86,18 +92,34 @@ class BookForm extends Component {
                 rows="4"
                 fullWidth
               />
-              <Field
-                component={renderTextField}
-                name="googleMyMaps"
-                label="Ссылка на маршрут в Google My Maps"
-                helperText="Этот маршрут должен быть доступен для просмотра всем пользователям, имеющим ссылку"
-                margin="normal"
-                fullWidth
+              <FormGroup>
+              <FormControlLabel
+                  control={<Switch
+                      checked={this.state.googleMap}
+                      onChange={() =>
+                          this.setState(state => ({
+                            googleMap: !state.googleMap
+                          }))
+                      }
+                      name="googleMap"
+                  />}
+                  label="Использовать карту Google My Maps"
               />
+              </FormGroup>
+              {this.state.googleMap && (
+                <Field
+                  component={renderTextField}
+                  name="googleMyMaps"
+                  label="Ссылка на маршрут в Google My Maps"
+                  helperText="Этот маршрут должен быть доступен для просмотра всем пользователям, имеющим ссылку"
+                  margin="normal"
+                  fullWidth
+                />
+              )}
               <Button
                 type="submit"
                 disabled={pristine || submitting}
-                variant="raised"
+                variant="outlined"
                 color="secondary"
                 size="large"
                 style={{ margin: "15px 0" }}
@@ -112,27 +134,29 @@ class BookForm extends Component {
                 />
               )}
             </Grid>
-            <Grid item xs={12} md={8}>
-              <FormLabel component="legend" style={{ margin: "15px 0 0 0" }}>
-                Точки маршрута
-              </FormLabel>
-              <FormLabel
-                component="legend"
-                style={{ margin: "10px 0 15px 0", fontSize: ".8rem" }}
-              >
-                Если маршрут включает более сложную геометрию, например, пути
-                или целые области, то лучше составить его в{" "}
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://www.google.com/maps/d/u/0/"
+            {!this.state.googleMap && (
+              <Grid item xs={12} md={8}>
+                <FormLabel component="legend" style={{ margin: "15px 0 0 0" }}>
+                  Точки маршрута
+                </FormLabel>
+                <FormLabel
+                  component="legend"
+                  style={{ margin: "10px 0 15px 0", fontSize: ".8rem" }}
                 >
-                  Google My Maps
-                </a>{" "}
-                и указать ссылку на него в этой форме.
-              </FormLabel>
-              <RouteMapSuggestion />
-            </Grid>
+                  Если маршрут включает более сложную геометрию, например, пути
+                  или целые области, то лучше составить его в{" "}
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.google.com/maps/d/u/0/"
+                  >
+                    Google My Maps
+                  </a>{" "}
+                  и указать ссылку на него в этой форме.
+                </FormLabel>
+                <RouteMapSuggestion />
+              </Grid>
+            )}
           </Grid>
         </form>
         <Snackbar

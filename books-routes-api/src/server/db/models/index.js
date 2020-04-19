@@ -15,7 +15,7 @@ const Route = bookshelf.Model.extend({
     return this.belongsTo(Book);
   },
   points: function() {
-    return this.hasMany(Point);
+    return this.hasMany(Point).query(qb => qb.select('*'));
   },
   languages: function() {
     return this.belongsToMany(Language);
@@ -39,7 +39,7 @@ const Country = bookshelf.Model.extend({
 const Point = bookshelf.Model.extend({
   tableName: "points",
   route: function() {
-    return this.belongsTo(Route);
+    return this.belongsTo(Route).query(qb => qb.select('*'));
   }
 });
 const Author = bookshelf.Model.extend({

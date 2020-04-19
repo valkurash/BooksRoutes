@@ -11,25 +11,28 @@
   "author": "LLC Ideas Band",
   "license": "ISC",
   "devDependencies": {
-    "babel-eslint": "^8.2.2",
+    "babel-eslint": "^8.2.6",
     "chai": "4.1.1",
-    "chai-http": "^3.0.0",
-    "eslint": "^4.18.1",
+    "chai-http": "^4.3.0",
+    "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
-    "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-mocha": "^4.12.1",
     "eslint-plugin-node": "^6.0.1",
-    "mocha": "^3.5.0",
-    "nodemon": "^1.18.3",
-    "prettier-eslint": "^8.8.1"
+    "mocha": "^7.1.1",
+    "nodemon": "^1.19.4",
+    "prettier-eslint": "^8.8.2"
   },
   "dependencies": {
-    "@koa/cors": "^2.2.1",
-    "bookshelf": "^0.13.3",
-    "knex": "^0.15.2",
-    "koa": "^2.3.0",
-    "koa-bodyparser": "^4.2.0",
-    "koa-router": "^7.2.1",
-    "pg": "^7.4.3",
-    "speakingurl": "^14.0.1"
+    "@koa/cors": "^2.2.3",
+    "bookshelf": "^0.15.2",
+    "knex": "^0.21.0",
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^7.4.0",
+    "node-fetch": "^2.6.0",
+    "pg": "^7.18.2",
+    "speakingurl": "^14.0.1",
+    "togeojson": "github:FBrusquetti/togeojson#master",
+    "xmldom": "^0.3.0"
   }
 }

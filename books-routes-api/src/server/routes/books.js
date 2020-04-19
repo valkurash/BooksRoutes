@@ -1,5 +1,7 @@
 const Router = require("koa-router");
 const queries = require("../db/queries/books");
+const parser = require("../utils/geoJsonParser");
+const url = require("url");
 
 const router = new Router();
 const BASE_URL = `/api/books`;
@@ -63,31 +65,25 @@ router.get(`/api/countries-languages`, async ctx => {
 router.post(`${BASE_URL}`, async ctx => {
   try {
     const body = ctx.request.body;
+    const googlemymap = body.googleMyMaps || "";
+    const urlObject = url.parse(googlemymap, true);
+    const mid = urlObject.query && urlObject.query.mid;
+    const moderated = /^checked-/gi.test(body.title) ? "true" : "false";
     const bookData = {
       book: {
-        title: body.title,
+        title: body.title.replace("checked-", ""),
         description: body.route,
-        moderated: "false"
+        moderated: moderated
       },
       authors: (body.authors.replace(/\s\s+/g, " ") || "unknown")
         .split(",")
         .map(name => ({ name: name.trim() })),
-      routes: [
-        {
-          name: "Основной маршрут",
-          googlemymap: body.googleMyMaps,
-          path: body.points.map((point, i) => {
-            return {
-              name: point.key,
-              description: point.description || "unknown",
-              lat: point.lat,
-              lon: point.lng,
-              order: i
-            };
-          })
-        }
-      ]
+      routes: mid
+        ? await parser.getRoutesFromGmap(mid)
+        : parser.getCustomRoutes(body.points),
+      googleMyMaps: body.googleMyMaps
     };
+
     const book = await queries.addBookWithRelations(bookData);
     ctx.status = 201;
     ctx.body = {
