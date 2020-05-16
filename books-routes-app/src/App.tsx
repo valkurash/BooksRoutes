@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core/styles';
 import { create } from 'jss';
 import ReactGA from 'react-ga';
+import ReactPixel from 'react-facebook-pixel';
 import './index.css';
 
 const store = configureStore();
@@ -28,6 +29,9 @@ if (production && notSnap) {
   ReactGA.ga((tracker:any) => {
     ReactGA.set({ dimension1: tracker.get('clientId') });
   });
+
+  ReactPixel.init('532439894178602', undefined, { debug: true, autoConfig: true });
+  ReactPixel.pageView();
 }
 
 const theme = createMuiTheme({
