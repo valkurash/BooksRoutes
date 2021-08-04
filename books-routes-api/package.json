@@ -33,6 +33,6 @@
     "pg": "^7.18.2",
     "speakingurl": "^14.0.1",
     "togeojson": "github:FBrusquetti/togeojson#master",
-    "xmldom": "^0.3.0"
+    "xmldom": "^0.6.0"
   }
 }
